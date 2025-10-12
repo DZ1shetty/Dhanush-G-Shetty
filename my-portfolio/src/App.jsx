@@ -768,9 +768,8 @@ export default function App() {
                     <h3 className="text-xl font-bold mb-2">{project.title}</h3>
                     <p className="text-slate-600 dark:text-slate-400 mb-4">{project.description}</p>
                     <div className="flex flex-wrap gap-2 mb-4">{project.tags.map((tag, i) => (<span key={i} className="bg-blue-100 text-blue-800 text-xs font-semibold px-2.5 py-0.5 rounded-full dark:bg-blue-900 dark:text-blue-300">{tag}</span>))}</div>
-                    <div className="flex justify-between items-center">
+                    <div className="flex justify-start items-center">
                       <a href={project.repoUrl} target="_blank" rel="noopener noreferrer" className="text-slate-500 hover:text-slate-900 dark:hover:text-white transition-colors duration-300 font-medium">GitHub</a>
-                      <button className="opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-slate-500 hover:text-slate-900 dark:hover:text-white font-medium" aria-label={`View details for ${project.title}`}>View Details</button>
                     </div>
                   </div>
                 </Motion>
