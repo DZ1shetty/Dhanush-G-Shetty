@@ -14,9 +14,15 @@ export const portfolioData = {
   contact: {
     email: "dhanushgshetty666@gmail.com",
     social: {
-      linkedin: "https://www.linkedin.com/in/dhanush-g-shetty",
-      github: "https://github.com/DZ1shetty",
-      instagram: "https://www.instagram.com/dhanu_shetty1105/",
+      linkedin: {
+        url: "https://www.linkedin.com/in/dhanush-g-shetty-b812642b8/"
+      },
+      github: {
+        url: "https://github.com/DZ1shetty"
+      },
+      instagram: {
+        url: "https://www.instagram.com/dhanu_shetty1105/"
+      }
     }
   },
   internships: [
