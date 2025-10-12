@@ -59,7 +59,8 @@ export const portfolioData = {
   { title: "Network-Speed-Heatmap", description: "Network speed heatmap visualizer.", tags: ["TypeScript"], repoUrl: "https://github.com/DZ1shetty/Network-Speed-Heatmap" },
   { title: "Smart Insurance App", description: "React app for document adjudication in insurance.", tags: ["React", "JavaScript"], repoUrl: "https://github.com/DZ1shetty/smart-insurance-app" },
   { title: "Bus_Fleet_Management_System", description: "Web system to manage a fleet of buses in real-time.", tags: ["JavaScript", "HTML/CSS"], repoUrl: "https://github.com/DZ1shetty/Bus_Fleet_Management_System" },
-  { title: "SDLC-of-a-Real-World-System", description: "Analysis of 'Hospital at Home' SDLC.", tags: ["HTML", "System Analysis"], repoUrl: "https://github.com/DZ1shetty/SDLC-of-a-Real-World-System" }
+  { title: "SDLC-of-a-Real-World-System", description: "Analysis of 'Hospital at Home' SDLC.", tags: ["HTML", "System Analysis"], repoUrl: "https://github.com/DZ1shetty/SDLC-of-a-Real-World-System" },
+  { title: "FinNovate", description: "Financial innovation project.", tags: ["JavaScript"], repoUrl: "https://github.com/DZ1shetty/FinNovate" }
   ],
   skills: ["JavaScript", "React", "Python", "HTML5 & CSS3", "Git & GitHub", "C", "Java"]
 };
