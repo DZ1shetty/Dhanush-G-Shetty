@@ -126,7 +126,7 @@ export default function App() {
   );
 
   return (
-    <div className="bg-slate-100 dark:bg-slate-900 min-h-screen font-sans text-slate-800 dark:text-slate-200 transition-colors duration-500" style={{filter: isSwitching ? 'contrast(1.25) saturate(1.15)' : undefined, transition: 'filter 350ms ease'}}>
+    <div className="min-h-screen font-sans text-slate-800 dark:text-slate-200 transition-colors duration-500" style={{filter: isSwitching ? 'contrast(1.25) saturate(1.15)' : undefined, transition: 'filter 350ms ease'}}>
       {/* Contrast overlay used during theme switch to create a visible flash/effect. pointer-events-none so it doesn't block interactions */}
       <div aria-hidden className={`fixed inset-0 pointer-events-none z-50 transition-opacity duration-500 ${isSwitching ? 'opacity-100' : 'opacity-0'}`} style={{background: theme === 'light' ? 'rgba(255,255,255,0.85)' : 'rgba(0,0,0,0.6)', mixBlendMode: 'overlay', backdropFilter: 'contrast(1.4) saturate(1.05)'}} />
       <header className="fixed top-0 left-0 right-0 bg-white/60 dark:bg-slate-900/60 backdrop-blur-md z-50 shadow-lg transition-all duration-300">
@@ -158,9 +158,10 @@ export default function App() {
 
       <div className="fixed inset-0 -z-10 bg-gradient-to-r from-slate-50 via-blue-50 to-teal-50 dark:from-slate-900 dark:via-slate-800 dark:to-slate-700 animate-gradient" />
 
-      <_motion.div className="fixed top-20 left-10 w-20 h-20 bg-blue-200 dark:bg-blue-800 rounded-full opacity-20 -z-10" animate={{ y: [0, -30, 0] }} transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }} />
-      <_motion.div className="fixed top-40 right-20 w-16 h-16 bg-teal-200 dark:bg-teal-800 rounded-full opacity-15 -z-10" animate={{ y: [0, -25, 0] }} transition={{ duration: 8, repeat: Infinity, ease: "easeInOut", delay: 1 }} />
-      <_motion.div className="fixed bottom-40 left-1/4 w-12 h-12 bg-purple-200 dark:bg-purple-800 rounded-full opacity-10 -z-10" animate={{ y: [0, -20, 0] }} transition={{ duration: 7, repeat: Infinity, ease: "easeInOut", delay: 2 }} />
+      <_motion.div className="fixed top-20 left-10 w-24 h-24 bg-blue-200 dark:bg-blue-800 rounded-full opacity-40 -z-10" animate={{ y: [0, -40, 0] }} transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }} />
+      <_motion.div className="fixed top-40 right-20 w-20 h-20 bg-teal-200 dark:bg-teal-800 rounded-full opacity-30 -z-10" animate={{ y: [0, -35, 0] }} transition={{ duration: 8, repeat: Infinity, ease: "easeInOut", delay: 1 }} />
+      <_motion.div className="fixed bottom-40 left-1/4 w-16 h-16 bg-purple-200 dark:bg-purple-800 rounded-full opacity-25 -z-10" animate={{ y: [0, -30, 0] }} transition={{ duration: 7, repeat: Infinity, ease: "easeInOut", delay: 2 }} />
+      <_motion.div className="fixed top-60 right-1/3 w-18 h-18 bg-indigo-200 dark:bg-indigo-800 rounded-full opacity-35 -z-10" animate={{ y: [0, -25, 0] }} transition={{ duration: 9, repeat: Infinity, ease: "easeInOut", delay: 0.5 }} />
 
       <main className="container mx-auto px-4 sm:px-6 lg:px-8 pt-20">
         <section id="home" className="min-h-screen flex items-center justify-center text-center">
@@ -181,7 +182,7 @@ export default function App() {
         </section>
 
         <Section id="about" title="About Me" icon={<User className="w-8 h-8"/>}>
-          <div className="max-w-3xl mx-auto bg-white dark:bg-slate-800 p-6 rounded-xl shadow-lg"><p className="text-lg leading-relaxed text-slate-600 dark:text-slate-300">{portfolioData.bio}</p></div>
+          <div className="max-w-3xl mx-auto bg-white/95 dark:bg-slate-800/95 p-6 rounded-xl shadow-lg"><p className="text-lg leading-relaxed text-slate-600 dark:text-slate-300">{portfolioData.bio}</p></div>
         </Section>
 
         <Section id="journey" title="My Journey" icon={<GraduationCap className="w-8 h-8"/>}>
@@ -192,7 +193,7 @@ export default function App() {
                   <span className="absolute flex items-center justify-center w-8 h-8 bg-slate-200 rounded-full -left-4 ring-8 ring-white dark:ring-slate-900 dark:bg-slate-700">
                     {item.type === 'Education' ? <GraduationCap className="w-5 h-5 text-slate-600 dark:text-slate-300" /> : <Building2 className="w-5 h-5 text-slate-600 dark:text-slate-300" />}
                   </span>
-                  <div className="p-4 bg-white dark:bg-slate-800 rounded-lg shadow-md">
+                  <div className="p-4 bg-white/95 dark:bg-slate-800/95 rounded-lg shadow-md">
                     <time className="text-sm font-normal leading-none text-slate-400 dark:text-slate-500">{item.date}</time>
                     <h3 className="text-lg font-semibold text-slate-900 dark:text-white mt-1">{item.title}</h3>
                     <p className="text-base font-normal text-blue-500 dark:text-blue-400 mb-2">{item.institution}</p>
@@ -207,7 +208,7 @@ export default function App() {
         <Section id="internships" title="Internship Experience" icon={<Building2 className="w-8 h-8"/>}>
           <div className="max-w-4xl mx-auto space-y-4">
             {portfolioData.internships.map((internship, index) => (
-              <div key={index} className="bg-white dark:bg-slate-800 p-6 rounded-xl shadow-lg">
+              <div key={index} className="bg-white/95 dark:bg-slate-800/95 p-6 rounded-xl shadow-lg">
                 <h3 className="text-2xl font-bold">{internship.title}</h3>
                 <p className="text-blue-500 dark:text-blue-400 font-semibold">{internship.company} | {internship.duration}</p>
                 <p className="mt-4 text-slate-600 dark:text-slate-300">{internship.description}</p>
@@ -254,7 +255,7 @@ export default function App() {
           <_motion.div layout className="grid md:grid-cols-2 gap-8">
             <AnimatePresence>
               {filteredProjects.map((project) => (
-                <_motion.div key={project.title} layout initial={{ opacity: 0, scale: 0.8 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0, scale: 0.8 }} transition={{ duration: 0.4 }} className="bg-white dark:bg-slate-800 rounded-xl shadow-lg overflow-hidden">
+                <_motion.div key={project.title} layout initial={{ opacity: 0, scale: 0.8 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0, scale: 0.8 }} transition={{ duration: 0.4 }} className="bg-white/95 dark:bg-slate-800/95 rounded-xl shadow-lg overflow-hidden">
                   <div className="p-6">
                     <h3 className="text-xl font-bold mb-2">{project.title}</h3>
                     <p className="text-slate-600 dark:text-slate-400 mb-4">{project.description}</p>
@@ -291,7 +292,7 @@ export default function App() {
                 viewport={{ once: true, amount: 0.5 }}
                 transition={{ duration: 0.5, delay: index * 0.1 }}
               >
-                <div className="bg-white dark:bg-slate-800 p-4 rounded-lg shadow-lg transform group-hover:scale-105 transition-transform duration-300">
+                <div className="bg-white/95 dark:bg-slate-800/95 p-4 rounded-lg shadow-lg transform group-hover:scale-105 transition-transform duration-300">
                   <img src={cert.src} alt={cert.title} className="rounded-md w-full h-auto aspect-[4/3] object-contain" />
                 </div>
                 <h3 className="mt-4 font-semibold text-slate-700 dark:text-slate-300">{cert.title}</h3>
@@ -313,7 +314,7 @@ export default function App() {
                 viewport={{ once: true, amount: 0.5 }}
                 transition={{ duration: 0.5, delay: index * 0.1 }}
               >
-                <div className="bg-white dark:bg-slate-800 p-4 rounded-lg shadow-lg transform group-hover:scale-105 transition-transform duration-300">
+                <div className="bg-white/95 dark:bg-slate-800/95 p-4 rounded-lg shadow-lg transform group-hover:scale-105 transition-transform duration-300">
                   <img src={cert.src} alt={cert.title} className="rounded-md w-full h-auto aspect-[4/3] object-contain" />
                 </div>
                 <h3 className="mt-4 font-semibold text-slate-700 dark:text-slate-300">{cert.title}</h3>
@@ -335,7 +336,7 @@ export default function App() {
                 viewport={{ once: true, amount: 0.5 }}
                 transition={{ duration: 0.5, delay: index * 0.1 }}
               >
-                <div className="bg-white dark:bg-slate-800 p-4 rounded-lg shadow-lg transform group-hover:scale-105 transition-transform duration-300">
+                <div className="bg-white/95 dark:bg-slate-800/95 p-4 rounded-lg shadow-lg transform group-hover:scale-105 transition-transform duration-300">
                   <img src={cert.src} alt={cert.title} className="rounded-md w-full h-auto aspect-[4/3] object-contain" />
                 </div>
                 <h3 className="mt-4 font-semibold text-slate-700 dark:text-slate-300">{cert.title}</h3>
@@ -345,7 +346,7 @@ export default function App() {
         </Section>
 
         <Section id="skills" title="Skills & Expertise" icon={<Wrench className="w-8 h-8"/>}>
-          <div className="max-w-4xl mx-auto bg-white dark:bg-slate-800 p-6 rounded-xl shadow-lg">
+          <div className="max-w-4xl mx-auto bg-white/95 dark:bg-slate-800/95 p-6 rounded-xl shadow-lg">
             <div className="flex flex-wrap justify-center gap-4">
               {portfolioData.skills.map((skill, index) => (<_motion.div key={index} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.3, delay: index * 0.05 }} className="bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-200 py-2 px-4 rounded-lg font-medium">{skill}</_motion.div>))}
             </div>
