@@ -111,24 +111,15 @@ export default function App() {
         e.preventDefault();
         handleNavClick(section);
       }}
-      className={`px-4 py-2 rounded-lg font-medium transition-colors duration-200 text-base mx-1`}
-      style={
+      className={`px-4 py-2 rounded-lg font-medium transition-all duration-200 hover:scale-105 ${
         activeSection === section
-          ? {
-              background: '#000',
-              color: '#fff',
-              boxShadow: '0 2px 8px rgba(0,0,0,0.08)',
-              fontWeight: 600,
-              borderRadius: '0.5rem',
-              transition: 'background 0.2s, color 0.2s',
-            }
-          : {
-              color: '#222',
-              background: 'transparent',
-              borderRadius: '0.5rem',
-              transition: 'background 0.2s, color 0.2s',
-            }
-      }
+          ? theme === 'light'
+            ? 'bg-black text-white shadow-md'
+            : 'bg-white text-black shadow-md'
+          : theme === 'light'
+            ? 'text-slate-700 hover:text-black hover:bg-slate-100'
+            : 'text-slate-300 hover:text-white hover:bg-slate-800'
+      }`}
     >
       {children}
     </a>
@@ -138,7 +129,7 @@ export default function App() {
     <div className="bg-slate-100 dark:bg-slate-900 min-h-screen font-sans text-slate-800 dark:text-slate-200 transition-colors duration-500" style={{filter: isSwitching ? 'contrast(1.25) saturate(1.15)' : undefined, transition: 'filter 350ms ease'}}>
       {/* Contrast overlay used during theme switch to create a visible flash/effect. pointer-events-none so it doesn't block interactions */}
       <div aria-hidden className={`fixed inset-0 pointer-events-none z-50 transition-opacity duration-500 ${isSwitching ? 'opacity-100' : 'opacity-0'}`} style={{background: theme === 'light' ? 'rgba(255,255,255,0.85)' : 'rgba(0,0,0,0.6)', mixBlendMode: 'overlay', backdropFilter: 'contrast(1.4) saturate(1.05)'}} />
-      <header className="fixed top-0 left-0 right-0 bg-white/80 dark:bg-slate-900/80 backdrop-blur-sm z-50 shadow-md">
+      <header className="fixed top-0 left-0 right-0 bg-white/60 dark:bg-slate-900/60 backdrop-blur-md z-50 shadow-lg transition-all duration-300">
         <nav className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16">
             <div className="flex-shrink-0">
@@ -157,7 +148,7 @@ export default function App() {
               </div>
             </div>
             <div className="flex items-center">
-              <button onClick={toggleTheme} className="p-2 rounded-full text-slate-700 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700 focus:outline-none transition-colors duration-300" aria-label="Toggle theme">
+              <button onClick={toggleTheme} className="p-2 rounded-full text-slate-700 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700 focus:outline-none transition-all duration-300 hover:scale-110" aria-label="Toggle theme">
                 {theme === 'light' ? <Moon className="h-6 w-6" /> : <Sun className="h-6 w-6" />}
               </button>
             </div>
