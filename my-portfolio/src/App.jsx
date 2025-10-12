@@ -68,7 +68,7 @@ export default function App() {
   };
 
   useEffect(() => {
-    const sectionIds = ['home','about','journey','internships','projects','certificate','hackathon-certificates','skills','contact'];
+    const sectionIds = ['home','about','journey','internships','projects','certificate','hackathon-certificates','internship-certificates','skills','contact'];
     const options = {
       root: null,
       rootMargin: '-70px 0px 0px 0px', // offset for fixed header
@@ -307,6 +307,28 @@ export default function App() {
           <div className="max-w-5xl mx-auto grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
             {[
               { src: '/ACEathon Participation Certificate.jpg', title: 'ACEathon Participation Certificate' },
+            ].map((cert, index) => (
+              <_motion.div
+                key={cert.title}
+                className="text-center cursor-pointer group"
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, amount: 0.5 }}
+                transition={{ duration: 0.5, delay: index * 0.1 }}
+              >
+                <div className="bg-white dark:bg-slate-800 p-4 rounded-lg shadow-lg transform group-hover:scale-105 transition-transform duration-300">
+                  <img src={cert.src} alt={cert.title} className="rounded-md w-full h-auto aspect-[4/3] object-contain" />
+                </div>
+                <h3 className="mt-4 font-semibold text-slate-700 dark:text-slate-300">{cert.title}</h3>
+              </_motion.div>
+            ))}
+          </div>
+        </Section>
+
+        <Section id="internship-certificates" title="Internship Certificates" icon={<Award className="w-8 h-8"/>}>
+          <div className="max-w-5xl mx-auto grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
+            {[
+              { src: '/AR-VR Internship Certificate.jpg', title: 'AR-VR Internship Certificate' },
             ].map((cert, index) => (
               <_motion.div
                 key={cert.title}
