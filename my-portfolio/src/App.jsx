@@ -282,6 +282,9 @@ export default function App() {
               { src: '/Unity Essentials.jpeg', title: 'Unity Essentials' },
               { src: '/VR Development.jpeg', title: 'VR Development' },
               { src: '/WordPress.jpeg', title: 'WordPress' },
+              { src: '/Microsoft AI Learning.jpg', title: 'Microsoft AI Learning' },
+              { src: '/Microsoft Applied AI Learning.jpg', title: 'Microsoft Applied AI Learning' },
+              { src: '/Microsoft Azure Learning.jpg', title: 'Microsoft Azure Learning' },
             ].map((cert, index) => (
               <_motion.div
                 key={cert.title}
