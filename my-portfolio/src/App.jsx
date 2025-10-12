@@ -49,6 +49,7 @@ export default function App() {
   const [filteredProjects, setFilteredProjects] = useState(portfolioData.projects);
   const [activeFilter, setActiveFilter] = useState("All");
   const [selectedImage, setSelectedImage] = useState(null);
+  const [selectedCertificate, setSelectedCertificate] = useState(null);
   const [isSwitching, setIsSwitching] = useState(false);
 
   useEffect(() => {
@@ -292,7 +293,7 @@ export default function App() {
                 viewport={{ once: true, amount: 0.5 }}
                 transition={{ duration: 0.5, delay: index * 0.1 }}
               >
-                <div className="bg-white/95 dark:bg-slate-800/95 p-4 rounded-lg shadow-lg transform group-hover:scale-105 transition-transform duration-300">
+                <div className="bg-white/95 dark:bg-slate-800/95 p-4 rounded-lg shadow-lg transform group-hover:scale-105 transition-transform duration-300 cursor-pointer" onClick={() => setSelectedCertificate(index)}>
                   <img src={cert.src} alt={cert.title} className="rounded-md w-full h-auto aspect-[4/3] object-contain" />
                 </div>
                 <h3 className="mt-4 font-semibold text-slate-700 dark:text-slate-300">{cert.title}</h3>
@@ -300,6 +301,21 @@ export default function App() {
             ))}
           </div>
         </Section>
+
+        <AnimatePresence>
+          {selectedCertificate !== null && <Lightbox images={[
+            { src: '/AR Development.jpeg', caption: 'AR Development' },
+            { src: '/Business Analysis And Process Management.jpeg', caption: 'Business Analysis And Process Management' },
+            { src: '/Google Ads For Beginner.jpeg', caption: 'Google Ads For Beginner' },
+            { src: '/Microsoft Excel.jpeg', caption: 'Microsoft Excel' },
+            { src: '/Unity Essentials.jpeg', caption: 'Unity Essentials' },
+            { src: '/VR Development.jpeg', caption: 'VR Development' },
+            { src: '/WordPress.jpeg', caption: 'WordPress' },
+            { src: '/Microsoft AI Learning.jpg', caption: 'Microsoft AI Learning' },
+            { src: '/Microsoft Applied AI Learning.jpg', caption: 'Microsoft Applied AI Learning' },
+            { src: '/Microsoft Azure Learning.jpg', caption: 'Microsoft Azure Learning' },
+          ]} selectedImage={selectedCertificate} setSelectedImage={setSelectedCertificate} />}
+        </AnimatePresence>
 
         <Section id="hackathon-certificates" title="Hackathon Certificates" icon={<Award className="w-8 h-8"/>}>
           <div className="max-w-5xl mx-auto grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
