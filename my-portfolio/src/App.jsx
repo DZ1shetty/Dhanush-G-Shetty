@@ -302,7 +302,23 @@ export default function App() {
 
         <Section id="hackathon-certificates" title="Hackathon Certificates" icon={<Award className="w-8 h-8"/>}>
           <div className="max-w-5xl mx-auto grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
-            {/* Hackathon certificates will be added here */}
+            {[
+              { src: '/ACEathon Participation Certificate.jpg', title: 'ACEathon Participation Certificate' },
+            ].map((cert, index) => (
+              <_motion.div
+                key={cert.title}
+                className="text-center cursor-pointer group"
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, amount: 0.5 }}
+                transition={{ duration: 0.5, delay: index * 0.1 }}
+              >
+                <div className="bg-white dark:bg-slate-800 p-4 rounded-lg shadow-lg transform group-hover:scale-105 transition-transform duration-300">
+                  <img src={cert.src} alt={cert.title} className="rounded-md w-full h-auto aspect-[4/3] object-contain" />
+                </div>
+                <h3 className="mt-4 font-semibold text-slate-700 dark:text-slate-300">{cert.title}</h3>
+              </_motion.div>
+            ))}
           </div>
         </Section>
 
