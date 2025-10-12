@@ -156,6 +156,12 @@ export default function App() {
         </nav>
       </header>
 
+      <div className="fixed inset-0 -z-10 bg-gradient-to-r from-slate-50 via-blue-50 to-teal-50 dark:from-slate-900 dark:via-slate-800 dark:to-slate-700 animate-gradient" />
+
+      <_motion.div className="fixed top-20 left-10 w-20 h-20 bg-blue-200 dark:bg-blue-800 rounded-full opacity-20 -z-10" animate={{ y: [0, -30, 0] }} transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }} />
+      <_motion.div className="fixed top-40 right-20 w-16 h-16 bg-teal-200 dark:bg-teal-800 rounded-full opacity-15 -z-10" animate={{ y: [0, -25, 0] }} transition={{ duration: 8, repeat: Infinity, ease: "easeInOut", delay: 1 }} />
+      <_motion.div className="fixed bottom-40 left-1/4 w-12 h-12 bg-purple-200 dark:bg-purple-800 rounded-full opacity-10 -z-10" animate={{ y: [0, -20, 0] }} transition={{ duration: 7, repeat: Infinity, ease: "easeInOut", delay: 2 }} />
+
       <main className="container mx-auto px-4 sm:px-6 lg:px-8 pt-20">
         <section id="home" className="min-h-screen flex items-center justify-center text-center">
           <_motion.div initial={{ opacity: 0, scale: 0.8 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.8 }} className="space-y-4">
