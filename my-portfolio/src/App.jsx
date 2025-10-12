@@ -4,8 +4,8 @@ import { motion as _motion, AnimatePresence } from "framer-motion";
 import { portfolioData } from "./data";
 
 const Section = ({ id, title, icon, children }) => (
-  <_motion.section id={id} className="py-20" initial={{ opacity: 0, y: 50 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, amount: 0.2 }} transition={{ duration: 0.6 }}>
-    <h2 className="text-3xl font-bold text-center mb-12 flex items-center justify-center gap-x-3">{icon}{title}</h2>
+  <_motion.section id={id} className="py-16" initial={{ opacity: 0, y: 50 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, amount: 0.2 }} transition={{ duration: 0.6 }}>
+    <h2 className="text-3xl font-bold text-center mb-10 flex items-center justify-center gap-x-3">{icon}{title}</h2>
     {children}
   </_motion.section>
 );
@@ -167,7 +167,7 @@ export default function App() {
 
       <main className="container mx-auto px-4 sm:px-6 lg:px-8 pt-20">
         <section id="home" className="min-h-screen flex items-center justify-center text-center">
-          <_motion.div initial={{ opacity: 0, scale: 0.8 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.8 }} className="space-y-6">
+          <_motion.div initial={{ opacity: 0, scale: 0.8 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.8 }} className="space-y-4">
             <div className="relative w-40 h-40 mx-auto">
               <img className="rounded-full w-full h-full object-cover border-4 border-slate-200 dark:border-slate-700 shadow-lg" src={`https://placehold.co/160x160/E2E8F0/475569?text=DS`} alt={portfolioData.name} />
               <span className="absolute bottom-2 right-2 block h-6 w-6 bg-green-400 rounded-full border-2 border-white dark:border-slate-900"></span>
@@ -184,14 +184,14 @@ export default function App() {
         </section>
 
         <Section id="about" title="About Me" icon={<User className="w-8 h-8"/>}>
-          <div className="max-w-3xl mx-auto bg-white dark:bg-slate-800 p-8 rounded-xl shadow-lg"><p className="text-lg leading-relaxed text-slate-600 dark:text-slate-300">{portfolioData.bio}</p></div>
+          <div className="max-w-3xl mx-auto bg-white dark:bg-slate-800 p-6 rounded-xl shadow-lg"><p className="text-lg leading-relaxed text-slate-600 dark:text-slate-300">{portfolioData.bio}</p></div>
         </Section>
 
         <Section id="journey" title="My Journey" icon={<GraduationCap className="w-8 h-8"/>}>
           <div className="max-w-3xl mx-auto">
             <div className="relative border-l-2 border-slate-200 dark:border-slate-700">
               {portfolioData.journey.map((item, index) => (
-                <_motion.div key={index} className="mb-10 ml-8" initial={{ opacity: 0, x: -50 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true, amount: 0.5 }} transition={{ duration: 0.6 }}>
+                <_motion.div key={index} className="mb-8 ml-8" initial={{ opacity: 0, x: -50 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true, amount: 0.5 }} transition={{ duration: 0.6 }}>
                   <span className="absolute flex items-center justify-center w-8 h-8 bg-slate-200 rounded-full -left-4 ring-8 ring-white dark:ring-slate-900 dark:bg-slate-700">
                     {item.type === 'Education' ? <GraduationCap className="w-5 h-5 text-slate-600 dark:text-slate-300" /> : <Building2 className="w-5 h-5 text-slate-600 dark:text-slate-300" />}
                   </span>
@@ -208,9 +208,9 @@ export default function App() {
         </Section>
 
         <Section id="internships" title="Internship Experience" icon={<Building2 className="w-8 h-8"/>}>
-          <div className="max-w-4xl mx-auto space-y-6">
+          <div className="max-w-4xl mx-auto space-y-4">
             {portfolioData.internships.map((internship, index) => (
-              <div key={index} className="bg-white dark:bg-slate-800 p-8 rounded-xl shadow-lg">
+              <div key={index} className="bg-white dark:bg-slate-800 p-6 rounded-xl shadow-lg">
                 <h3 className="text-2xl font-bold">{internship.title}</h3>
                 <p className="text-blue-500 dark:text-blue-400 font-semibold">{internship.company} | {internship.duration}</p>
                 <p className="mt-4 text-slate-600 dark:text-slate-300">{internship.description}</p>
@@ -249,7 +249,7 @@ export default function App() {
             </AnimatePresence>
 
         <Section id="projects" title="My Projects" icon={<Briefcase className="w-8 h-8"/>}>
-          <div className="flex justify-center flex-wrap gap-2 mb-8">
+          <div className="flex justify-center flex-wrap gap-2 mb-6">
             {allTags.map(tag => (
               <button key={tag} onClick={() => handleFilter(tag)} className={`px-4 py-2 text-sm font-medium rounded-full transition-colors duration-300 ${activeFilter === tag ? 'bg-slate-800 text-white dark:bg-slate-200 dark:text-slate-900' : 'bg-white dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700'}`}>{tag}</button>
             ))}
@@ -273,7 +273,7 @@ export default function App() {
         </Section>
 
         <Section id="certificate" title="My Certificates" icon={<Award className="w-8 h-8"/>}>
-          <div className="max-w-5xl mx-auto grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
+          <div className="max-w-5xl mx-auto grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
             {[
               { src: '/AR Development.jpeg', title: 'AR Development' },
               { src: '/Business Analysis And Process Management.jpeg', title: 'Business Analysis And Process Management' },
@@ -304,7 +304,7 @@ export default function App() {
         </Section>
 
         <Section id="hackathon-certificates" title="Hackathon Certificates" icon={<Award className="w-8 h-8"/>}>
-          <div className="max-w-5xl mx-auto grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
+          <div className="max-w-5xl mx-auto grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
             {[
               { src: '/ACEathon Participation Certificate.jpg', title: 'ACEathon Participation Certificate' },
             ].map((cert, index) => (
@@ -326,7 +326,7 @@ export default function App() {
         </Section>
 
         <Section id="internship-certificates" title="Internship Certificates" icon={<Award className="w-8 h-8"/>}>
-          <div className="max-w-5xl mx-auto grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
+          <div className="max-w-5xl mx-auto grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
             {[
               { src: '/AR-VR Internship Certificate.jpg', title: 'AR-VR Internship Certificate' },
             ].map((cert, index) => (
@@ -348,7 +348,7 @@ export default function App() {
         </Section>
 
         <Section id="skills" title="Skills & Expertise" icon={<Wrench className="w-8 h-8"/>}>
-          <div className="max-w-4xl mx-auto bg-white dark:bg-slate-800 p-8 rounded-xl shadow-lg">
+          <div className="max-w-4xl mx-auto bg-white dark:bg-slate-800 p-6 rounded-xl shadow-lg">
             <div className="flex flex-wrap justify-center gap-4">
               {portfolioData.skills.map((skill, index) => (<_motion.div key={index} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.3, delay: index * 0.05 }} className="bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-200 py-2 px-4 rounded-lg font-medium">{skill}</_motion.div>))}
             </div>
@@ -357,13 +357,13 @@ export default function App() {
 
         <Section id="contact" title="Contact Me" icon={<Mail className="w-8 h-8"/>}>
           <div className="max-w-2xl mx-auto text-center">
-            <p className="text-lg mb-4 text-slate-600 dark:text-slate-400">I'm currently open to new opportunities. Feel free to reach out!</p>
+            <p className="text-lg mb-2 text-slate-600 dark:text-slate-400">I'm currently open to new opportunities. Feel free to reach out!</p>
             <a href={`mailto:${portfolioData.contact.email}`} className="text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-500 to-teal-400 hover:underline">{portfolioData.contact.email}</a>
           </div>
         </Section>
       </main>
 
-      <footer className="text-center py-6 border-t border-slate-200 dark:border-slate-800">
+      <footer className="text-center py-4 border-t border-slate-200 dark:border-slate-800">
         <p className="text-sm text-slate-500 dark:text-slate-400">© {new Date().getFullYear()} {portfolioData.name}. All Rights Reserved.</p>
       </footer>
     </div>
