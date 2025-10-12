@@ -68,7 +68,7 @@ export default function App() {
   };
 
   useEffect(() => {
-    const sectionIds = ['home','about','journey','internships','projects','certificate','skills','contact'];
+    const sectionIds = ['home','about','journey','internships','projects','certificate','hackathon-certificates','skills','contact'];
     const options = {
       root: null,
       rootMargin: '-70px 0px 0px 0px', // offset for fixed header
@@ -297,6 +297,12 @@ export default function App() {
                 <h3 className="mt-4 font-semibold text-slate-700 dark:text-slate-300">{cert.title}</h3>
               </_motion.div>
             ))}
+          </div>
+        </Section>
+
+        <Section id="hackathon-certificates" title="Hackathon Certificates" icon={<Award className="w-8 h-8"/>}>
+          <div className="max-w-5xl mx-auto grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
+            {/* Hackathon certificates will be added here */}
           </div>
         </Section>
 
