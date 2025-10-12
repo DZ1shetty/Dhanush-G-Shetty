@@ -50,6 +50,8 @@ export default function App() {
   const [activeFilter, setActiveFilter] = useState("All");
   const [selectedImage, setSelectedImage] = useState(null);
   const [selectedCertificate, setSelectedCertificate] = useState(null);
+  const [selectedHackathonCert, setSelectedHackathonCert] = useState(null);
+  const [selectedInternshipCert, setSelectedInternshipCert] = useState(null);
   const [isSwitching, setIsSwitching] = useState(false);
 
   useEffect(() => {
@@ -330,7 +332,7 @@ export default function App() {
                 viewport={{ once: true, amount: 0.5 }}
                 transition={{ duration: 0.5, delay: index * 0.1 }}
               >
-                <div className="bg-white/95 dark:bg-slate-800/95 p-4 rounded-lg shadow-lg transform group-hover:scale-105 transition-transform duration-300">
+                <div className="bg-white/95 dark:bg-slate-800/95 p-4 rounded-lg shadow-lg transform group-hover:scale-105 transition-transform duration-300 cursor-pointer" onClick={() => setSelectedHackathonCert(0)}>
                   <img src={cert.src} alt={cert.title} className="rounded-md w-full h-auto aspect-[4/3] object-contain" />
                 </div>
                 <h3 className="mt-4 font-semibold text-slate-700 dark:text-slate-300">{cert.title}</h3>
@@ -338,6 +340,12 @@ export default function App() {
             ))}
           </div>
         </Section>
+
+        <AnimatePresence>
+          {selectedHackathonCert !== null && <Lightbox images={[
+            { src: '/ACEathon Participation Certificate.jpg', caption: 'ACEathon Participation Certificate' },
+          ]} selectedImage={selectedHackathonCert} setSelectedImage={setSelectedHackathonCert} />}
+        </AnimatePresence>
 
         <Section id="internship-certificates" title="Internship Certificates" icon={<Award className="w-8 h-8"/>}>
           <div className="max-w-5xl mx-auto grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
@@ -352,7 +360,7 @@ export default function App() {
                 viewport={{ once: true, amount: 0.5 }}
                 transition={{ duration: 0.5, delay: index * 0.1 }}
               >
-                <div className="bg-white/95 dark:bg-slate-800/95 p-4 rounded-lg shadow-lg transform group-hover:scale-105 transition-transform duration-300">
+                <div className="bg-white/95 dark:bg-slate-800/95 p-4 rounded-lg shadow-lg transform group-hover:scale-105 transition-transform duration-300 cursor-pointer" onClick={() => setSelectedInternshipCert(0)}>
                   <img src={cert.src} alt={cert.title} className="rounded-md w-full h-auto aspect-[4/3] object-contain" />
                 </div>
                 <h3 className="mt-4 font-semibold text-slate-700 dark:text-slate-300">{cert.title}</h3>
@@ -360,6 +368,12 @@ export default function App() {
             ))}
           </div>
         </Section>
+
+        <AnimatePresence>
+          {selectedInternshipCert !== null && <Lightbox images={[
+            { src: '/AR-VR Internship Certificate.jpg', caption: 'AR-VR Internship Certificate' },
+          ]} selectedImage={selectedInternshipCert} setSelectedImage={setSelectedInternshipCert} />}
+        </AnimatePresence>
 
         <Section id="skills" title="Skills & Expertise" icon={<Wrench className="w-8 h-8"/>}>
           <div className="max-w-4xl mx-auto bg-white/95 dark:bg-slate-800/95 p-6 rounded-xl shadow-lg">
