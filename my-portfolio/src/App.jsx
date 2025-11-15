@@ -3,6 +3,8 @@ import { Briefcase, User, Wrench, Mail, Linkedin, Github, Instagram, Moon, Sun, 
 import { motion as _motion, AnimatePresence } from "framer-motion";
 import { Helmet } from "react-helmet-async";
 import { portfolioData } from "./data";
+import GlitchText from "./components/GlitchText";
+import "./components/GlitchText.css";
 
 // Utility function to check for reduced motion preference
 const prefersReducedMotion = () => {
@@ -645,7 +647,7 @@ export default function App() {
         <nav className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16">
             <div className="flex-shrink-0">
-              <span className="text-2xl font-bold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-blue-500 to-teal-400">{portfolioData.name}</span>
+              <GlitchText speed={1} enableShadows={true} enableOnHover={true} className={`text-2xl font-bold tracking-tight${theme === 'dark' ? ' dark' : ''}`}>{portfolioData.name}</GlitchText>
             </div>
             <div className="hidden md:block">
               <div className="ml-10 flex items-baseline space-x-4">
@@ -768,7 +770,7 @@ export default function App() {
                     <h3 className="text-xl font-bold mb-2">{project.title}</h3>
                     <p className="text-slate-600 dark:text-slate-400 mb-4">{project.description}</p>
                     <div className="flex flex-wrap gap-2 mb-4">{project.tags.map((tag, i) => (<span key={i} className="bg-blue-100 text-blue-800 text-xs font-semibold px-2.5 py-0.5 rounded-full dark:bg-blue-900 dark:text-blue-300">{tag}</span>))}</div>
-                    <div className="flex justify-start items-center">
+                    <div className="flex items-center">
                       <a href={project.repoUrl} target="_blank" rel="noopener noreferrer" className="text-slate-500 hover:text-slate-900 dark:hover:text-white transition-colors duration-300 font-medium">GitHub</a>
                     </div>
                   </div>
@@ -825,6 +827,7 @@ export default function App() {
           <div className="max-w-5xl mx-auto grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
             {[
               { src: '/ACEathon Participation Certificate.jpg', title: 'ACEathon Participation Certificate' },
+              { src: '/HackauraParticipation.jpg', title: 'Hackaura Hackathon Participation Certificate' },
             ].map((cert, index) => (
               <Motion
                 key={cert.title}
@@ -835,6 +838,7 @@ export default function App() {
                 transition={{ duration: 0.5, delay: index * 0.1 }}
                 onClick={() => openModal([
                   { src: '/ACEathon Participation Certificate.jpg', title: 'ACEathon Participation Certificate' },
+                  { src: '/HackauraParticipation.jpg', title: 'Hackaura Hackathon Participation Certificate' },
                 ], index)}
               >
                 <div className="bg-white/95 dark:bg-slate-800/95 p-4 rounded-lg shadow-lg transform group-hover:scale-105 transition-transform duration-300">
