@@ -5,6 +5,10 @@ import { Helmet } from "react-helmet-async";
 import { portfolioData } from "./data";
 import GlitchText from "./components/GlitchText";
 import "./components/GlitchText.css";
+import AnimatedHeroText from "./components/AnimatedHeroText";
+import HeroParallax from "./components/HeroParallax";
+import GlitchImage from "./components/GlitchImage";
+import FloatingLines from "./components/FloatingLines";
 
 // Utility function to check for reduced motion preference
 const prefersReducedMotion = () => {
@@ -65,20 +69,10 @@ const AnimatedRoles = ({ roles }) => {
 
   return (
     <div className="text-2xl md:text-3xl font-semibold text-slate-600 dark:text-slate-400 h-10 flex justify-center items-center">
-      {displayText}<span className="animate-pulse">|</span>
+      {displayText}<span>|</span>
     </div>
   );
 };
-
-const LoadingScreen = () => (
-  <div className="fixed inset-0 bg-slate-100 dark:bg-slate-900 flex items-center justify-center z-50">
-    <div className="text-center">
-      <div className="w-20 h-20 border-4 border-slate-300 dark:border-slate-700 border-t-blue-500 rounded-full animate-spin mx-auto mb-4"></div>
-      <h1 className="text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-500 to-teal-400">Dhanush G Shetty</h1>
-      <p className="text-slate-600 dark:text-slate-400 mt-2">Loading Portfolio...</p>
-    </div>
-  </div>
-);
 
 const ContactForm = () => {
   const [formData, setFormData] = useState({
@@ -389,8 +383,8 @@ const LazyImage = ({ src, alt, className, ...props }) => {
     <div ref={imgRef} className={`relative ${className}`}>
       {/* Loading placeholder */}
       {!isLoaded && (
-        <div className="absolute inset-0 bg-slate-200 dark:bg-slate-700 animate-pulse rounded-md flex items-center justify-center">
-          <div className="w-8 h-8 border-2 border-slate-400 dark:border-slate-600 border-t-blue-500 rounded-full animate-spin"></div>
+        <div className="absolute inset-0 bg-slate-200 dark:bg-slate-700 rounded-md flex items-center justify-center">
+          <div className="w-8 h-8 border-2 border-slate-400 dark:border-slate-600 border-t-blue-500 rounded-full" />
         </div>
       )}
       
@@ -527,11 +521,10 @@ const ImageModal = ({ isOpen, images, currentIndex, onClose, onNext, onPrev }) =
 };
 
 export default function App() {
-  const [theme, setTheme] = useState(() => localStorage.getItem("theme") || "dark");
+  const [theme, _setTheme] = useState(() => localStorage.getItem("theme") || "dark");
   const [filteredProjects, setFilteredProjects] = useState(portfolioData.projects);
   const [activeFilter, setActiveFilter] = useState("All");
-  const [isLoading, setIsLoading] = useState(true);
-  const [isSwitching, setIsSwitching] = useState(false);
+  const [isPageLoaded, setIsPageLoaded] = useState(false);
   
   // Modal state
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -543,20 +536,8 @@ export default function App() {
     localStorage.setItem("theme", theme);
   }, [theme]);
 
-  const toggleTheme = () => {
-    // show a short contrast overlay/flash, then toggle the theme, then hide overlay
-    setIsSwitching(true);
-    // small delay so overlay is visible before the document theme class toggles
-    setTimeout(() => {
-      setTheme(t => (t === "light" ? "dark" : "light"));
-    }, 200);
-    // keep overlay for the duration of the visual transition
-    setTimeout(() => setIsSwitching(false), 800);
-  };
-
   useEffect(() => {
-    const timer = setTimeout(() => setIsLoading(false), 2000);
-    return () => clearTimeout(timer);
+    setIsPageLoaded(true);
   }, []);
 
   // Register service worker for offline capability
@@ -581,14 +562,38 @@ export default function App() {
 
   const allTags = ['All', ...new Set(portfolioData.projects.flatMap(p => p.tags))];
 
+  const [activeNav, setActiveNav] = useState('home');
+
   const handleNavClick = (section) => {
     const el = document.getElementById(section);
     if (el) {
+      // Use native scroll-behavior for smoother performance
       const yOffset = -70; // header height (match rootMargin)
       const y = el.getBoundingClientRect().top + window.pageYOffset + yOffset;
       window.scrollTo({ top: y, behavior: 'smooth' });
     }
+    setActiveNav(section);
   };
+
+  // Underline removed: the nav uses text highlight only (activeNav) now
+
+  // Observe sections and set active nav as user scrolls
+  useEffect(()=>{
+    const ids = ['home','about','journey','internships','projects','certificate','skills','contact'];
+    const observer = new IntersectionObserver((entries)=>{
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          const id = entry.target.getAttribute('id');
+          if (id) setActiveNav(id);
+        }
+      });
+    }, { root: null, rootMargin: '-40% 0px -55% 0px', threshold: 0.15 });
+    ids.forEach(id => {
+      const el = document.getElementById(id);
+      if (el) observer.observe(el);
+    });
+    return ()=> observer.disconnect();
+  },[]);
 
   // Modal handlers
   const openModal = (images, startIndex = 0) => {
@@ -609,6 +614,8 @@ export default function App() {
     setCurrentImageIndex((prev) => (prev - 1 + modalImages.length) % modalImages.length);
   };
 
+  // Nav underline removed per user request
+
   const NavLink = ({ section, children }) => (
     <a
       href={`#${section}`}
@@ -616,18 +623,21 @@ export default function App() {
         e.preventDefault();
         handleNavClick(section);
       }}
-      className={`px-4 py-2 rounded-lg font-medium transition-all duration-200 hover:scale-105 ${
-        theme === 'light'
+      className={`px-4 py-2 rounded-lg font-medium relative transition-all duration-200 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 ${
+        activeNav === section ? 'text-blue-500 dark:text-blue-300 font-semibold' : (theme === 'light'
           ? 'text-slate-700 hover:text-black hover:bg-slate-100'
-          : 'text-slate-300 hover:text-white hover:bg-slate-800'
+          : 'text-slate-300 hover:text-white hover:bg-slate-800')
       }`}
+      data-section={section}
+      aria-current={activeNav === section ? 'page' : undefined}
     >
-      {children}
+      <span className="nav-link-text">{children}</span>
     </a>
   );
 
+
   return (
-    <div className="min-h-screen font-sans text-slate-800 dark:text-slate-200 transition-colors duration-500" style={{filter: isSwitching ? 'contrast(1.25) saturate(1.15)' : undefined, transition: 'filter 350ms ease'}}>
+    <div className="min-h-screen font-sans text-slate-800 dark:text-slate-200" style={{opacity: isPageLoaded ? 1 : 0, transition: 'opacity 1s ease-in-out'}}>
       <Helmet>
         <title>{portfolioData.name} - Portfolio</title>
         <meta name="description" content={`${portfolioData.name} - ${portfolioData.roles.join(', ')}. ${portfolioData.bio.substring(0, 150)}...`} />
@@ -637,12 +647,7 @@ export default function App() {
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <link rel="canonical" href={window.location.origin} />
       </Helmet>
-      {/* Skip to main content link for accessibility */}
       <a href="#main-content" className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 bg-blue-600 text-white px-4 py-2 rounded-md z-50 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">Skip to main content</a>
-      
-      {isLoading && <LoadingScreen />}
-      {/* Contrast overlay used during theme switch to create a visible flash/effect. pointer-events-none so it doesn't block interactions */}
-      <div aria-hidden className={`fixed inset-0 pointer-events-none z-50 transition-opacity duration-500 ${isSwitching ? 'opacity-100' : 'opacity-0'}`} style={{background: theme === 'light' ? 'rgba(255,255,255,0.85)' : 'rgba(0,0,0,0.6)', mixBlendMode: 'overlay', backdropFilter: 'contrast(1.4) saturate(1.05)'}} />
       <header className="fixed top-0 left-0 right-0 bg-white/60 dark:bg-slate-900/60 backdrop-blur-md z-50 shadow-lg transition-all duration-300">
         <nav className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16">
@@ -650,7 +655,7 @@ export default function App() {
               <GlitchText speed={1} enableShadows={true} enableOnHover={true} className={`text-2xl font-bold tracking-tight${theme === 'dark' ? ' dark' : ''}`}>{portfolioData.name}</GlitchText>
             </div>
             <div className="hidden md:block">
-              <div className="ml-10 flex items-baseline space-x-4">
+              <div className="ml-10 relative flex items-baseline space-x-4">
                 <NavLink section="home">Home</NavLink>
                 <NavLink section="about">About</NavLink>
                 <NavLink section="journey">Journey</NavLink>
@@ -659,34 +664,46 @@ export default function App() {
                 <NavLink section="certificate">Certificate</NavLink>
                 <NavLink section="skills">Skills</NavLink>
                 <NavLink section="contact">Contact</NavLink>
+                {/* Underline removed */}
               </div>
-            </div>
-            <div className="flex items-center">
-              <button onClick={toggleTheme} className="p-2 rounded-full text-slate-700 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700 focus:outline-none transition-all duration-300 hover:scale-110" aria-label="Toggle theme">
-                {theme === 'light' ? <Moon className="h-6 w-6" /> : <Sun className="h-6 w-6" />}
-              </button>
             </div>
           </div>
         </nav>
       </header>
 
-      <div className="fixed inset-0 -z-10 bg-gradient-to-r from-slate-50 via-blue-50 to-teal-50 dark:from-slate-900 dark:via-slate-800 dark:to-slate-700 animate-gradient" />
-
-      <Motion className="fixed top-20 left-10 w-24 h-24 bg-blue-200 dark:bg-blue-800 rounded-full opacity-40 -z-10" animate={{ y: [0, -40, 0] }} transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }} />
-      <Motion className="fixed top-40 right-20 w-20 h-20 bg-teal-200 dark:bg-teal-800 rounded-full opacity-30 -z-10" animate={{ y: [0, -35, 0] }} transition={{ duration: 8, repeat: Infinity, ease: "easeInOut", delay: 1 }} />
-      <Motion className="fixed bottom-40 left-1/4 w-16 h-16 bg-purple-200 dark:bg-purple-800 rounded-full opacity-25 -z-10" animate={{ y: [0, -30, 0] }} transition={{ duration: 7, repeat: Infinity, ease: "easeInOut", delay: 2 }} />
-      <Motion className="fixed top-60 right-1/3 w-18 h-18 bg-indigo-200 dark:bg-indigo-800 rounded-full opacity-35 -z-10" animate={{ y: [0, -25, 0] }} transition={{ duration: 9, repeat: Infinity, ease: "easeInOut", delay: 0.5 }} />
+      <div className="fixed inset-0 -z-10 h-screen w-full">
+        <FloatingLines 
+          enabledWaves={['top', 'middle', 'bottom']}
+          lineCount={[10, 15, 20]}
+          lineDistance={[8, 6, 4]}
+          bendRadius={5.0}
+          bendStrength={-0.5}
+          interactive={true}
+          parallax={true}
+          mixBlendMode="multiply"
+        />
+      </div>
 
       <main id="main-content" className="container mx-auto px-4 sm:px-6 lg:px-8 pt-20">
         <section id="home" className="min-h-screen flex items-center justify-center text-center">
           <Motion initial={{ opacity: 0, scale: 0.8 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.8 }} className="space-y-4">
-            <div className="relative w-40 h-40 mx-auto">
-              <LazyImage className="rounded-full w-full h-full object-cover border-4 border-slate-200 dark:border-slate-700 shadow-lg" src={`https://placehold.co/160x160/E2E8F0/475569?text=DS`} alt={portfolioData.name} />
-              <span className="absolute bottom-2 right-2 block h-6 w-6 bg-green-400 rounded-full border-2 border-white dark:border-slate-900"></span>
-            </div>
-            <h1 className="text-5xl md:text-6xl font-extrabold tracking-tight">Hi, I'm <span className="bg-clip-text text-transparent bg-gradient-to-r from-blue-500 to-teal-400">{portfolioData.name}</span></h1>
-            <AnimatedRoles roles={portfolioData.roles} />
-            <SocialMediaIcons socialData={portfolioData.contact.social} />
+            <HeroParallax className="w-full flex flex-col items-center justify-center">
+              <div className="parallax-layer" data-depth="mid">
+                <div className="relative w-40 h-40 mx-auto">
+                  <GlitchImage className="rounded-full w-full h-full object-cover border-4 border-slate-200 dark:border-slate-700 shadow-lg" src={`https://placehold.co/160x160/E2E8F0/475569?text=DS`} alt={portfolioData.name} speed={0.7} enableShadows={true} enableOnHover={false} />
+                  <span className="absolute bottom-2 right-2 block h-6 w-6 bg-green-400 rounded-full border-2 border-white dark:border-slate-900"></span>
+                </div>
+              </div>
+
+              <div className="parallax-layer fade-in mt-6" data-depth="fg">
+                <AnimatedHeroText text={`Hi, I'm ${portfolioData.name}`} className="text-4xl md:text-5xl" />
+              </div>
+
+              <div className="parallax-layer fade-in mt-2" data-depth="fg">
+                <AnimatedRoles roles={portfolioData.roles} />
+                <SocialMediaIcons socialData={portfolioData.contact.social} />
+              </div>
+            </HeroParallax>
           </Motion>
         </section>
 
@@ -699,7 +716,7 @@ export default function App() {
             <div className="relative border-l-2 border-slate-200 dark:border-slate-700">
               {portfolioData.journey.map((item, index) => (
                 <Motion key={index} className="mb-8 ml-8" initial={{ opacity: 0, x: -50 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true, amount: 0.5 }} transition={{ duration: 0.6 }}>
-                  <span className="absolute flex items-center justify-center w-8 h-8 bg-slate-200 rounded-full -left-4 ring-8 ring-white dark:ring-slate-900 dark:bg-slate-700 animate-pulse">
+                    <span className="absolute flex items-center justify-center w-8 h-8 bg-slate-200 rounded-full -left-4 ring-8 ring-white dark:ring-slate-900 dark:bg-slate-700">
                     {item.type === 'Education' ? <GraduationCap className="w-5 h-5 text-slate-600 dark:text-slate-300" /> : <Building2 className="w-5 h-5 text-slate-600 dark:text-slate-300" />}
                   </span>
                   <div className="p-4 bg-white/95 dark:bg-slate-800/95 rounded-lg shadow-md hover:shadow-lg hover:scale-105 transition-all duration-300 cursor-pointer">
