@@ -65,7 +65,7 @@ export default function ProfileCard({
       transition={{ duration: 0.6 }}
     >
       <div
-        className="relative glass bg-gradient-to-br from-slate-800 via-slate-900 to-slate-950 dark:from-slate-800 dark:via-slate-900 dark:to-slate-950 rounded-3xl shadow-2xl overflow-hidden transition-all duration-300 hover:shadow-3xl border border-slate-700/50"
+        className="relative glass bg-black/30 backdrop-blur-md rounded-3xl shadow-2xl overflow-hidden transition-all duration-300 hover:shadow-3xl border border-white/10"
         style={{
           transform: shouldTilt
             ? `perspective(1000px) rotateX(${tiltStyle.rotateX}deg) rotateY(${tiltStyle.rotateY}deg)`
@@ -73,7 +73,9 @@ export default function ProfileCard({
           transformStyle: 'preserve-3d',
         }}
       >
-        {/* Background accent removed to keep FloatingLines vibe clean */}
+        {/* Background Glow */}
+        <div className="absolute top-0 right-0 w-64 h-64 bg-blue-500/10 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2 pointer-events-none" />
+        <div className="absolute bottom-0 left-0 w-64 h-64 bg-purple-500/10 rounded-full blur-3xl translate-y-1/2 -translate-x-1/2 pointer-events-none" />
 
         {/* Content */}
         <div className="relative z-10 p-8 flex flex-col h-full">
@@ -83,12 +85,12 @@ export default function ProfileCard({
             whileHover={{ scale: 1.02 }}
             transition={{ duration: 0.2 }}
           >
-            <div className="relative w-full aspect-square overflow-hidden rounded-2xl border-2 border-slate-700/50 z-10">
+            <div className="relative w-full aspect-square overflow-hidden rounded-2xl border border-white/10 z-10 shadow-lg group-hover:shadow-blue-500/20 transition-shadow duration-500">
               <div className="avatar-ring -z-10" aria-hidden="true" />
               <GlitchImage src={avatarUrl} alt={name} speed={0.8} enableShadows={true} enableOnHover={true} className="w-full h-full" />
               {/* Status Indicator - Bottom Right */}
               <div className="absolute bottom-4 right-4">
-                <div className={`h-5 w-5 rounded-full ${status === 'Online' ? 'bg-green-500' : 'bg-gray-500'} border-3 border-white shadow-lg`} />
+                <div className={`h-4 w-4 rounded-full ${status === 'Online' ? 'bg-emerald-500' : 'bg-gray-500'} border-2 border-black shadow-[0_0_10px_rgba(16,185,129,0.5)]`} />
               </div>
             </div>
           </Motion>
@@ -96,8 +98,8 @@ export default function ProfileCard({
           {/* User Info */}
           {showUserInfo && (
             <div className="text-center mb-6">
-              <h3 className="text-3xl font-bold text-white mb-1 leading-tight">{name}</h3>
-              <p className="text-base text-blue-300 font-semibold mb-3">{title}</p>
+              <h3 className="text-3xl font-bold text-white mb-1 leading-tight drop-shadow-md">{name}</h3>
+              <p className="text-base text-blue-300 font-medium mb-3 tracking-wide">{title}</p>
               <p className="text-sm text-slate-400 mb-3">@{handle}</p>
               <div className="inline-block px-4 py-2 bg-green-500/20 rounded-full border border-green-500/50">
                 <span className="text-sm font-bold text-green-300">{status}</span>
@@ -113,7 +115,7 @@ export default function ProfileCard({
           >
             <button
               onClick={onContactClick}
-              className="cta-btn w-full py-3 px-4 bg-gradient-to-r from-blue-500 via-blue-600 to-cyan-500 hover:from-blue-600 hover:via-blue-700 hover:to-cyan-600 text-white font-bold rounded-xl transition-all duration-200 shadow-lg hover:shadow-xl text-lg"
+              className="btn-ripple cta-btn w-full py-3 px-4 bg-gradient-to-r from-blue-500 via-blue-600 to-cyan-500 hover:from-blue-600 hover:via-blue-700 hover:to-cyan-600 text-white font-bold rounded-xl transition-all duration-200 shadow-lg hover:shadow-xl text-lg"
             >
               {contactText}
             </button>

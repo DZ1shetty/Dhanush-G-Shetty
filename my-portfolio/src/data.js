@@ -68,5 +68,26 @@ export const portfolioData = {
   { title: "SDLC-of-a-Real-World-System", description: "Analysis of 'Hospital at Home' SDLC.", tags: ["HTML", "System Analysis"], repoUrl: "https://github.com/DZ1shetty/SDLC-of-a-Real-World-System" },
   { title: "FinNovate", description: "Financial innovation project.", tags: ["JavaScript"], repoUrl: "https://github.com/DZ1shetty/FinNovate" }
   ],
-  skills: ["JavaScript", "React", "Python", "HTML5 & CSS3", "Git & GitHub", "C", "Java"]
+  skills: ["JavaScript", "React", "Python", "HTML5 & CSS3", "Git & GitHub", "C", "Java"],
+  certificates: {
+    courses: [
+      { src: '/AR Development.jpeg', title: 'AR Development' },
+      { src: '/Business Analysis And Process Management.jpeg', title: 'Business Analysis And Process Management' },
+      { src: '/Google Ads For Beginner.jpeg', title: 'Google Ads For Beginner' },
+      { src: '/Microsoft Excel.jpeg', title: 'Microsoft Excel' },
+      { src: '/Unity Essentials.jpeg', title: 'Unity Essentials' },
+      { src: '/VR Development.jpeg', title: 'VR Development' },
+      { src: '/WordPress.jpeg', title: 'WordPress' },
+      { src: '/Microsoft AI Learning.jpg', title: 'Microsoft AI Learning' },
+      { src: '/Microsoft Applied AI Learning.jpg', title: 'Microsoft Applied AI Learning' },
+      { src: '/Microsoft Azure Learning.jpg', title: 'Microsoft Azure Learning' },
+    ],
+    hackathons: [
+      { src: '/ACEathon Participation Certificate.jpg', title: 'ACEathon Participation Certificate' },
+      { src: '/HackauraParticipation.jpg', title: 'Hackaura Hackathon Participation Certificate' },
+    ],
+    internships: [
+      { src: '/AR-VR Internship Certificate.jpg', title: 'AR-VR Internship Certificate' },
+    ]
+  }
 };

@@ -13,9 +13,9 @@ export default function GlitchImage({ src, alt = '', speed = 0.5, enableShadows 
 
   return (
     <div className={`glitch-img ${hoverClass} ${className}`} style={inlineStyles}>
-      <img src={src} className="glitch-img__base" alt={alt} />
-      <img src={src} className="glitch-img__after" aria-hidden alt="" />
-      <img src={src} className="glitch-img__before" aria-hidden alt="" />
+      <img src={src} className="glitch-img__base" alt={alt} loading="lazy" decoding="async" />
+      <img src={src} className="glitch-img__after" aria-hidden alt="" loading="lazy" decoding="async" />
+      <img src={src} className="glitch-img__before" aria-hidden alt="" loading="lazy" decoding="async" />
     </div>
   );
 }

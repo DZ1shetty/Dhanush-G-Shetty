@@ -1,0 +1,3 @@
+.certificate-grid .certificate-image-container img { transition: transform 300ms ease, filter 300ms ease; }
+.certificate-grid .certificate-image-container:hover img { transform: scale(1.02); filter: brightness(1.04); }
+.certificate-grid .certificate-image-container { aspect-ratio: 4/3; display: grid; place-items: center; }

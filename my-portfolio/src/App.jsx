@@ -1,5 +1,5 @@
-import React, { useState, useEffect, useRef } from "react";
-import { Briefcase, User, Wrench, Mail, Linkedin, Github, Instagram, Moon, Sun, GraduationCap, Building2, X, ChevronLeft, ChevronRight, Video, Award } from "lucide-react";
+import React, { useState, useEffect, useRef, Suspense, lazy } from "react";
+import { Briefcase, User, Wrench, Mail, Linkedin, Github, Instagram, Moon, Sun, GraduationCap, Building2, X, ChevronLeft, ChevronRight, Video, Award, FileText, Terminal } from "lucide-react";
 import { motion as _motion, AnimatePresence } from "framer-motion";
 import { Helmet } from "react-helmet-async";
 import { portfolioData } from "./data";
@@ -9,6 +9,15 @@ import AnimatedHeroText from "./components/AnimatedHeroText";
 import HeroParallax from "./components/HeroParallax";
 import GlitchImage from "./components/GlitchImage";
 import FloatingLines from "./components/FloatingLines";
+import ProjectCard from "./components/ProjectCard";
+import SkillChart from "./components/SkillChart";
+import PageTransition from "./components/PageTransition";
+
+// Lazy load heavy sections
+const Certificates = lazy(() => import("./components/Certificates"));
+const Journey = lazy(() => import("./components/Journey"));
+const Internship = lazy(() => import("./components/Internship"));
+const Contact = lazy(() => import("./components/Contact"));
 
 // Utility function to check for reduced motion preference
 const prefersReducedMotion = () => {
@@ -32,13 +41,25 @@ const Motion = ({ children, ...props }) => {
 const Section = ({ id, title, icon, children }) => (
   <Motion 
     id={id} 
-    className="py-16" 
+    className="py-24 relative" 
     initial={{ opacity: 0, y: 50 }} 
     whileInView={{ opacity: 1, y: 0 }} 
-    viewport={{ once: true, amount: 0.2 }} 
+    viewport={{ once: true, amount: 0.1 }} 
     transition={{ duration: 0.6 }}
   >
-    <h2 className="text-3xl font-bold text-center mb-10 flex items-center justify-center gap-x-3">{icon}{title}</h2>
+    <div className="flex flex-col items-center mb-16">
+      <div className="flex items-center gap-3 mb-2">
+        <div className="h-[1px] w-12 bg-gradient-to-r from-transparent to-cyan-500/50" />
+        <span className="text-cyan-500 font-mono text-xs tracking-[0.3em] uppercase">System_Section</span>
+        <div className="h-[1px] w-12 bg-gradient-to-l from-transparent to-cyan-500/50" />
+      </div>
+      <h2 className="text-4xl md:text-5xl font-bold text-center flex items-center justify-center gap-x-4 text-white tracking-tight">
+        <span className="text-cyan-400 drop-shadow-[0_0_10px_rgba(34,211,238,0.5)]">{icon}</span>
+        <span className="bg-clip-text text-transparent bg-gradient-to-r from-white via-slate-200 to-slate-400">
+          {title}
+        </span>
+      </h2>
+    </div>
     {children}
   </Motion>
 );
@@ -54,7 +75,7 @@ const AnimatedRoles = ({ roles }) => {
       if (displayText.length < currentRole.length) {
         const timer = setTimeout(() => {
           setDisplayText(currentRole.slice(0, displayText.length + 1));
-        }, 100);
+        }, 50); // Faster typing
         return () => clearTimeout(timer);
       } else {
         setIsTyping(false);
@@ -68,242 +89,17 @@ const AnimatedRoles = ({ roles }) => {
   }, [displayText, index, roles, isTyping]);
 
   return (
-    <div className="text-2xl md:text-3xl font-semibold text-slate-600 dark:text-slate-400 h-10 flex justify-center items-center">
-      {displayText}<span>|</span>
+    <div className="text-xl md:text-2xl font-mono h-8 flex justify-center items-center tracking-wider">
+      <span className="text-cyan-500 mr-2">{'>'}</span>
+      <span className="text-slate-300">
+        {displayText}
+      </span>
+      <span className="w-2 h-5 bg-cyan-500 ml-1 animate-pulse shadow-[0_0_8px_rgba(34,211,238,0.8)]" />
     </div>
   );
 };
 
-const ContactForm = () => {
-  const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    subject: '',
-    message: ''
-  });
-  const [errors, setErrors] = useState({});
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [isSubmitted, setIsSubmitted] = useState(false);
 
-  const validateForm = () => {
-    const newErrors = {};
-    
-    if (!formData.name.trim()) {
-      newErrors.name = 'Name is required';
-    }
-    
-    if (!formData.email.trim()) {
-      newErrors.email = 'Email is required';
-    } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
-      newErrors.email = 'Email is invalid';
-    }
-    
-    if (!formData.subject.trim()) {
-      newErrors.subject = 'Subject is required';
-    }
-    
-    if (!formData.message.trim()) {
-      newErrors.message = 'Message is required';
-    } else if (formData.message.trim().length < 10) {
-      newErrors.message = 'Message must be at least 10 characters';
-    }
-    
-    setErrors(newErrors);
-    return Object.keys(newErrors).length === 0;
-  };
-
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData(prev => ({
-      ...prev,
-      [name]: value
-    }));
-    // Clear error when user starts typing
-    if (errors[name]) {
-      setErrors(prev => ({
-        ...prev,
-        [name]: ''
-      }));
-    }
-  };
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    
-    if (!validateForm()) {
-      return;
-    }
-    
-    setIsSubmitting(true);
-    
-    // Simulate form submission (replace with actual API call)
-    try {
-      // Here you would typically send the form data to your backend
-      // For now, we'll simulate a successful submission
-      await new Promise(resolve => setTimeout(resolve, 2000));
-      
-      setIsSubmitted(true);
-      setFormData({ name: '', email: '', subject: '', message: '' });
-      
-      // Reset success message after 5 seconds
-      setTimeout(() => setIsSubmitted(false), 5000);
-    } catch (error) {
-      console.error('Form submission error:', error);
-    } finally {
-      setIsSubmitting(false);
-    }
-  };
-
-  return (
-    <div className="max-w-2xl mx-auto">
-      <p className="text-lg mb-6 text-center text-slate-600 dark:text-slate-400">
-        I'm currently open to new opportunities. Feel free to reach out!
-      </p>
-      
-      <AnimatePresence mode="wait">
-        {isSubmitted ? (
-          <Motion
-            key="success"
-            initial={{ opacity: 0, scale: 0.8, y: 20 }}
-            animate={{ opacity: 1, scale: 1, y: 0 }}
-            exit={{ opacity: 0, scale: 0.8, y: -20 }}
-            className="text-center p-8 bg-green-50 dark:bg-green-900/20 rounded-xl border border-green-200 dark:border-green-800"
-          >
-            <div className="w-16 h-16 bg-green-500 rounded-full flex items-center justify-center mx-auto mb-4">
-              <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-              </svg>
-            </div>
-            <h3 className="text-xl font-bold text-green-800 dark:text-green-200 mb-2">Message Sent!</h3>
-            <p className="text-green-700 dark:text-green-300">Thank you for reaching out. I'll get back to you soon!</p>
-          </Motion>
-        ) : (
-          <_motion.form
-            key="form"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -20 }}
-            onSubmit={handleSubmit}
-            className="space-y-6"
-          >
-            <div className="grid md:grid-cols-2 gap-6">
-              <div>
-                <label htmlFor="name" className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">
-                  Name *
-                </label>
-                <input
-                  type="text"
-                  id="name"
-                  name="name"
-                  value={formData.name}
-                  onChange={handleChange}
-                  className={`w-full px-4 py-3 rounded-lg border transition-colors focus:outline-none focus:ring-2 ${
-                    errors.name
-                      ? 'border-red-300 focus:border-red-500 focus:ring-red-200'
-                      : 'border-slate-300 dark:border-slate-600 focus:border-blue-500 focus:ring-blue-200'
-                  } bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100`}
-                  placeholder="Your full name"
-                  aria-describedby={errors.name ? "name-error" : undefined}
-                  aria-invalid={errors.name ? "true" : "false"}
-                />
-                {errors.name && <p id="name-error" className="mt-1 text-sm text-red-600 dark:text-red-400">{errors.name}</p>}
-              </div>
-              
-              <div>
-                <label htmlFor="email" className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">
-                  Email *
-                </label>
-                <input
-                  type="email"
-                  id="email"
-                  name="email"
-                  value={formData.email}
-                  onChange={handleChange}
-                  className={`w-full px-4 py-3 rounded-lg border transition-colors focus:outline-none focus:ring-2 ${
-                    errors.email
-                      ? 'border-red-300 focus:border-red-500 focus:ring-red-200'
-                      : 'border-slate-300 dark:border-slate-600 focus:border-blue-500 focus:ring-blue-200'
-                  } bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100`}
-                  placeholder="your.email@example.com"
-                  aria-describedby={errors.email ? "email-error" : undefined}
-                  aria-invalid={errors.email ? "true" : "false"}
-                />
-                {errors.email && <p id="email-error" className="mt-1 text-sm text-red-600 dark:text-red-400">{errors.email}</p>}
-              </div>
-            </div>
-            
-            <div>
-              <label htmlFor="subject" className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">
-                Subject *
-              </label>
-              <input
-                type="text"
-                id="subject"
-                name="subject"
-                value={formData.subject}
-                onChange={handleChange}
-                className={`w-full px-4 py-3 rounded-lg border transition-colors focus:outline-none focus:ring-2 ${
-                  errors.subject
-                    ? 'border-red-300 focus:border-red-500 focus:ring-red-200'
-                    : 'border-slate-300 dark:border-slate-600 focus:border-blue-500 focus:ring-blue-200'
-                } bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100`}
-                placeholder="What's this about?"
-                aria-describedby={errors.subject ? "subject-error" : undefined}
-                aria-invalid={errors.subject ? "true" : "false"}
-              />
-              {errors.subject && <p id="subject-error" className="mt-1 text-sm text-red-600 dark:text-red-400">{errors.subject}</p>}
-            </div>
-            
-            <div>
-              <label htmlFor="message" className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">
-                Message *
-              </label>
-              <textarea
-                id="message"
-                name="message"
-                value={formData.message}
-                onChange={handleChange}
-                rows={6}
-                className={`w-full px-4 py-3 rounded-lg border transition-colors focus:outline-none focus:ring-2 resize-vertical ${
-                  errors.message
-                    ? 'border-red-300 focus:border-red-500 focus:ring-red-200'
-                    : 'border-slate-300 dark:border-slate-600 focus:border-blue-500 focus:ring-blue-200'
-                } bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100`}
-                placeholder="Tell me about your project or opportunity..."
-                aria-describedby={errors.message ? "message-error" : undefined}
-                aria-invalid={errors.message ? "true" : "false"}
-              />
-              {errors.message && <p id="message-error" className="mt-1 text-sm text-red-600 dark:text-red-400">{errors.message}</p>}
-            </div>
-            
-            <div className="text-center">
-              <button
-                type="submit"
-                disabled={isSubmitting}
-                className="inline-flex items-center px-8 py-3 bg-gradient-to-r from-blue-500 to-teal-400 text-white font-semibold rounded-lg hover:from-blue-600 hover:to-teal-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-300 hover:scale-105"
-              >
-                {isSubmitting ? (
-                  <>
-                    <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                      <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                      <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                    </svg>
-                    Sending...
-                  </>
-                ) : (
-                  <>
-                    <Mail className="w-5 h-5 mr-2" />
-                    Send Message
-                  </>
-                )}
-              </button>
-            </div>
-          </_motion.form>
-        )}
-      </AnimatePresence>
-    </div>
-  );
-};
 
 
 
@@ -312,25 +108,25 @@ const SocialMediaIcons = ({ socialData }) => {
     {
       key: 'linkedin',
       icon: Linkedin,
-      color: 'hover:text-blue-600 dark:hover:text-blue-400',
+      color: 'hover:text-cyan-400',
       label: 'LinkedIn'
     },
     {
       key: 'github',
       icon: Github,
-      color: 'hover:text-slate-900 dark:hover:text-white',
+      color: 'hover:text-white',
       label: 'GitHub'
     },
     {
       key: 'instagram',
       icon: Instagram,
-      color: 'hover:text-pink-500 dark:hover:text-pink-400',
+      color: 'hover:text-pink-400',
       label: 'Instagram'
     }
   ];
 
   return (
-    <div className="flex justify-center space-x-4 pt-4">
+    <div className="flex justify-center space-x-6 pt-8">
       {socialPlatforms.map((platform) => {
         const Icon = platform.icon;
         const data = socialData[platform.key];
@@ -341,10 +137,11 @@ const SocialMediaIcons = ({ socialData }) => {
             href={data.url}
             target="_blank"
             rel="noopener noreferrer"
-            className={`p-3 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 ${platform.color} transition-colors duration-300 hover:scale-110`}
+            className={`group relative p-4 rounded-xl bg-black/40 backdrop-blur-md border border-white/10 transition-all duration-300 hover:scale-110 hover:border-cyan-500/50 hover:shadow-[0_0_20px_rgba(34,211,238,0.2)] overflow-hidden`}
             aria-label={platform.label}
           >
-            <Icon size={24} />
+            <div className="absolute inset-0 bg-gradient-to-br from-cyan-500/10 to-purple-500/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+            <Icon size={24} className={`relative z-10 text-slate-400 ${platform.color} transition-colors duration-300`} />
           </a>
         );
       })}
@@ -520,6 +317,10 @@ const ImageModal = ({ isOpen, images, currentIndex, onClose, onNext, onPrev }) =
   );
 };
 
+const FLOATING_LINES_WAVES = ['top', 'middle', 'bottom'];
+const FLOATING_LINES_COUNTS = [10, 15, 20];
+const FLOATING_LINES_DISTANCES = [8, 6, 4];
+
 export default function App() {
   const [theme, _setTheme] = useState(() => localStorage.getItem("theme") || "dark");
   const [filteredProjects, setFilteredProjects] = useState(portfolioData.projects);
@@ -530,6 +331,10 @@ export default function App() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalImages, setModalImages] = useState([]);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
+
+  // Page Transition State
+  const [transitionStage, setTransitionStage] = useState('idle'); // idle, entering, exiting
+  const [pendingSection, setPendingSection] = useState(null);
 
   useEffect(() => {
     if (theme === "dark") document.documentElement.classList.add("dark"); else document.documentElement.classList.remove("dark");
@@ -565,29 +370,48 @@ export default function App() {
   const [activeNav, setActiveNav] = useState('home');
 
   const handleNavClick = (section) => {
-    const el = document.getElementById(section);
-    if (el) {
-      // Use native scroll-behavior for smoother performance
-      const yOffset = -70; // header height (match rootMargin)
-      const y = el.getBoundingClientRect().top + window.pageYOffset + yOffset;
-      window.scrollTo({ top: y, behavior: 'smooth' });
+    if (transitionStage !== 'idle') return;
+    setPendingSection(section);
+    setTransitionStage('entering');
+  };
+
+  const handleTransitionCovered = () => {
+    if (pendingSection) {
+      const el = document.getElementById(pendingSection);
+      if (el) {
+        const yOffset = -70;
+        const y = el.getBoundingClientRect().top + window.pageYOffset + yOffset;
+        window.scrollTo({ top: y, behavior: 'auto' });
+      }
+      setActiveNav(pendingSection);
     }
-    setActiveNav(section);
+    // Small delay for effect
+    setTimeout(() => {
+      setTransitionStage('exiting');
+    }, 500);
+  };
+
+  const handleTransitionExited = () => {
+    setTransitionStage('idle');
+    setPendingSection(null);
   };
 
   // Underline removed: the nav uses text highlight only (activeNav) now
 
   // Observe sections and set active nav as user scrolls
   useEffect(()=>{
-    const ids = ['home','about','journey','internships','projects','certificate','skills','contact'];
+    const ids = ['home','journey','internships','projects','certificate','contact'];
     const observer = new IntersectionObserver((entries)=>{
       entries.forEach(entry => {
         if (entry.isIntersecting) {
-          const id = entry.target.getAttribute('id');
-          if (id) setActiveNav(id);
+          setActiveNav(entry.target.id);
         }
       });
-    }, { root: null, rootMargin: '-40% 0px -55% 0px', threshold: 0.15 });
+    }, { 
+      rootMargin: '-20% 0px -60% 0px', // Active zone is near the top (20% from top to 60% from bottom)
+      threshold: 0 
+    });
+    
     ids.forEach(id => {
       const el = document.getElementById(id);
       if (el) observer.observe(el);
@@ -616,53 +440,67 @@ export default function App() {
 
   // Nav underline removed per user request
 
-  const NavLink = ({ section, children }) => (
-    <a
-      href={`#${section}`}
-      onClick={e => {
-        e.preventDefault();
-        handleNavClick(section);
-      }}
-      className={`px-4 py-2 rounded-lg font-medium relative transition-all duration-200 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 ${
-        activeNav === section ? 'text-blue-500 dark:text-blue-300 font-semibold' : (theme === 'light'
-          ? 'text-slate-700 hover:text-black hover:bg-slate-100'
-          : 'text-slate-300 hover:text-white hover:bg-slate-800')
-      }`}
-      data-section={section}
-      aria-current={activeNav === section ? 'page' : undefined}
-    >
-      <span className="nav-link-text">{children}</span>
-    </a>
-  );
+  const NavLink = ({ section, children }) => {
+    const isActive = activeNav === section;
+    return (
+      <a
+        href={`#${section}`}
+        onClick={e => {
+          e.preventDefault();
+          handleNavClick(section);
+        }}
+        className={`relative px-4 py-2 rounded-lg font-mono text-sm tracking-wider transition-colors duration-300 ${
+          isActive ? 'text-cyan-400' : 'text-slate-400 hover:text-white'
+        }`}
+        data-section={section}
+        aria-current={isActive ? 'page' : undefined}
+      >
+        {isActive && (
+          <Motion
+            layoutId="active-nav-pill"
+            className="absolute inset-0 bg-cyan-500/10 rounded-lg border-b-2 border-cyan-500 shadow-[0_0_15px_rgba(34,211,238,0.4)]"
+            transition={{ type: "spring", stiffness: 500, damping: 30, mass: 0.8 }}
+          />
+        )}
+        <span className="relative z-10">{children}</span>
+      </a>
+    );
+  };
 
 
   return (
-    <div className="min-h-screen font-sans text-slate-800 dark:text-slate-200" style={{opacity: isPageLoaded ? 1 : 0, transition: 'opacity 1s ease-in-out'}}>
+    <div className="min-h-screen font-sans text-slate-200" style={{opacity: isPageLoaded ? 1 : 0, transition: 'opacity 1s ease-in-out'}}>
       <Helmet>
         <title>{portfolioData.name} - Portfolio</title>
         <meta name="description" content={`${portfolioData.name} - ${portfolioData.roles.join(', ')}. ${portfolioData.bio.substring(0, 150)}...`} />
-        <meta name="keywords" content={`portfolio, ${portfolioData.roles.join(', ')}, ${portfolioData.skills.join(', ')}, web development, projects`} />
+        <meta name="keywords" content={`portfolio, ${portfolioData.roles.join(', ')}, web development, projects`} />
         <meta name="author" content={portfolioData.name} />
         <meta name="robots" content="index, follow" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <link rel="canonical" href={window.location.origin} />
       </Helmet>
       <a href="#main-content" className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 bg-blue-600 text-white px-4 py-2 rounded-md z-50 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">Skip to main content</a>
-      <header className="fixed top-0 left-0 right-0 bg-white/60 dark:bg-slate-900/60 backdrop-blur-md z-50 shadow-lg transition-all duration-300">
+      
+      <PageTransition 
+        stage={transitionStage} 
+        targetSection={pendingSection} 
+        onCovered={handleTransitionCovered} 
+        onExited={handleTransitionExited} 
+      />
+
+      <header className="fixed top-0 left-0 right-0 bg-black/20 backdrop-blur-md z-50 shadow-lg transition-all duration-300 border-b border-white/10">
         <nav className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16">
             <div className="flex-shrink-0">
-              <GlitchText speed={1} enableShadows={true} enableOnHover={true} className={`text-2xl font-bold tracking-tight${theme === 'dark' ? ' dark' : ''}`}>{portfolioData.name}</GlitchText>
+              <GlitchText speed={1} enableShadows={true} enableOnHover={true} className="text-2xl font-bold tracking-tight text-white">{portfolioData.name}</GlitchText>
             </div>
             <div className="hidden md:block">
               <div className="ml-10 relative flex items-baseline space-x-4">
                 <NavLink section="home">Home</NavLink>
-                <NavLink section="about">About</NavLink>
                 <NavLink section="journey">Journey</NavLink>
                 <NavLink section="internships">Internships</NavLink>
                 <NavLink section="projects">Projects</NavLink>
                 <NavLink section="certificate">Certificate</NavLink>
-                <NavLink section="skills">Skills</NavLink>
                 <NavLink section="contact">Contact</NavLink>
                 {/* Underline removed */}
               </div>
@@ -673,9 +511,9 @@ export default function App() {
 
       <div className="fixed inset-0 -z-10 h-screen w-full">
         <FloatingLines 
-          enabledWaves={['top', 'middle', 'bottom']}
-          lineCount={[10, 15, 20]}
-          lineDistance={[8, 6, 4]}
+          enabledWaves={FLOATING_LINES_WAVES}
+          lineCount={FLOATING_LINES_COUNTS}
+          lineDistance={FLOATING_LINES_DISTANCES}
           bendRadius={5.0}
           bendStrength={-0.5}
           interactive={true}
@@ -685,278 +523,142 @@ export default function App() {
       </div>
 
       <main id="main-content" className="container mx-auto px-4 sm:px-6 lg:px-8 pt-20">
-        <section id="home" className="min-h-screen flex items-center justify-center text-center">
-          <Motion initial={{ opacity: 0, scale: 0.8 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.8 }} className="space-y-4">
+        <section id="home" className="min-h-screen flex flex-col lg:flex-row items-center justify-center gap-10 pt-20 pb-10 relative overflow-hidden">
+          {/* Cyber Background Elements */}
+          <div className="absolute top-1/4 left-10 w-64 h-64 bg-cyan-500/5 rounded-full blur-3xl pointer-events-none" />
+          <div className="absolute bottom-1/4 right-10 w-64 h-64 bg-purple-500/5 rounded-full blur-3xl pointer-events-none" />
+          
+          <Motion initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.8 }} className="w-full lg:w-1/2 flex flex-col items-center justify-center space-y-8 z-10">
             <HeroParallax className="w-full flex flex-col items-center justify-center">
-              <div className="parallax-layer" data-depth="mid">
-                <div className="relative w-40 h-40 mx-auto">
-                  <GlitchImage className="rounded-full w-full h-full object-cover border-4 border-slate-200 dark:border-slate-700 shadow-lg" src={`https://placehold.co/160x160/E2E8F0/475569?text=DS`} alt={portfolioData.name} speed={0.7} enableShadows={true} enableOnHover={false} />
-                  <span className="absolute bottom-2 right-2 block h-6 w-6 bg-green-400 rounded-full border-2 border-white dark:border-slate-900"></span>
+              <div className="parallax-layer relative" data-depth="mid">
+                <div className="relative w-56 h-56 mx-auto mb-8 group">
+                  {/* Rotating Rings */}
+                  <div className="absolute inset-[-10px] border border-cyan-500/30 rounded-full border-dashed animate-[spin_10s_linear_infinite]" />
+                  <div className="absolute inset-[-20px] border border-purple-500/20 rounded-full border-dotted animate-[spin_15s_linear_infinite_reverse]" />
+                  
+                  <div className="absolute inset-0 bg-gradient-to-r from-cyan-500 to-purple-500 rounded-full blur-xl opacity-20 animate-pulse group-hover:opacity-40 transition-opacity duration-500"></div>
+                  <GlitchImage className="relative z-10 rounded-full w-full h-full object-cover border-2 border-white/10 shadow-[0_0_30px_rgba(0,0,0,0.5)]" src={`https://placehold.co/160x160/E2E8F0/475569?text=DS`} alt={portfolioData.name} speed={0.7} enableShadows={true} enableOnHover={true} />
+                  
+                  {/* Status Indicator */}
+                  <div className="absolute bottom-2 right-2 flex items-center gap-2 bg-black/80 backdrop-blur-md px-3 py-1 rounded-full border border-emerald-500/30 z-20 shadow-lg">
+                    <span className="block h-2 w-2 bg-emerald-400 rounded-full animate-pulse shadow-[0_0_10px_rgba(74,222,128,0.8)]"></span>
+                    <span className="text-[10px] font-mono text-emerald-400 tracking-wider">ONLINE</span>
+                  </div>
                 </div>
               </div>
 
-              <div className="parallax-layer fade-in mt-6" data-depth="fg">
-                <AnimatedHeroText text={`Hi, I'm ${portfolioData.name}`} className="text-4xl md:text-5xl" />
+              <div className="parallax-layer fade-in mt-2 text-center" data-depth="fg">
+                <div className="inline-block mb-2 px-3 py-1 rounded-full bg-white/5 border border-white/10 text-[10px] font-mono text-cyan-400 tracking-[0.2em]">SYSTEM_INITIALIZED</div>
+                <h1 className="text-5xl md:text-7xl font-bold text-center tracking-tighter mb-4">
+                  <span className="bg-clip-text text-transparent bg-gradient-to-r from-white via-cyan-100 to-white drop-shadow-[0_0_20px_rgba(34,211,238,0.3)]">
+                    {portfolioData.name}
+                  </span>
+                </h1>
               </div>
 
-              <div className="parallax-layer fade-in mt-2" data-depth="fg">
+              <div className="parallax-layer fade-in mt-4 flex flex-col items-center gap-6" data-depth="fg">
                 <AnimatedRoles roles={portfolioData.roles} />
                 <SocialMediaIcons socialData={portfolioData.contact.social} />
               </div>
             </HeroParallax>
           </Motion>
+
+          <Motion 
+            initial={{ opacity: 0, x: 50 }} 
+            whileInView={{ opacity: 1, x: 0 }} 
+            viewport={{ once: true, amount: 0.2 }} 
+            transition={{ duration: 0.6 }}
+            className="w-full lg:w-1/2 px-4"
+          >
+            <div className="relative group">
+              {/* Cyber Card Container */}
+              <div className="absolute -inset-1 bg-gradient-to-r from-cyan-500/20 to-purple-600/20 rounded-2xl blur-xl opacity-50 group-hover:opacity-70 transition duration-1000"></div>
+              <div className="relative bg-black/60 backdrop-blur-xl p-8 md:p-10 rounded-2xl border border-white/10 shadow-2xl overflow-hidden">
+                
+                {/* Decorative Lines */}
+                <div className="absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-cyan-500/50 to-transparent"></div>
+                <div className="absolute bottom-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-purple-500/50 to-transparent"></div>
+                
+                {/* Corner Accents */}
+                <div className="absolute top-0 left-0 w-8 h-8 border-t-2 border-l-2 border-cyan-500/30 rounded-tl-lg"></div>
+                <div className="absolute bottom-0 right-0 w-8 h-8 border-b-2 border-r-2 border-purple-500/30 rounded-br-lg"></div>
+
+                <h2 className="text-3xl font-bold text-center mb-8 flex items-center justify-center gap-x-3 text-white">
+                  <User className="w-6 h-6 text-cyan-400"/>
+                  <span className="font-mono tracking-tight">ABOUT_ME</span>
+                </h2>
+                
+                <div className="space-y-4 text-slate-300 font-light leading-relaxed">
+                  <p className="text-lg">
+                    <span className="text-cyan-400 font-bold text-2xl">Hey</span>
+                    {portfolioData.bio.substring(3)}
+                  </p>
+                </div>
+              </div>
+            </div>
+          </Motion>
         </section>
 
-        <Section id="about" title="About Me" icon={<User className="w-8 h-8"/>}>
-          <div className="max-w-3xl mx-auto bg-white/95 dark:bg-slate-800/95 p-6 rounded-xl shadow-lg"><p className="text-lg leading-relaxed text-slate-600 dark:text-slate-300">{portfolioData.bio}</p></div>
-        </Section>
-
         <Section id="journey" title="My Journey" icon={<GraduationCap className="w-8 h-8"/>}>
-          <div className="max-w-3xl mx-auto">
-            <div className="relative border-l-2 border-slate-200 dark:border-slate-700">
-              {portfolioData.journey.map((item, index) => (
-                <Motion key={index} className="mb-8 ml-8" initial={{ opacity: 0, x: -50 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true, amount: 0.5 }} transition={{ duration: 0.6 }}>
-                    <span className="absolute flex items-center justify-center w-8 h-8 bg-slate-200 rounded-full -left-4 ring-8 ring-white dark:ring-slate-900 dark:bg-slate-700">
-                    {item.type === 'Education' ? <GraduationCap className="w-5 h-5 text-slate-600 dark:text-slate-300" /> : <Building2 className="w-5 h-5 text-slate-600 dark:text-slate-300" />}
-                  </span>
-                  <div className="p-4 bg-white/95 dark:bg-slate-800/95 rounded-lg shadow-md hover:shadow-lg hover:scale-105 transition-all duration-300 cursor-pointer">
-                    <time className="text-sm font-normal leading-none text-slate-400 dark:text-slate-500">{item.date}</time>
-                    <h3 className="text-lg font-semibold text-slate-900 dark:text-white mt-1">{item.title}</h3>
-                    <p className="text-base font-normal text-blue-500 dark:text-blue-400 mb-2">{item.institution}</p>
-                    <p className="text-base font-normal text-slate-600 dark:text-slate-300">{item.description}</p>
-                  </div>
-                </Motion>
-              ))}
-            </div>
-          </div>
+          <Suspense fallback={<div className="h-40 flex items-center justify-center text-cyan-500 font-mono">LOADING_SYSTEM_LOGS...</div>}>
+            <Journey data={portfolioData.journey} />
+          </Suspense>
         </Section>
 
         <Section id="internships" title="Internship Experience" icon={<Building2 className="w-8 h-8"/>}>
-          <div className="max-w-4xl mx-auto space-y-4">
-            {portfolioData.internships.map((internship, index) => (
-              <div key={index} className="bg-white/95 dark:bg-slate-800/95 p-6 rounded-xl shadow-lg">
-                <h3 className="text-2xl font-bold">{internship.title}</h3>
-                <p className="text-blue-500 dark:text-blue-400 font-semibold">{internship.company} | {internship.duration}</p>
-                <p className="mt-4 text-slate-600 dark:text-slate-300">{internship.description}</p>
-                <div className="mt-8 space-y-8">
-                  {internship.projects.map((project, pIndex) => (
-                    <div key={pIndex}>
-                      <h4 className="text-xl font-bold flex items-center gap-2">{project.images ? <Briefcase/> : <Video/>} {project.title}</h4>
-                      <p className="mt-2 text-slate-600 dark:text-slate-300">{project.description}</p>
-                      {project.images && (
-                        <div className="mt-4 grid grid-cols-2 md:grid-cols-4 gap-4">
-                          {project.images.map((img, i) => (
-                            <Motion 
-                              key={i} 
-                              whileHover={{ scale: 1.05 }}
-                              className="cursor-pointer"
-                              onClick={() => openModal(project.images, i)}
-                            >
-                              <LazyImage src={img.src} alt={img.caption} className="rounded-lg shadow-md object-cover w-full h-32"/>
-                            </Motion>
-                          ))}
-                        </div>
-                      )}
-                      {project.video && (
-                        <div className="mt-4">
-                          <video controls className="w-full rounded-lg shadow-md">
-                            <source src={project.video} type="video/mp4" />
-                            Your browser does not support the video tag.
-                          </video>
-                        </div>
-                      )}
-                    </div>
-                  ))}
-                </div>
-              </div>
-            ))}
-          </div>
+          <Suspense fallback={<div className="h-40 flex items-center justify-center text-cyan-500 font-mono">DECRYPTING_FILES...</div>}>
+            <Internship data={portfolioData.internships} openModal={openModal} />
+          </Suspense>
         </Section>
 
         <Section id="projects" title="My Projects" icon={<Briefcase className="w-8 h-8"/>}>
-          <div className="flex justify-center flex-wrap gap-2 mb-6">
-            {allTags.map(tag => (
-              <button key={tag} onClick={() => handleFilter(tag)} className={`px-4 py-2 text-sm font-medium rounded-full transition-colors duration-300 ${activeFilter === tag ? 'bg-slate-800 text-white dark:bg-slate-200 dark:text-slate-900' : 'bg-white dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700'}`} aria-label={`Filter projects by ${tag}`} aria-pressed={activeFilter === tag}>{tag}</button>
-            ))}
+          <div className="flex justify-center mb-10">
+            <div className="flex flex-wrap justify-center gap-2 p-1.5 bg-black/30 backdrop-blur-md rounded-2xl border border-white/10 shadow-inner">
+              {allTags.map(tag => (
+                <button
+                  key={tag}
+                  onClick={() => handleFilter(tag)}
+                  className={`relative px-5 py-2.5 text-sm font-medium rounded-xl transition-all duration-300 z-10 ${
+                    activeFilter === tag 
+                      ? 'text-white' 
+                      : 'text-slate-400 hover:text-slate-200'
+                  }`}
+                  aria-label={`Filter projects by ${tag}`}
+                  aria-pressed={activeFilter === tag}
+                >
+                  {activeFilter === tag && (
+                    <_motion.div
+                      layoutId="activeTab"
+                      className="absolute inset-0 bg-white/10 rounded-xl shadow-md border border-white/10"
+                      transition={{ type: "spring", stiffness: 200, damping: 25 }}
+                    />
+                  )}
+                  <span className="relative z-10">{tag}</span>
+                </button>
+              ))}
+            </div>
           </div>
-          <Motion layout className="grid md:grid-cols-2 gap-8">
-            <AnimatePresence>
-              {filteredProjects.map((project) => (
-                <Motion key={project.title} layout initial={{ opacity: 0, scale: 0.8 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0, scale: 0.8 }} transition={{ duration: 0.4 }} className="bg-white/95 dark:bg-slate-800/95 rounded-xl shadow-lg overflow-hidden hover:scale-105 hover:shadow-2xl transition-all duration-300 cursor-pointer group">
-                  <div className="p-6">
-                    <h3 className="text-xl font-bold mb-2">{project.title}</h3>
-                    <p className="text-slate-600 dark:text-slate-400 mb-4">{project.description}</p>
-                    <div className="flex flex-wrap gap-2 mb-4">{project.tags.map((tag, i) => (<span key={i} className="bg-blue-100 text-blue-800 text-xs font-semibold px-2.5 py-0.5 rounded-full dark:bg-blue-900 dark:text-blue-300">{tag}</span>))}</div>
-                    <div className="flex items-center">
-                      <a href={project.repoUrl} target="_blank" rel="noopener noreferrer" className="text-slate-500 hover:text-slate-900 dark:hover:text-white transition-colors duration-300 font-medium">GitHub</a>
-                    </div>
-                  </div>
-                </Motion>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <AnimatePresence mode="wait">
+              {filteredProjects.map((project, index) => (
+                <ProjectCard key={project.title} project={project} index={index} />
               ))}
             </AnimatePresence>
-          </Motion>
-        </Section>
-
-        <Section id="certificate" title="My Certificates" icon={<Award className="w-8 h-8"/>}>
-          <div className="max-w-5xl mx-auto grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-            {[
-              { src: '/AR Development.jpeg', title: 'AR Development' },
-              { src: '/Business Analysis And Process Management.jpeg', title: 'Business Analysis And Process Management' },
-              { src: '/Google Ads For Beginner.jpeg', title: 'Google Ads For Beginner' },
-              { src: '/Microsoft Excel.jpeg', title: 'Microsoft Excel' },
-              { src: '/Unity Essentials.jpeg', title: 'Unity Essentials' },
-              { src: '/VR Development.jpeg', title: 'VR Development' },
-              { src: '/WordPress.jpeg', title: 'WordPress' },
-              { src: '/Microsoft AI Learning.jpg', title: 'Microsoft AI Learning' },
-              { src: '/Microsoft Applied AI Learning.jpg', title: 'Microsoft Applied AI Learning' },
-              { src: '/Microsoft Azure Learning.jpg', title: 'Microsoft Azure Learning' },
-            ].map((cert, index) => (
-              <Motion
-                key={cert.title}
-                className="text-center cursor-pointer group"
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, amount: 0.5 }}
-                transition={{ duration: 0.5, delay: index * 0.1 }}
-                onClick={() => openModal([
-                  { src: '/AR Development.jpeg', title: 'AR Development' },
-                  { src: '/Business Analysis And Process Management.jpeg', title: 'Business Analysis And Process Management' },
-                  { src: '/Google Ads For Beginner.jpeg', title: 'Google Ads For Beginner' },
-                  { src: '/Microsoft Excel.jpeg', title: 'Microsoft Excel' },
-                  { src: '/Unity Essentials.jpeg', title: 'Unity Essentials' },
-                  { src: '/VR Development.jpeg', title: 'VR Development' },
-                  { src: '/WordPress.jpeg', title: 'WordPress' },
-                  { src: '/Microsoft AI Learning.jpg', title: 'Microsoft AI Learning' },
-                  { src: '/Microsoft Applied AI Learning.jpg', title: 'Microsoft Applied AI Learning' },
-                  { src: '/Microsoft Azure Learning.jpg', title: 'Microsoft Azure Learning' },
-                ], index)}
-              >
-                <div className="bg-white/95 dark:bg-slate-800/95 p-4 rounded-lg shadow-lg transform group-hover:scale-105 transition-transform duration-300">
-                  <LazyImage src={cert.src} alt={cert.title} className="rounded-md w-full h-auto aspect-[4/3] object-contain" />
-                </div>
-                <h3 className="mt-4 font-semibold text-slate-700 dark:text-slate-300">{cert.title}</h3>
-              </Motion>
-            ))}
           </div>
         </Section>
 
-        <Section id="hackathon-certificates" title="Hackathon Certificates" icon={<Award className="w-8 h-8"/>}>
-          <div className="max-w-5xl mx-auto grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-            {[
-              { src: '/ACEathon Participation Certificate.jpg', title: 'ACEathon Participation Certificate' },
-              { src: '/HackauraParticipation.jpg', title: 'Hackaura Hackathon Participation Certificate' },
-            ].map((cert, index) => (
-              <Motion
-                key={cert.title}
-                className="text-center cursor-pointer group"
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, amount: 0.5 }}
-                transition={{ duration: 0.5, delay: index * 0.1 }}
-                onClick={() => openModal([
-                  { src: '/ACEathon Participation Certificate.jpg', title: 'ACEathon Participation Certificate' },
-                  { src: '/HackauraParticipation.jpg', title: 'Hackaura Hackathon Participation Certificate' },
-                ], index)}
-              >
-                <div className="bg-white/95 dark:bg-slate-800/95 p-4 rounded-lg shadow-lg transform group-hover:scale-105 transition-transform duration-300">
-                  <LazyImage src={cert.src} alt={cert.title} className="rounded-md w-full h-auto aspect-[4/3] object-contain" />
-                </div>
-                <h3 className="mt-4 font-semibold text-slate-700 dark:text-slate-300">{cert.title}</h3>
-              </Motion>
-            ))}
-          </div>
-        </Section>
-
-        <Section id="internship-certificates" title="Internship Certificates" icon={<Award className="w-8 h-8"/>}>
-          <div className="max-w-5xl mx-auto grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-            {[
-              { src: '/AR-VR Internship Certificate.jpg', title: 'AR-VR Internship Certificate' },
-            ].map((cert, index) => (
-              <Motion
-                key={cert.title}
-                className="text-center cursor-pointer group"
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, amount: 0.5 }}
-                transition={{ duration: 0.5, delay: index * 0.1 }}
-                onClick={() => openModal([
-                  { src: '/AR-VR Internship Certificate.jpg', title: 'AR-VR Internship Certificate' },
-                ], index)}
-              >
-                <div className="bg-white/95 dark:bg-slate-800/95 p-4 rounded-lg shadow-lg transform group-hover:scale-105 transition-transform duration-300">
-                  <LazyImage src={cert.src} alt={cert.title} className="rounded-md w-full h-auto aspect-[4/3] object-contain" />
-                </div>
-                <h3 className="mt-4 font-semibold text-slate-700 dark:text-slate-300">{cert.title}</h3>
-              </Motion>
-            ))}
-          </div>
-        </Section>
-
-        <Section id="skills" title="Skills & Expertise" icon={<Wrench className="w-8 h-8"/>}>
-          <div className="max-w-4xl mx-auto bg-white/95 dark:bg-slate-800/95 p-6 rounded-xl shadow-lg">
-            <div className="space-y-6">
-              {[
-                { name: "SQL", level: 69 },
-                { name: "Java", level: 29 },
-                { name: "HTML", level: 26 },
-                { name: "Python", level: 11 },
-                { name: "MongoDB", level: 7 },
-                { name: "DSA (Data Structures & Algorithms)", level: 6 },
-                { name: "React", level: 6 },
-                { name: "JavaScript", level: 2 },
-                { name: "Git", level: 2 },
-                { name: "CSS", level: 1 }
-              ].map((skill, index) => (
-                <div key={skill.name}>
-                  <div className="flex justify-between mb-2">
-                    <span className="font-medium">{skill.name}</span>
-                    <span className="text-sm text-slate-500">{skill.level}%</span>
-                  </div>
-                  <div className="w-full bg-slate-200 dark:bg-slate-700 rounded-full h-3 overflow-hidden">
-                    <Motion
-                      className="bg-gradient-to-r from-blue-500 to-teal-500 h-3 rounded-full"
-                      initial={{ width: 0 }}
-                      whileInView={{ width: `${skill.level}%` }}
-                      viewport={{ once: true }}
-                      transition={{ duration: 1.5, delay: index * 0.1 }}
-                    />
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-        </Section>
-
-        <Section id="testimonials" title="Social Proof" icon={<Award className="w-8 h-8"/>}>
-          <div className="max-w-5xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-8">
-            <div className="bg-white/95 dark:bg-slate-800/95 p-6 rounded-xl shadow-lg text-center">
-              <Github className="w-12 h-12 mx-auto mb-4 text-slate-600 dark:text-slate-400" />
-              <h3 className="text-2xl font-bold text-blue-500">10+</h3>
-              <p className="text-slate-600 dark:text-slate-400">GitHub Repositories</p>
-            </div>
-            <div className="bg-white/95 dark:bg-slate-800/95 p-6 rounded-xl shadow-lg text-center">
-              <Linkedin className="w-12 h-12 mx-auto mb-4 text-blue-600" />
-              <h3 className="text-2xl font-bold text-blue-500"></h3>
-              <p className="text-slate-600 dark:text-slate-400">LinkedIn Connections</p>
-            </div>
-            <div className="bg-white/95 dark:bg-slate-800/95 p-6 rounded-xl shadow-lg text-center">
-              <Award className="w-12 h-12 mx-auto mb-4 text-yellow-500" />
-              <h3 className="text-2xl font-bold text-blue-500">12</h3>
-              <p className="text-slate-600 dark:text-slate-400">Certificates Earned</p>
-            </div>
-          </div>
+        <Section id="certificate" title="Certificates & Achievements" icon={<Award className="w-8 h-8"/>}>
+          <Suspense fallback={<div className="h-40 flex items-center justify-center text-cyan-500 font-mono">VERIFYING_CREDENTIALS...</div>}>
+            <Certificates data={portfolioData.certificates} />
+          </Suspense>
         </Section>
 
         <Section id="contact" title="Contact Me" icon={<Mail className="w-8 h-8"/>}>
-          <ContactForm />
+          <Suspense fallback={<div className="h-40 flex items-center justify-center text-cyan-500 font-mono">ESTABLISHING_UPLINK...</div>}>
+            <Contact />
+          </Suspense>
         </Section>
       </main>
-
-      <footer>
-        <div className="text-center py-4 border-t border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-900/50">
-          <p className="text-sm text-slate-500 dark:text-slate-400">© {new Date().getFullYear()} {portfolioData.name}. All Rights Reserved.</p>
-        </div>
-      </footer>
 
       {/* Image Modal */}
       <ImageModal

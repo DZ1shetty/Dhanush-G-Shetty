@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react';
+import React, { useEffect, useRef } from 'react';
 import {
   Scene,
   OrthographicCamera,
@@ -227,7 +227,7 @@ function hexToVec3(hex) {
   return new Vector3(r / 255, g / 255, b / 255);
 }
 
-export default function FloatingLines({
+export default React.memo(function FloatingLines({
   linesGradient,
   enabledWaves = ['top', 'middle', 'bottom'],
   lineCount = [6],
@@ -367,6 +367,7 @@ export default function FloatingLines({
       const height = el.clientHeight || 1;
 
       renderer.setSize(width, height, false);
+      renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 
       const canvasWidth = renderer.domElement.width;
       const canvasHeight = renderer.domElement.height;
@@ -449,13 +450,14 @@ export default function FloatingLines({
       }
     };
   }, [
-    linesGradient,
-    enabledWaves,
-    lineCount,
-    lineDistance,
-    topWavePosition,
-    middleWavePosition,
-    bottomWavePosition,
+    // Use JSON.stringify for array/object dependencies to avoid re-renders on new references
+    JSON.stringify(linesGradient),
+    JSON.stringify(enabledWaves),
+    JSON.stringify(lineCount),
+    JSON.stringify(lineDistance),
+    JSON.stringify(topWavePosition),
+    JSON.stringify(middleWavePosition),
+    JSON.stringify(bottomWavePosition),
     animationSpeed,
     interactive,
     bendRadius,
@@ -474,4 +476,4 @@ export default function FloatingLines({
       }}
     />
   );
-}
+});
