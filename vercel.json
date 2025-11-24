@@ -1,0 +1,11 @@
+{
+  "builds": [
+    { "src": "my-portfolio/package.json", "use": "@vercel/static-build" }
+  ],
+  "routes": [
+    { "src": "^/(.*)$", "dest": "/index.html" }
+  ],
+  "buildCommand": "cd my-portfolio && npm run build",
+  "outputDirectory": "my-portfolio/dist",
+  "installCommand": "cd my-portfolio && npm install --legacy-peer-deps"
+}
