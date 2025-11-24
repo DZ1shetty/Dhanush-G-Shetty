@@ -1,5 +1,5 @@
-const PRECACHE = 'portfolio-precache-v2';
-const RUNTIME = 'portfolio-runtime-v1';
+const PRECACHE = 'portfolio-precache-v3';
+const RUNTIME = 'portfolio-runtime-v3';
 const PRECACHE_URLS = ['/', '/index.html'];
 
 self.addEventListener('install', (event) => {
@@ -29,9 +29,24 @@ self.addEventListener('fetch', (event) => {
   if (event.request.method !== 'GET') return;
   const requestUrl = new URL(event.request.url);
 
+  // Network First strategy for HTML navigation (ensures latest version)
   if (requestUrl.origin === self.location.origin && PRECACHE_URLS.includes(requestUrl.pathname)) {
     event.respondWith(
-      caches.match(event.request).then((cached) => cached || fetch(event.request))
+      fetch(event.request)
+        .then((response) => {
+          // Check if we received a valid response
+          if (!response || response.status !== 200 || response.type !== 'basic') {
+            return response;
+          }
+          const responseToCache = response.clone();
+          caches.open(PRECACHE).then((cache) => {
+            cache.put(event.request, responseToCache);
+          });
+          return response;
+        })
+        .catch(() => {
+          return caches.match(event.request);
+        })
     );
     return;
   }
