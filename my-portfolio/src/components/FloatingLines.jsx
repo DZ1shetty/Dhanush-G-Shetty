@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import { useEffect, useRef } from 'react';
 import {
   Scene,
   OrthographicCamera,
@@ -99,7 +99,7 @@ vec3 getLineColor(float t, vec3 baseColor) {
   return gradientColor * 0.5;
 }
 
-float wave(vec2 uv, float offset, vec2 screenUv, vec2 mouseUv, bool shouldBend) {
+  float wave(vec2 uv, float offset, vec2 screenUv, vec2 mouseUv, bool shouldBend) {
   float time = iTime * animationSpeed;
 
   float x_offset   = offset;
@@ -109,7 +109,7 @@ float wave(vec2 uv, float offset, vec2 screenUv, vec2 mouseUv, bool shouldBend) 
 
   if (shouldBend) {
     vec2 d = screenUv - mouseUv;
-    float influence = exp(-dot(d, d) * bendRadius);
+    float influence = exp(-dot(d, d) * bendRadius); // radial falloff around cursor
     float bendOffset = (mouseUv.y - screenUv.y) * influence * bendStrength * bendInfluence;
     y += bendOffset;
   }
@@ -227,7 +227,7 @@ function hexToVec3(hex) {
   return new Vector3(r / 255, g / 255, b / 255);
 }
 
-export default React.memo(function FloatingLines({
+export default function FloatingLines({
   linesGradient,
   enabledWaves = ['top', 'middle', 'bottom'],
   lineCount = [6],
@@ -242,8 +242,20 @@ export default React.memo(function FloatingLines({
   mouseDamping = 0.05,
   parallax = true,
   parallaxStrength = 0.2,
-  mixBlendMode = 'screen'
+  mixBlendMode = 'screen',
+  smoothMode = false
 }) {
+  const effectiveEnabledWaves = smoothMode ? ['middle'] : enabledWaves;
+  const effectiveLineCount = smoothMode ? 4 : lineCount;
+  const effectiveLineDistance = smoothMode ? 2 : lineDistance;
+  const effectiveInteractive = smoothMode ? false : interactive;
+  const effectiveParallax = smoothMode ? false : parallax;
+  const effectiveParallaxStrength = smoothMode ? 0 : parallaxStrength;
+  const effectiveAnimationSpeed = smoothMode ? Math.min(animationSpeed, 0.6) : animationSpeed;
+  const effectiveBendRadius = smoothMode ? 0 : bendRadius;
+  const effectiveBendStrength = smoothMode ? 0 : bendStrength;
+  const effectiveMouseDamping = smoothMode ? Math.max(mouseDamping, 0.1) : mouseDamping;
+  const effectiveMixBlendMode = smoothMode ? 'normal' : mixBlendMode;
   const containerRef = useRef(null);
   const targetMouseRef = useRef(new Vector2(-1000, -1000));
   const currentMouseRef = useRef(new Vector2(-1000, -1000));
@@ -253,26 +265,26 @@ export default React.memo(function FloatingLines({
   const currentParallaxRef = useRef(new Vector2(0, 0));
 
   const getLineCount = waveType => {
-    if (typeof lineCount === 'number') return lineCount;
-    if (!enabledWaves.includes(waveType)) return 0;
-    const index = enabledWaves.indexOf(waveType);
-    return lineCount[index] ?? 6;
+    if (typeof effectiveLineCount === 'number') return effectiveLineCount;
+    if (!effectiveEnabledWaves.includes(waveType)) return 0;
+    const index = effectiveEnabledWaves.indexOf(waveType);
+    return effectiveLineCount[index] ?? 6;
   };
 
   const getLineDistance = waveType => {
-    if (typeof lineDistance === 'number') return lineDistance;
-    if (!enabledWaves.includes(waveType)) return 0.1;
-    const index = enabledWaves.indexOf(waveType);
-    return lineDistance[index] ?? 0.1;
+    if (typeof effectiveLineDistance === 'number') return effectiveLineDistance;
+    if (!effectiveEnabledWaves.includes(waveType)) return 0.1;
+    const index = effectiveEnabledWaves.indexOf(waveType);
+    return effectiveLineDistance[index] ?? 0.1;
   };
 
-  const topLineCount = enabledWaves.includes('top') ? getLineCount('top') : 0;
-  const middleLineCount = enabledWaves.includes('middle') ? getLineCount('middle') : 0;
-  const bottomLineCount = enabledWaves.includes('bottom') ? getLineCount('bottom') : 0;
+  const topLineCount = effectiveEnabledWaves.includes('top') ? getLineCount('top') : 0;
+  const middleLineCount = effectiveEnabledWaves.includes('middle') ? getLineCount('middle') : 0;
+  const bottomLineCount = effectiveEnabledWaves.includes('bottom') ? getLineCount('bottom') : 0;
 
-  const topLineDistance = enabledWaves.includes('top') ? getLineDistance('top') * 0.01 : 0.01;
-  const middleLineDistance = enabledWaves.includes('middle') ? getLineDistance('middle') * 0.01 : 0.01;
-  const bottomLineDistance = enabledWaves.includes('bottom') ? getLineDistance('bottom') * 0.01 : 0.01;
+  const topLineDistance = effectiveEnabledWaves.includes('top') ? getLineDistance('top') * 0.01 : 0.01;
+  const middleLineDistance = effectiveEnabledWaves.includes('middle') ? getLineDistance('middle') * 0.01 : 0.01;
+  const bottomLineDistance = effectiveEnabledWaves.includes('bottom') ? getLineDistance('bottom') * 0.01 : 0.01;
 
   useEffect(() => {
     if (!containerRef.current) return;
@@ -282,8 +294,8 @@ export default React.memo(function FloatingLines({
     const camera = new OrthographicCamera(-1, 1, 1, -1, 0, 1);
     camera.position.z = 1;
 
-    const renderer = new WebGLRenderer({ antialias: true, alpha: true });
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+    const renderer = new WebGLRenderer({ antialias: false, alpha: false });
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 1.5));
     renderer.domElement.style.width = '100%';
     renderer.domElement.style.height = '100%';
     containerRef.current.appendChild(renderer.domElement);
@@ -291,11 +303,11 @@ export default React.memo(function FloatingLines({
     const uniforms = {
       iTime: { value: 0 },
       iResolution: { value: new Vector3(1, 1, 1) },
-      animationSpeed: { value: animationSpeed },
+      animationSpeed: { value: effectiveAnimationSpeed },
 
-      enableTop: { value: enabledWaves.includes('top') },
-      enableMiddle: { value: enabledWaves.includes('middle') },
-      enableBottom: { value: enabledWaves.includes('bottom') },
+      enableTop: { value: effectiveEnabledWaves.includes('top') },
+      enableMiddle: { value: effectiveEnabledWaves.includes('middle') },
+      enableBottom: { value: effectiveEnabledWaves.includes('bottom') },
 
       topLineCount: { value: topLineCount },
       middleLineCount: { value: middleLineCount },
@@ -324,13 +336,13 @@ export default React.memo(function FloatingLines({
       },
 
       iMouse: { value: new Vector2(-1000, -1000) },
-      interactive: { value: interactive },
-      bendRadius: { value: bendRadius },
-      bendStrength: { value: bendStrength },
+      interactive: { value: effectiveInteractive },
+      bendRadius: { value: effectiveBendRadius },
+      bendStrength: { value: effectiveBendStrength },
       bendInfluence: { value: 0 },
 
-      parallax: { value: parallax },
-      parallaxStrength: { value: parallaxStrength },
+      parallax: { value: effectiveParallax },
+      parallaxStrength: { value: effectiveParallaxStrength },
       parallaxOffset: { value: new Vector2(0, 0) },
 
       lineGradient: {
@@ -367,7 +379,6 @@ export default React.memo(function FloatingLines({
       const height = el.clientHeight || 1;
 
       renderer.setSize(width, height, false);
-      renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 
       const canvasWidth = renderer.domElement.width;
       const canvasHeight = renderer.domElement.height;
@@ -391,12 +402,12 @@ export default React.memo(function FloatingLines({
       targetMouseRef.current.set(x * dpr, (rect.height - y) * dpr);
       targetInfluenceRef.current = 1.0;
 
-      if (parallax) {
+      if (effectiveParallax) {
         const centerX = rect.width / 2;
         const centerY = rect.height / 2;
         const offsetX = (x - centerX) / rect.width;
         const offsetY = -(y - centerY) / rect.height;
-        targetParallaxRef.current.set(offsetX * parallaxStrength, offsetY * parallaxStrength);
+        targetParallaxRef.current.set(offsetX * effectiveParallaxStrength, offsetY * effectiveParallaxStrength);
       }
     };
 
@@ -404,7 +415,7 @@ export default React.memo(function FloatingLines({
       targetInfluenceRef.current = 0.0;
     };
 
-    if (interactive) {
+    if (effectiveInteractive) {
       renderer.domElement.addEventListener('pointermove', handlePointerMove);
       renderer.domElement.addEventListener('pointerleave', handlePointerLeave);
     }
@@ -413,16 +424,16 @@ export default React.memo(function FloatingLines({
     const renderLoop = () => {
       uniforms.iTime.value = clock.getElapsedTime();
 
-      if (interactive) {
-        currentMouseRef.current.lerp(targetMouseRef.current, mouseDamping);
+      if (effectiveInteractive) {
+        currentMouseRef.current.lerp(targetMouseRef.current, effectiveMouseDamping);
         uniforms.iMouse.value.copy(currentMouseRef.current);
 
-        currentInfluenceRef.current += (targetInfluenceRef.current - currentInfluenceRef.current) * mouseDamping;
+        currentInfluenceRef.current += (targetInfluenceRef.current - currentInfluenceRef.current) * effectiveMouseDamping;
         uniforms.bendInfluence.value = currentInfluenceRef.current;
       }
 
-      if (parallax) {
-        currentParallaxRef.current.lerp(targetParallaxRef.current, mouseDamping);
+      if (effectiveParallax) {
+        currentParallaxRef.current.lerp(targetParallaxRef.current, effectiveMouseDamping);
         uniforms.parallaxOffset.value.copy(currentParallaxRef.current);
       }
 
@@ -433,11 +444,12 @@ export default React.memo(function FloatingLines({
 
     return () => {
       cancelAnimationFrame(raf);
+      // eslint-disable-next-line react-hooks/exhaustive-deps
       if (ro && containerRef.current) {
         ro.disconnect();
       }
 
-      if (interactive) {
+      if (effectiveInteractive) {
         renderer.domElement.removeEventListener('pointermove', handlePointerMove);
         renderer.domElement.removeEventListener('pointerleave', handlePointerLeave);
       }
@@ -449,22 +461,23 @@ export default React.memo(function FloatingLines({
         renderer.domElement.parentElement.removeChild(renderer.domElement);
       }
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [
-    // Use JSON.stringify for array/object dependencies to avoid re-renders on new references
-    JSON.stringify(linesGradient),
-    JSON.stringify(enabledWaves),
-    JSON.stringify(lineCount),
-    JSON.stringify(lineDistance),
-    JSON.stringify(topWavePosition),
-    JSON.stringify(middleWavePosition),
-    JSON.stringify(bottomWavePosition),
+    linesGradient,
+    enabledWaves,
+    lineCount,
+    lineDistance,
+    topWavePosition,
+    middleWavePosition,
+    bottomWavePosition,
     animationSpeed,
     interactive,
     bendRadius,
     bendStrength,
     mouseDamping,
     parallax,
-    parallaxStrength
+    parallaxStrength,
+    smoothMode
   ]);
 
   return (
@@ -472,8 +485,8 @@ export default React.memo(function FloatingLines({
       ref={containerRef}
       className="w-full h-full relative overflow-hidden floating-lines-container"
       style={{
-        mixBlendMode: mixBlendMode
+        mixBlendMode: effectiveMixBlendMode
       }}
     />
   );
-});
+}

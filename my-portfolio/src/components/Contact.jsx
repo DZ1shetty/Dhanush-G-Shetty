@@ -52,7 +52,7 @@ const TextAreaField = ({ label, name, value, onChange, error, icon: Icon, placeh
   </div>
 );
 
-const Contact = () => {
+const Contact = ({ smoothMode }) => {
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -100,6 +100,9 @@ const Contact = () => {
     }
   };
 
+  const MotionDiv = smoothMode ? 'div' : motion.div;
+  const motionProps = (props) => smoothMode ? {} : props;
+
   return (
     <div className="max-w-7xl mx-auto px-4 relative">
       {/* Background Glows */}
@@ -108,11 +111,13 @@ const Contact = () => {
 
       <div className="grid lg:grid-cols-2 gap-12 items-start">
         {/* Resume Section - Cyber Terminal Style */}
-        <motion.div
-          initial={{ opacity: 0, x: -50 }}
-          whileInView={{ opacity: 1, x: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
+        <MotionDiv
+          {...motionProps({
+            initial: { opacity: 0, x: -50 },
+            whileInView: { opacity: 1, x: 0 },
+            viewport: { once: true },
+            transition: { duration: 0.6 }
+          })}
           className="relative group"
         >
           <div className="absolute -inset-0.5 bg-gradient-to-r from-blue-500 to-purple-600 rounded-2xl blur opacity-20 group-hover:opacity-40 transition duration-500" />
@@ -202,14 +207,16 @@ const Contact = () => {
               ENCRYPTED_CONNECTION
             </div>
           </div>
-        </motion.div>
+        </MotionDiv>
 
         {/* Contact Form Section */}
-        <motion.div
-          initial={{ opacity: 0, x: 50 }}
-          whileInView={{ opacity: 1, x: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6, delay: 0.2 }}
+        <MotionDiv
+          {...motionProps({
+            initial: { opacity: 0, x: 50 },
+            whileInView: { opacity: 1, x: 0 },
+            viewport: { once: true },
+            transition: { duration: 0.6, delay: 0.2 }
+          })}
           className="relative"
         >
           <div className="absolute -inset-0.5 bg-gradient-to-r from-purple-600 to-blue-500 rounded-2xl blur opacity-20" />
@@ -227,10 +234,12 @@ const Contact = () => {
 
               <AnimatePresence mode="wait">
                 {isSubmitted ? (
-                  <motion.div
-                    initial={{ opacity: 0, scale: 0.9 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    exit={{ opacity: 0, scale: 0.9 }}
+                  <MotionDiv
+                    {...motionProps({
+                      initial: { opacity: 0, scale: 0.9 },
+                      animate: { opacity: 1, scale: 1 },
+                      exit: { opacity: 0, scale: 0.9 }
+                    })}
                     className="flex flex-col items-center justify-center py-12 text-center"
                   >
                     <div className="relative mb-6">
@@ -243,79 +252,143 @@ const Contact = () => {
                     <p className="text-slate-400 font-mono text-sm">
                       &gt; Message successfully queued for delivery.
                     </p>
-                  </motion.div>
+                  </MotionDiv>
                 ) : (
-                  <motion.form
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    exit={{ opacity: 0 }}
-                    onSubmit={handleSubmit}
-                  >
-                    <div className="grid md:grid-cols-2 gap-4">
+                  smoothMode ? (
+                    <form onSubmit={handleSubmit}>
+                      <div className="grid md:grid-cols-2 gap-4">
+                        <InputField
+                          label="IDENTIFIER"
+                          name="name"
+                          icon={User}
+                          value={formData.name}
+                          onChange={handleChange}
+                          error={errors.name}
+                          placeholder="John Doe"
+                        />
+                        <InputField
+                          label="CONTACT_LINK"
+                          name="email"
+                          type="email"
+                          icon={Mail}
+                          value={formData.email}
+                          onChange={handleChange}
+                          error={errors.email}
+                          placeholder="john@example.com"
+                        />
+                      </div>
+                      
                       <InputField
-                        label="IDENTIFIER"
-                        name="name"
-                        icon={User}
-                        value={formData.name}
+                        label="SUBJECT_LINE"
+                        name="subject"
+                        icon={MessageSquare}
+                        value={formData.subject}
                         onChange={handleChange}
-                        error={errors.name}
-                        placeholder="John Doe"
+                        error={errors.subject}
+                        placeholder="Project Inquiry"
                       />
-                      <InputField
-                        label="CONTACT_LINK"
-                        name="email"
-                        type="email"
-                        icon={Mail}
-                        value={formData.email}
+                      
+                      <TextAreaField
+                        label="DATA_PACKET"
+                        name="message"
+                        icon={FileText}
+                        value={formData.message}
                         onChange={handleChange}
-                        error={errors.email}
-                        placeholder="john@example.com"
+                        error={errors.message}
+                        placeholder="Input message content..."
                       />
-                    </div>
-                    
-                    <InputField
-                      label="SUBJECT_LINE"
-                      name="subject"
-                      icon={MessageSquare}
-                      value={formData.subject}
-                      onChange={handleChange}
-                      error={errors.subject}
-                      placeholder="Project Inquiry"
-                    />
-                    
-                    <TextAreaField
-                      label="DATA_PACKET"
-                      name="message"
-                      icon={FileText}
-                      value={formData.message}
-                      onChange={handleChange}
-                      error={errors.message}
-                      placeholder="Input message content..."
-                    />
 
-                    <button
-                      type="submit"
-                      disabled={isSubmitting}
-                      className="w-full py-4 bg-white text-black hover:bg-blue-400 hover:text-black rounded-lg font-bold font-mono tracking-wider shadow-lg transition-all duration-300 hover:scale-[1.01] disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 group"
+                      <button
+                        type="submit"
+                        disabled={isSubmitting}
+                        className="w-full py-4 bg-white text-black hover:bg-blue-400 hover:text-black rounded-lg font-bold font-mono tracking-wider shadow-lg transition-all duration-300 hover:scale-[1.01] disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 group"
+                      >
+                        {isSubmitting ? (
+                          <>
+                            <Loader2 className="animate-spin" size={20} />
+                            TRANSMITTING...
+                          </>
+                        ) : (
+                          <>
+                            <Send size={20} className="group-hover:translate-x-1 transition-transform" />
+                            SEND_TRANSMISSION
+                          </>
+                        )}
+                      </button>
+                    </form>
+                  ) : (
+                    <motion.form
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      exit={{ opacity: 0 }}
+                      onSubmit={handleSubmit}
                     >
-                      {isSubmitting ? (
-                        <>
-                          <Loader2 className="animate-spin" size={20} />
-                          TRANSMITTING...
-                        </>
-                      ) : (
-                        <>
-                          <Send size={20} className="group-hover:translate-x-1 transition-transform" />
-                          SEND_TRANSMISSION
-                        </>
-                      )}
-                    </button>
-                  </motion.form>
+                      <div className="grid md:grid-cols-2 gap-4">
+                        <InputField
+                          label="IDENTIFIER"
+                          name="name"
+                          icon={User}
+                          value={formData.name}
+                          onChange={handleChange}
+                          error={errors.name}
+                          placeholder="John Doe"
+                        />
+                        <InputField
+                          label="CONTACT_LINK"
+                          name="email"
+                          type="email"
+                          icon={Mail}
+                          value={formData.email}
+                          onChange={handleChange}
+                          error={errors.email}
+                          placeholder="john@example.com"
+                        />
+                      </div>
+                      
+                      <InputField
+                        label="SUBJECT_LINE"
+                        name="subject"
+                        icon={MessageSquare}
+                        value={formData.subject}
+                        onChange={handleChange}
+                        error={errors.subject}
+                        placeholder="Project Inquiry"
+                      />
+                      
+                      <TextAreaField
+                        label="DATA_PACKET"
+                        name="message"
+                        icon={FileText}
+                        value={formData.message}
+                        onChange={handleChange}
+                        error={errors.message}
+                        placeholder="Input message content..."
+                      />
+
+                      <button
+                        type="submit"
+                        disabled={isSubmitting}
+                        className="w-full py-4 bg-white text-black hover:bg-blue-400 hover:text-black rounded-lg font-bold font-mono tracking-wider shadow-lg transition-all duration-300 hover:scale-[1.01] disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 group"
+                      >
+                        {isSubmitting ? (
+                          <>
+                            <Loader2 className="animate-spin" size={20} />
+                            TRANSMITTING...
+                          </>
+                        ) : (
+                          <>
+                            <Send size={20} className="group-hover:translate-x-1 transition-transform" />
+                            SEND_TRANSMISSION
+                          </>
+                        )}
+                      </button>
+                    </motion.form>
+                  )
                 )}
               </AnimatePresence>
             </div>
           </div>
-        </motion.div>
+        </MotionDiv>
       </div>
     </div>
   );

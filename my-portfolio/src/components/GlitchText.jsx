@@ -1,6 +1,13 @@
 import React from 'react';
 
-const GlitchText = ({ children, speed = 0.5, enableShadows = true, enableOnHover = false, className = '' }) => {
+const GlitchText = ({ children, speed = 0.5, enableShadows = true, enableOnHover = false, className = '', smoothMode = false }) => {
+  if (smoothMode) {
+    return (
+      <div className={`text-white font-black select-none ${className}`}>
+        {children}
+      </div>
+    );
+  }
   const inlineStyles = {
     '--after-duration': `${speed * 3}s`,
     '--before-duration': `${speed * 2}s`,

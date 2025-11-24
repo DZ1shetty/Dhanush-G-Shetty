@@ -1,7 +1,7 @@
 import React, { useRef, useEffect } from 'react';
 import './HeroParallax.css';
 
-export default function HeroParallax({ children, className = '', maxOffset = 25 }) {
+export default function HeroParallax({ children, className = '', maxOffset = 25, smoothMode = false }) {
   const ref = useRef(null);
   const gridRef = useRef(null);
 
@@ -10,27 +10,47 @@ export default function HeroParallax({ children, className = '', maxOffset = 25 
     const grid = gridRef.current;
     if (!el || !grid) return;
 
+    if (smoothMode) {
+      el.style.setProperty('--mx', '0');
+      el.style.setProperty('--my', '0');
+      grid.style.transform = 'translate(0px, 0px)';
+      return;
+    }
+
+    if (typeof window === 'undefined') return;
+
     // early exit for reduced motion or coarse input devices
     const isReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     const isCoarse = window.matchMedia('(pointer: coarse)').matches;
     if (isReduced || isCoarse) return;
 
+    let rafId = null;
     const handler = (e) => {
-      const rect = el.getBoundingClientRect();
-      const x = e.clientX - (rect.left + rect.width / 2);
-      const y = e.clientY - (rect.top + rect.height / 2);
-      // normalized ratio -1..1
-      const rx = (x / (rect.width / 2));
-      const ry = (y / (rect.height / 2));
+      if (rafId) return;
       
-      el.style.setProperty('--mx', `${rx * maxOffset}`);
-      el.style.setProperty('--my', `${ry * maxOffset}`);
-      
-      // Inverse movement for background grid for depth
-      grid.style.transform = `translate(${rx * -10}px, ${ry * -10}px)`;
+      rafId = requestAnimationFrame(() => {
+        const rect = el.getBoundingClientRect();
+        const x = e.clientX - (rect.left + rect.width / 2);
+        const y = e.clientY - (rect.top + rect.height / 2);
+        // normalized ratio -1..1
+        const rx = (x / (rect.width / 2));
+        const ry = (y / (rect.height / 2));
+        
+        el.style.setProperty('--mx', `${rx * maxOffset}`);
+        el.style.setProperty('--my', `${ry * maxOffset}`);
+        
+        // Inverse movement for background grid for depth
+        grid.style.transform = `translate(${rx * -10}px, ${ry * -10}px)`;
+        
+        rafId = null;
+      });
     };
 
     const reset = () => { 
+      if (rafId) {
+        cancelAnimationFrame(rafId);
+        rafId = null;
+      }
       el.style.setProperty('--mx', '0'); 
       el.style.setProperty('--my', '0');
       grid.style.transform = `translate(0px, 0px)`;
@@ -43,7 +63,7 @@ export default function HeroParallax({ children, className = '', maxOffset = 25 
       el.removeEventListener('mousemove', handler);
       el.removeEventListener('mouseleave', reset);
     };
-  }, [maxOffset]);
+  }, [maxOffset, smoothMode]);
 
   return (
     <div ref={ref} className={`hero-parallax relative overflow-hidden ${className}`}>

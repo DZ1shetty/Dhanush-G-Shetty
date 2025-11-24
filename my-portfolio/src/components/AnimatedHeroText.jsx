@@ -7,8 +7,11 @@ const letter = {
   show: { y: 0, opacity: 1, filter: "blur(0px)", transition: { duration: 0.4, ease: "easeOut" } } 
 };
 
-export default function AnimatedHeroText({ text = '', className = '' }) {
+export default function AnimatedHeroText({ text = '', className = '', smoothMode = false }) {
   const shouldReduce = useReducedMotion();
+  if (smoothMode) return (
+    <h1 className={`text-4xl md:text-6xl font-extrabold ${className}`}>{text}</h1>
+  );
 
   if (shouldReduce) {
     return (

@@ -3,7 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Award, Code, Briefcase, BookOpen, ShieldCheck } from 'lucide-react';
 import CertificateGrid from './CertificateGrid';
 
-const Certificates = ({ data }) => {
+const Certificates = ({ data, smoothMode }) => {
   const [activeTab, setActiveTab] = useState('all');
 
   const tabs = [
@@ -46,11 +46,15 @@ const Certificates = ({ data }) => {
                 }`}
               >
                 {isActive && (
-                  <motion.div
-                    layoutId="activeCertTab"
-                    className="absolute inset-0 bg-cyan-400 shadow-[0_0_20px_rgba(34,211,238,0.6)]"
-                    transition={{ type: "spring", stiffness: 200, damping: 25 }}
-                  />
+                  smoothMode ? (
+                    <div className="absolute inset-0 bg-cyan-400 shadow-[0_0_20px_rgba(34,211,238,0.6)]" />
+                  ) : (
+                    <motion.div
+                      layoutId="activeCertTab"
+                      className="absolute inset-0 bg-cyan-400 shadow-[0_0_20px_rgba(34,211,238,0.6)]"
+                      transition={{ type: "spring", stiffness: 200, damping: 25 }}
+                    />
+                  )
                 )}
                 <Icon className={`w-4 h-4 relative z-10 ${isActive ? 'text-black' : 'group-hover:text-cyan-400'}`} />
                 <span className="relative z-10 tracking-wider">{tab.label}</span>
@@ -69,16 +73,22 @@ const Certificates = ({ data }) => {
       </div>
 
       {/* Content Area */}
-      <motion.div
-        key={activeTab}
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        exit={{ opacity: 0, y: -20 }}
-        transition={{ duration: 0.3 }}
-        className="min-h-[400px]"
-      >
-        <CertificateGrid certs={filteredCerts} />
-      </motion.div>
+      {smoothMode ? (
+        <div className="min-h-[400px]">
+          <CertificateGrid certs={filteredCerts} smoothMode={smoothMode} />
+        </div>
+      ) : (
+        <motion.div
+          key={activeTab}
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: -20 }}
+          transition={{ duration: 0.3 }}
+          className="min-h-[400px]"
+        >
+          <CertificateGrid certs={filteredCerts} smoothMode={smoothMode} />
+        </motion.div>
+      )}
     </div>
   );
 };

@@ -1,7 +1,15 @@
 import React from 'react';
 import './GlitchImage.css';
 
-export default function GlitchImage({ src, alt = '', speed = 0.5, enableShadows = true, enableOnHover = false, className = '' }) {
+export default function GlitchImage({ src, alt = '', speed = 0.5, enableShadows = true, enableOnHover = false, className = '', smoothMode = false }) {
+  if (smoothMode) {
+    return (
+      <div className={`glitch-img glitch-img--static ${className}`}>
+        <img src={src} className="glitch-img__base" alt={alt} loading="lazy" decoding="async" />
+      </div>
+    );
+  }
+
   const inlineStyles = {
     '--after-duration': `${speed * 3}s`,
     '--before-duration': `${speed * 2}s`,
