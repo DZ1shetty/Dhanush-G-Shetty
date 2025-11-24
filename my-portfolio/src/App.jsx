@@ -1,5 +1,5 @@
-import React, { useState, useEffect, useRef, Suspense, lazy, useMemo, useCallback } from "react";
-import { Briefcase, User, Wrench, Mail, Linkedin, Github, Instagram, Moon, Sun, GraduationCap, Building2, X, ChevronLeft, ChevronRight, Video, Award, FileText, Terminal } from "lucide-react";
+import React, { useState, useEffect, useRef, useMemo, useCallback } from "react";
+import { Briefcase, User, Mail, Linkedin, Github, Instagram, GraduationCap, Building2, X, ChevronLeft, ChevronRight, Award, Menu } from "lucide-react";
 import { motion as _motion, AnimatePresence } from "framer-motion";
 import { Helmet } from "react-helmet-async";
 import { portfolioData } from "./data";
@@ -11,15 +11,13 @@ import GlitchImage from "./components/GlitchImage";
 import ProjectTerminalFilter from "./components/ProjectTerminalFilter";
 import SkillChart from "./components/SkillChart";
 import PageTransition from "./components/PageTransition";
-import CyberLoader from "./components/CyberLoader";
-import Preloader from "./components/Preloader";
-
-// Lazy load heavy sections
-const FloatingLines = lazy(() => import("./components/FloatingLines"));
-const Certificates = lazy(() => import("./components/Certificates"));
-const Journey = lazy(() => import("./components/Journey"));
-const Internship = lazy(() => import("./components/Internship"));
-const Contact = lazy(() => import("./components/Contact"));
+import { usePerformanceDiagnostics } from "./hooks/usePerformanceDiagnostics";
+import { useDeviceTier } from "./hooks/useDeviceTier";
+import Beams from "./components/Beams";
+import Certificates from "./components/Certificates";
+import Journey from "./components/Journey";
+import Internship from "./components/Internship";
+import Contact from "./components/Contact";
 
 // Utility function to check for reduced motion preference
 const prefersReducedMotion = () => {
@@ -27,25 +25,16 @@ const prefersReducedMotion = () => {
   return window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 };
 
-const detectSystemSmoothMode = () => {
-  if (typeof window === 'undefined') return false;
-  const prefersReduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  const saveData = typeof navigator !== 'undefined' && navigator.connection?.saveData;
-  return prefersReduce || Boolean(saveData);
-};
-
-const readSmoothModeSettings = () => {
-  if (typeof window === 'undefined') return { value: null, source: 'auto' };
-  const storedValue = localStorage.getItem('smoothMode');
-  const storedSource = localStorage.getItem('smoothModeSource');
-  const source = storedSource === 'user' ? 'user' : 'auto';
-
-  if (storedValue === null) {
-    return { value: null, source };
-  }
-
-  return { value: storedValue === 'true', source };
-};
+const SCROLL_ANIMATIONS_ENABLED = false;
+const NAV_SECTIONS = [
+  { id: "home", label: "Home" },
+  { id: "journey", label: "Journey" },
+  { id: "internships", label: "Internships" },
+  { id: "projects", label: "Projects" },
+  { id: "certificate", label: "Certificate" },
+  { id: "contact", label: "Contact" }
+];
+const HERO_ILLUSTRATION = "/hero-illustration.png";
 
 // Motion component that respects user's motion preferences
 const Motion = ({ children, ...props }) => {
@@ -61,31 +50,39 @@ const Motion = ({ children, ...props }) => {
 };
 
 // Section component with motion awareness
-const Section = React.memo(({ id, title, icon, children }) => (
-  <Motion 
-    id={id} 
-    className="py-24 relative" 
-    initial={{ opacity: 0, y: 50 }} 
-    whileInView={{ opacity: 1, y: 0 }} 
-    viewport={{ once: true, amount: 0.1 }} 
-    transition={{ duration: 0.6 }}
-  >
-    <div className="flex flex-col items-center mb-16">
-      <div className="flex items-center gap-3 mb-2">
-        <div className="h-[1px] w-12 bg-gradient-to-r from-transparent to-cyan-500/50" />
-        <span className="text-cyan-500 font-mono text-xs tracking-[0.3em] uppercase">System_Section</span>
-        <div className="h-[1px] w-12 bg-gradient-to-l from-transparent to-cyan-500/50" />
+const Section = React.memo(({ id, title, icon, children }) => {
+  const animationProps = SCROLL_ANIMATIONS_ENABLED
+    ? {
+        initial: { opacity: 0, y: 50 },
+        whileInView: { opacity: 1, y: 0 },
+        viewport: { once: true, amount: 0.1 },
+        transition: { duration: 0.6 }
+      }
+    : {};
+
+  return (
+    <Motion 
+      id={id} 
+      className="py-24 relative" 
+      {...animationProps}
+    >
+      <div className="flex flex-col items-center mb-16">
+        <div className="flex items-center gap-3 mb-2">
+          <div className="h-[1px] w-12 bg-gradient-to-r from-transparent to-cyan-500/50" />
+          <span className="text-cyan-500 font-mono text-xs tracking-[0.3em] uppercase">System_Section</span>
+          <div className="h-[1px] w-12 bg-gradient-to-l from-transparent to-cyan-500/50" />
+        </div>
+        <h2 className="text-4xl md:text-5xl font-bold text-center flex items-center justify-center gap-x-4 text-white tracking-tight">
+          <span className="text-cyan-400 drop-shadow-[0_0_10px_rgba(34,211,238,0.5)]">{icon}</span>
+          <span className="bg-clip-text text-transparent bg-gradient-to-r from-white via-slate-200 to-slate-400">
+            {title}
+          </span>
+        </h2>
       </div>
-      <h2 className="text-4xl md:text-5xl font-bold text-center flex items-center justify-center gap-x-4 text-white tracking-tight">
-        <span className="text-cyan-400 drop-shadow-[0_0_10px_rgba(34,211,238,0.5)]">{icon}</span>
-        <span className="bg-clip-text text-transparent bg-gradient-to-r from-white via-slate-200 to-slate-400">
-          {title}
-        </span>
-      </h2>
-    </div>
-    {children}
-  </Motion>
-));
+      {children}
+    </Motion>
+  );
+});
 Section.displayName = 'Section';
 
 const AnimatedRoles = React.memo(({ roles }) => {
@@ -368,17 +365,14 @@ const NavLink = React.memo(({ section, children, activeNav, handleNavClick }) =>
 });
 NavLink.displayName = 'NavLink';
 
-const FLOATING_LINES_WAVES = ['top', 'middle', 'bottom'];
-const FLOATING_LINES_COUNTS = [10, 15, 20];
-const FLOATING_LINES_DISTANCES = [8, 6, 4];
-
 export default function App() {
   const [theme, _setTheme] = useState(() => localStorage.getItem("theme") || "dark");
-  const initialSmoothSettings = useMemo(() => readSmoothModeSettings(), []);
-  const [smoothMode, setSmoothMode] = useState(() => initialSmoothSettings.value ?? detectSystemSmoothMode());
-  const [smoothModeSource, setSmoothModeSource] = useState(() => initialSmoothSettings.source);
-  const [isPageLoaded, setIsPageLoaded] = useState(false);
-  const [showPreloader, setShowPreloader] = useState(true);
+  const deviceTier = useDeviceTier();
+  const smoothMode = false;
+  usePerformanceDiagnostics({
+    enabled: import.meta.env.DEV,
+    consoleReporter: true
+  });
   
   // Modal state
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -388,81 +382,34 @@ export default function App() {
   // Page Transition State
   const [transitionStage, setTransitionStage] = useState('idle'); // idle, entering, exiting
   const [pendingSection, setPendingSection] = useState(null);
+  const [isMobileNavOpen, setIsMobileNavOpen] = useState(false);
+  const closeMobileNav = useCallback(() => setIsMobileNavOpen(false), []);
 
   useEffect(() => {
     if (theme === "dark") document.documentElement.classList.add("dark"); else document.documentElement.classList.remove("dark");
     localStorage.setItem("theme", theme);
   }, [theme]);
 
-  useEffect(() => {
-    if (typeof window === 'undefined') return;
-    localStorage.setItem('smoothMode', smoothMode ? 'true' : 'false');
-    localStorage.setItem('smoothModeSource', smoothModeSource);
-  }, [smoothMode, smoothModeSource]);
+  const [activeNav, setActiveNav] = useState('home');
 
   useEffect(() => {
-    if (typeof window === 'undefined') return;
-    const mediaQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
-    const handleChange = () => {
-      if (smoothModeSource === 'user') return;
-      const saveData = typeof navigator !== 'undefined' && navigator.connection?.saveData;
-      setSmoothMode(mediaQuery.matches || Boolean(saveData));
-    };
-
-    if (mediaQuery.addEventListener) {
-      mediaQuery.addEventListener('change', handleChange);
-    } else {
-      mediaQuery.addListener(handleChange);
+    if (isMobileNavOpen && !isModalOpen) {
+      document.body.style.overflow = 'hidden';
+    } else if (!isMobileNavOpen && !isModalOpen) {
+      document.body.style.overflow = '';
     }
-
     return () => {
-      if (mediaQuery.removeEventListener) {
-        mediaQuery.removeEventListener('change', handleChange);
-      } else {
-        mediaQuery.removeListener(handleChange);
+      if (!isModalOpen) {
+        document.body.style.overflow = '';
       }
     };
-  }, [smoothModeSource]);
-
-  useEffect(() => {
-    if (typeof document === 'undefined') return;
-    document.documentElement.dataset.smoothMode = smoothMode ? 'on' : 'off';
-  }, [smoothMode]);
-
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setShowPreloader(false);
-      setIsPageLoaded(true);
-    }, 2000);
-    return () => clearTimeout(timer);
-  }, []);
-
-  // Register service worker for offline capability
-  useEffect(() => {
-    if ('serviceWorker' in navigator) {
-      window.addEventListener('load', () => {
-        navigator.serviceWorker.register('/sw.js')
-          .then((registration) => {
-            console.log('SW registered: ', registration);
-          })
-          .catch((registrationError) => {
-            console.log('SW registration failed: ', registrationError);
-          });
-      });
-    }
-  }, []);
-
-  const toggleSmoothMode = useCallback(() => {
-    setSmoothMode((prev) => !prev);
-    setSmoothModeSource('user');
-  }, []);
-
-  const [activeNav, setActiveNav] = useState('home');
+  }, [isMobileNavOpen, isModalOpen]);
 
   const handleNavClick = useCallback((section) => {
     if (transitionStage !== 'idle') return;
     setPendingSection(section);
     setTransitionStage('entering');
+    setIsMobileNavOpen(false);
   }, [transitionStage]);
 
   const handleTransitionCovered = useCallback(() => {
@@ -471,11 +418,10 @@ export default function App() {
       if (el) {
         const yOffset = -70;
         const y = el.getBoundingClientRect().top + window.pageYOffset + yOffset;
-        window.scrollTo({ top: y, behavior: 'auto' });
+        window.scrollTo({ top: y, behavior: 'smooth' });
       }
       setActiveNav(pendingSection);
     }
-    // Small delay for effect
     setTimeout(() => {
       setTransitionStage('exiting');
     }, 200);
@@ -488,7 +434,7 @@ export default function App() {
 
   // Observe sections and set active nav as user scrolls
   useEffect(()=>{
-    const ids = ['home','journey','internships','projects','certificate','contact'];
+    const ids = NAV_SECTIONS.map((section) => section.id);
     const observer = new IntersectionObserver((entries)=>{
       entries.forEach(entry => {
         if (entry.isIntersecting) {
@@ -527,121 +473,184 @@ export default function App() {
   }, [modalImages.length]);
 
   // Memoize the background to prevent re-renders on scroll
-  const background = useMemo(() => (
-    <div className="fixed inset-0 -z-10 h-screen w-full" style={{ opacity: smoothMode ? 0.45 : 1 }}>
-      <Suspense fallback={<div className="w-full h-full bg-slate-900" />}>
-        <FloatingLines 
-          enabledWaves={FLOATING_LINES_WAVES}
-          lineCount={FLOATING_LINES_COUNTS}
-          lineDistance={FLOATING_LINES_DISTANCES}
-          bendRadius={5.0}
-          bendStrength={-0.5}
-          interactive={true}
-          parallax={true}
-          mixBlendMode="multiply"
-          smoothMode={smoothMode}
+  const beamQuality = deviceTier.deviceTier === 'unknown' ? 'medium' : deviceTier.deviceTier;
+  const disableBeams = prefersReducedMotion();
+  const beamPresets = useMemo(
+    () => ({
+      high: { beamWidth: 3, beamHeight: 22, beamNumber: 16, speed: 2.4, noiseIntensity: 2, scale: 0.25 },
+      medium: { beamWidth: 2.4, beamHeight: 18, beamNumber: 12, speed: 2, noiseIntensity: 1.8, scale: 0.22 },
+      low: { beamWidth: 2, beamHeight: 14, beamNumber: 8, speed: 1.6, noiseIntensity: 1.4, scale: 0.18 }
+    }),
+    []
+  );
+  const background = useMemo(() => {
+    if (disableBeams) {
+      return (
+        <div
+          className="fixed inset-0 -z-10 bg-gradient-to-b from-[#03001e] via-[#7303c0]/70 to-[#ec38bc]/60"
+          aria-hidden="true"
         />
-      </Suspense>
-    </div>
-  ), [smoothMode]);
+      );
+    }
+    const preset = beamPresets[beamQuality] ?? beamPresets.medium;
+    return (
+      <div className="fixed inset-0 -z-10" style={{ width: '100vw', height: '100vh' }}>
+        <Beams
+          beamWidth={preset.beamWidth}
+          beamHeight={preset.beamHeight}
+          beamNumber={preset.beamNumber}
+          speed={preset.speed}
+          noiseIntensity={preset.noiseIntensity}
+          scale={preset.scale}
+          rotation={0}
+        />
+      </div>
+    );
+  }, [beamPresets, beamQuality, disableBeams]);
 
   // Memoize the header to only update when activeNav changes
   const header = useMemo(() => {
-    const ModeIcon = smoothMode ? Sun : Wrench;
-    const modeLabel = smoothMode ? 'Smooth Mode' : 'Full FX';
-
     return (
-      <header className="fixed top-0 left-0 right-0 bg-black/20 backdrop-blur-md z-50 shadow-lg transition-all duration-300 border-b border-white/10">
-        <nav className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between h-16">
-            <div className="flex items-center gap-4">
-              <div className="flex-shrink-0">
-                <GlitchText
-                  speed={1}
-                  enableShadows={true}
-                  enableOnHover={true}
-                  className="text-2xl font-bold tracking-tight text-white"
-                  smoothMode={smoothMode}
-                >
-                  {portfolioData.name}
-                </GlitchText>
-              </div>
-              <button
-                type="button"
-                onClick={toggleSmoothMode}
-                aria-pressed={smoothMode}
-                className={`flex items-center gap-2 px-3 py-1 border rounded-full text-[10px] font-mono uppercase tracking-[0.3em] transition ${smoothMode ? 'border-cyan-400 bg-cyan-500/10 text-cyan-200 shadow-[0_0_20px_rgba(34,211,238,0.3)]' : 'border-white/20 text-slate-200/90 hover:border-cyan-500/60'}`}
-              >
-                <ModeIcon className="h-4 w-4" />
-                <span>{modeLabel}</span>
-              </button>
-            </div>
-            <div className="hidden md:block">
-              <div className="ml-10 relative flex items-baseline space-x-4">
-                <NavLink section="home" activeNav={activeNav} handleNavClick={handleNavClick}>Home</NavLink>
-                <NavLink section="journey" activeNav={activeNav} handleNavClick={handleNavClick}>Journey</NavLink>
-                <NavLink section="internships" activeNav={activeNav} handleNavClick={handleNavClick}>Internships</NavLink>
-                <NavLink section="projects" activeNav={activeNav} handleNavClick={handleNavClick}>Projects</NavLink>
-                <NavLink section="certificate" activeNav={activeNav} handleNavClick={handleNavClick}>Certificate</NavLink>
-                <NavLink section="contact" activeNav={activeNav} handleNavClick={handleNavClick}>Contact</NavLink>
-              </div>
-            </div>
-          </div>
-        </nav>
-      </header>
-    );
-  }, [activeNav, handleNavClick, smoothMode, toggleSmoothMode]);
-
-  // Memoize the main content to prevent re-renders when activeNav changes
-  const mainContent = useMemo(() => (
-    <main id="main-content" className="container mx-auto px-4 sm:px-6 lg:px-8 pt-20">
-      <section id="home" className="min-h-screen flex flex-col lg:flex-row items-center justify-center gap-10 pt-20 pb-10 relative overflow-hidden">
-        {/* Cyber Background Elements */}
-        <div className="absolute top-1/4 left-10 w-64 h-64 bg-cyan-500/5 rounded-full blur-3xl pointer-events-none" />
-        <div className="absolute bottom-1/4 right-10 w-64 h-64 bg-purple-500/5 rounded-full blur-3xl pointer-events-none" />
-        
-        <Motion initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.8 }} className="w-full lg:w-1/2 flex flex-col items-center justify-center space-y-8 z-10">
-          <HeroParallax className="w-full flex flex-col items-center justify-center" smoothMode={smoothMode}>
-            <div className="parallax-layer relative" data-depth="mid">
-              <div className="relative w-56 h-56 mx-auto mb-8 group">
-                {/* Rotating Rings */}
-                <div className="absolute inset-[-10px] border border-cyan-500/30 rounded-full border-dashed animate-[spin_10s_linear_infinite]" />
-                <div className="absolute inset-[-20px] border border-purple-500/20 rounded-full border-dotted animate-[spin_15s_linear_infinite_reverse]" />
-                
-                <div className="absolute inset-0 bg-gradient-to-r from-cyan-500 to-purple-500 rounded-full blur-xl opacity-20 animate-pulse group-hover:opacity-40 transition-opacity duration-500"></div>
-                <GlitchImage className="relative z-10 rounded-full w-full h-full object-cover border-2 border-white/10 shadow-[0_0_30px_rgba(0,0,0,0.5)]" src={`https://placehold.co/160x160/E2E8F0/475569?text=DS`} alt={portfolioData.name} speed={0.7} enableShadows={true} enableOnHover={true} smoothMode={smoothMode} />
-                
-                {/* Status Indicator */}
-                <div className="absolute bottom-2 right-2 flex items-center gap-2 bg-black/80 backdrop-blur-md px-3 py-1 rounded-full border border-emerald-500/30 z-20 shadow-lg">
-                  <span className="block h-2 w-2 bg-emerald-400 rounded-full animate-pulse shadow-[0_0_10px_rgba(74,222,128,0.8)]"></span>
-                  <span className="text-[10px] font-mono text-emerald-400 tracking-wider">ONLINE</span>
+      <>
+        <header className="fixed top-0 left-0 right-0 bg-black/20 backdrop-blur-md z-50 shadow-lg transition-all duration-300 border-b border-white/10">
+          <nav className="container mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="flex items-center justify-between h-16">
+              <div className="flex items-center gap-4">
+                <div className="flex-shrink-0">
+                  <GlitchText
+                    speed={1}
+                    enableShadows={true}
+                    enableOnHover={true}
+                    className="text-2xl font-bold tracking-tight text-white"
+                    smoothMode={smoothMode}
+                  >
+                    {portfolioData.name}
+                  </GlitchText>
                 </div>
               </div>
+              <div className="hidden md:block">
+                <div className="ml-10 relative flex items-baseline space-x-4">
+                  {NAV_SECTIONS.map((section) => (
+                    <NavLink
+                      key={section.id}
+                      section={section.id}
+                      activeNav={activeNav}
+                      handleNavClick={handleNavClick}
+                    >
+                      {section.label}
+                    </NavLink>
+                  ))}
+                </div>
+              </div>
+              <button
+                className="md:hidden p-2 rounded-lg border border-white/10 text-white hover:border-cyan-500/50 transition-colors"
+                onClick={() => setIsMobileNavOpen((prev) => !prev)}
+                aria-label="Toggle navigation"
+                aria-expanded={isMobileNavOpen}
+              >
+                {isMobileNavOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+              </button>
             </div>
+          </nav>
+        </header>
+        <AnimatePresence>
+          {isMobileNavOpen && (
+            <_motion.nav
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              className="fixed inset-0 z-40 bg-black/80 backdrop-blur-xl md:hidden"
+            >
+              <div className="flex flex-col items-center justify-center h-full gap-6 px-8">
+                {NAV_SECTIONS.map((section, idx) => (
+                  <_motion.button
+                    key={section.id}
+                    className={`w-full py-4 text-center text-xl font-semibold tracking-widest uppercase rounded-xl border ${
+                      activeNav === section.id
+                        ? 'border-cyan-400 bg-cyan-400/10 text-cyan-100'
+                        : 'border-white/10 text-white/80'
+                    }`}
+                    onClick={() => handleNavClick(section.id)}
+                    whileTap={{ scale: 0.97 }}
+                    transition={{ delay: idx * 0.03 }}
+                  >
+                    {section.label}
+                  </_motion.button>
+                ))}
+                <button
+                  className="mt-8 text-sm text-slate-400 underline underline-offset-4"
+                  onClick={closeMobileNav}
+                >
+                  Close
+                </button>
+              </div>
+            </_motion.nav>
+          )}
+        </AnimatePresence>
+      </>
+    );
+  }, [activeNav, closeMobileNav, handleNavClick, isMobileNavOpen, smoothMode]);
 
-            <div className="parallax-layer fade-in mt-2 text-center" data-depth="fg">
-              <div className="inline-block mb-2 px-3 py-1 rounded-full bg-white/5 border border-white/10 text-[10px] font-mono text-cyan-400 tracking-[0.2em]">SYSTEM_INITIALIZED</div>
-              <h1 className="text-5xl md:text-7xl font-bold text-center tracking-tighter mb-4">
-                <span className="bg-clip-text text-transparent bg-gradient-to-r from-white via-cyan-100 to-white drop-shadow-[0_0_20px_rgba(34,211,238,0.3)]">
-                  {portfolioData.name}
-                </span>
-              </h1>
-            </div>
+  // Memoize the main content to prevent re-renders when activeNav changes
+  const mainContent = useMemo(() => {
+    const heroPrimaryMotion = SCROLL_ANIMATIONS_ENABLED
+      ? {
+          initial: { opacity: 0, scale: 0.9 },
+          animate: { opacity: 1, scale: 1 },
+          transition: { duration: 0.8 }
+        }
+      : {};
 
-            <div className="parallax-layer fade-in mt-4 flex flex-col items-center gap-6" data-depth="fg">
+    const heroCardMotion = SCROLL_ANIMATIONS_ENABLED
+      ? {
+          initial: { opacity: 0, x: 50 },
+          whileInView: { opacity: 1, x: 0 },
+          viewport: { once: true, amount: 0.2 },
+          transition: { duration: 0.6 }
+        }
+      : {};
+
+    return (
+      <main id="main-content" className="container mx-auto px-4 sm:px-6 lg:px-8 pt-20">
+        <section id="home" className="min-h-screen flex flex-col lg:flex-row items-center justify-center gap-12 pt-8 pb-8 relative overflow-hidden">
+          <Motion {...heroPrimaryMotion} className="w-full lg:w-1/2 flex items-center justify-center z-10">
+            <figure className="w-full max-w-lg group">
+              <div className="relative rounded-[32px] overflow-hidden border border-white/10 shadow-[0_20px_80px_rgba(0,0,0,0.45)] bg-gradient-to-b from-slate-900/80 via-slate-900/40 to-slate-900/0">
+                <div className="absolute inset-0 bg-gradient-to-tr from-cyan-500/15 via-transparent to-purple-500/20 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                <img
+                  src={HERO_ILLUSTRATION}
+                  alt="Illustration of a developer coding on a beanbag chair"
+                  className="relative w-full h-full object-cover"
+                  loading="lazy"
+                />
+                <div className="absolute top-4 left-4 px-4 py-2 rounded-full bg-black/70 border border-white/10 text-xs font-mono tracking-[0.3em] text-white/80">
+                  CREATIVE_MODE
+                </div>
+                <div className="absolute bottom-4 right-4 flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/20 border border-emerald-400/40 backdrop-blur">
+                  <span className="h-2 w-2 rounded-full bg-emerald-300 animate-pulse" />
+                  <span className="text-[10px] font-mono text-emerald-100 tracking-widest">ALWAYS_ONLINE</span>
+                </div>
+              </div>
+            </figure>
+          </Motion>
+
+        <Motion 
+          {...heroCardMotion}
+          className="w-full lg:w-1/2 px-4 flex flex-col gap-10"
+        >
+          <div className="text-center lg:text-left">
+            <div className="inline-block mb-3 px-3 py-1 rounded-full bg-white/5 border border-white/10 text-[10px] font-mono text-cyan-400 tracking-[0.2em]">SYSTEM_INITIALIZED</div>
+            <h1 className="text-5xl md:text-7xl font-bold tracking-tighter mb-4">
+              <span className="bg-clip-text text-transparent bg-gradient-to-r from-white via-cyan-100 to-white drop-shadow-[0_0_20px_rgba(34,211,238,0.3)]">
+                {portfolioData.name}
+              </span>
+            </h1>
+            <div className="flex flex-col gap-6 items-center lg:items-start">
               <AnimatedRoles roles={portfolioData.roles} />
               <SocialMediaIcons socialData={portfolioData.contact.social} />
             </div>
-          </HeroParallax>
-        </Motion>
+          </div>
 
-        <Motion 
-          initial={{ opacity: 0, x: 50 }} 
-          whileInView={{ opacity: 1, x: 0 }} 
-          viewport={{ once: true, amount: 0.2 }} 
-          transition={{ duration: 0.6 }}
-          className="w-full lg:w-1/2 px-4"
-        >
           <div className="relative group">
             {/* Cyber Card Container */}
             <div className="absolute -inset-1 bg-gradient-to-r from-cyan-500/20 to-purple-600/20 rounded-2xl blur-xl opacity-50 group-hover:opacity-70 transition duration-1000"></div>
@@ -672,15 +681,11 @@ export default function App() {
       </section>
 
       <Section id="journey" title="My Journey" icon={<GraduationCap className="w-8 h-8"/>}>
-        <Suspense fallback={<CyberLoader text="LOADING_LOGS" />}>
-          <Journey data={portfolioData.journey} smoothMode={smoothMode} />
-        </Suspense>
+        <Journey data={portfolioData.journey} smoothMode={smoothMode} />
       </Section>
 
       <Section id="internships" title="Internship Experience" icon={<Building2 className="w-8 h-8"/>}>
-        <Suspense fallback={<CyberLoader text="DECRYPTING" />}>
-          <Internship data={portfolioData.internships} openModal={openModal} smoothMode={smoothMode} />
-        </Suspense>
+        <Internship data={portfolioData.internships} openModal={openModal} smoothMode={smoothMode} />
       </Section>
 
       <Section id="projects" title="My Projects" icon={<Briefcase className="w-8 h-8"/>}>
@@ -688,26 +693,21 @@ export default function App() {
       </Section>
 
       <Section id="certificate" title="Certificates & Achievements" icon={<Award className="w-8 h-8"/>}>
-        <Suspense fallback={<CyberLoader text="VERIFYING" />}>
-          <Certificates data={portfolioData.certificates} smoothMode={smoothMode} />
-        </Suspense>
+        <Certificates data={portfolioData.certificates} smoothMode={smoothMode} />
       </Section>
 
       <Section id="contact" title="Contact Me" icon={<Mail className="w-8 h-8"/>}>
-        <Suspense fallback={<CyberLoader text="CONNECTING" />}>
-          <Contact smoothMode={smoothMode} />
-        </Suspense>
+        <Contact smoothMode={smoothMode} />
       </Section>
     </main>
-  ), [openModal, smoothMode]);
+    );
+  }, [openModal, smoothMode]);
+
+  const canonicalUrl = typeof window !== 'undefined' ? window.location.origin : 'https://portfolio.local';
 
   return (
     <>
-      <AnimatePresence mode="wait">
-        {showPreloader && <Preloader />}
-      </AnimatePresence>
-      
-      <div className="min-h-screen font-sans text-slate-200" style={{opacity: isPageLoaded ? 1 : 0, transition: 'opacity 1s ease-in-out'}}>
+      <div className="min-h-screen font-sans text-slate-200">
         <Helmet>
           <title>{portfolioData.name} - Portfolio</title>
           <meta name="description" content={`${portfolioData.name} - ${portfolioData.roles.join(', ')}. ${portfolioData.bio.substring(0, 150)}...`} />
@@ -715,7 +715,7 @@ export default function App() {
           <meta name="author" content={portfolioData.name} />
           <meta name="robots" content="index, follow" />
           <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-          <link rel="canonical" href={window.location.origin} />
+          <link rel="canonical" href={canonicalUrl} />
         </Helmet>
         <a href="#main-content" className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 bg-blue-600 text-white px-4 py-2 rounded-md z-50 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">Skip to main content</a>
         

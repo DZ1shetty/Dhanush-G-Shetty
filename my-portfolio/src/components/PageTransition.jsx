@@ -1,7 +1,37 @@
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 import { motion } from 'framer-motion';
 
+const DISPLAY_DELAY = 1500;
+const EXIT_DURATION = 400;
+
 const PageTransition = ({ stage, targetSection, onCovered, onExited }) => {
+  const coverTimerRef = useRef(null);
+  const exitTimerRef = useRef(null);
+
+  useEffect(() => {
+    if (stage === 'entering') {
+      coverTimerRef.current = setTimeout(() => {
+        onCovered?.();
+      }, DISPLAY_DELAY);
+    } else {
+      clearTimeout(coverTimerRef.current);
+    }
+
+    return () => clearTimeout(coverTimerRef.current);
+  }, [stage, onCovered]);
+
+  useEffect(() => {
+    if (stage === 'exiting') {
+      exitTimerRef.current = setTimeout(() => {
+        onExited?.();
+      }, EXIT_DURATION);
+    } else {
+      clearTimeout(exitTimerRef.current);
+    }
+
+    return () => clearTimeout(exitTimerRef.current);
+  }, [stage, onExited]);
+
   return (
     <motion.div
       className="fixed inset-0 z-[100] pointer-events-none flex items-center justify-center bg-black/40 backdrop-blur-md"
@@ -10,10 +40,6 @@ const PageTransition = ({ stage, targetSection, onCovered, onExited }) => {
         opacity: stage === 'entering' ? 1 : 0 
       }}
       transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
-      onAnimationComplete={() => {
-        if (stage === 'entering') onCovered?.();
-        if (stage === 'exiting') onExited?.();
-      }}
     >
       {/* Ambient Background Glow */}
       <motion.div 

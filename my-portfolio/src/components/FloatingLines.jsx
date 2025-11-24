@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react';
+﻿import { useEffect, useRef } from 'react';
 import {
   Scene,
   OrthographicCamera,
@@ -243,7 +243,10 @@ export default function FloatingLines({
   parallax = true,
   parallaxStrength = 0.2,
   mixBlendMode = 'screen',
-  smoothMode = false
+  smoothMode = false,
+  maxFPS = 60,
+  pixelRatio,
+  enabled = true
 }) {
   const effectiveEnabledWaves = smoothMode ? ['middle'] : enabledWaves;
   const effectiveLineCount = smoothMode ? 4 : lineCount;
@@ -256,6 +259,7 @@ export default function FloatingLines({
   const effectiveBendStrength = smoothMode ? 0 : bendStrength;
   const effectiveMouseDamping = smoothMode ? Math.max(mouseDamping, 0.1) : mouseDamping;
   const effectiveMixBlendMode = smoothMode ? 'normal' : mixBlendMode;
+  const effectiveMaxFPS = Math.min(Math.max(maxFPS, 15), smoothMode ? 30 : 90);
   const containerRef = useRef(null);
   const targetMouseRef = useRef(new Vector2(-1000, -1000));
   const currentMouseRef = useRef(new Vector2(-1000, -1000));
@@ -287,7 +291,7 @@ export default function FloatingLines({
   const bottomLineDistance = effectiveEnabledWaves.includes('bottom') ? getLineDistance('bottom') * 0.01 : 0.01;
 
   useEffect(() => {
-    if (!containerRef.current) return;
+    if (!enabled || !containerRef.current) return;
 
     const scene = new Scene();
 
@@ -295,7 +299,8 @@ export default function FloatingLines({
     camera.position.z = 1;
 
     const renderer = new WebGLRenderer({ antialias: false, alpha: false });
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 1.5));
+    const targetPixelRatio = pixelRatio ?? Math.min(window.devicePixelRatio || 1, smoothMode ? 1 : 1.5);
+    renderer.setPixelRatio(targetPixelRatio);
     renderer.domElement.style.width = '100%';
     renderer.domElement.style.height = '100%';
     containerRef.current.appendChild(renderer.domElement);
@@ -421,7 +426,15 @@ export default function FloatingLines({
     }
 
     let raf = 0;
-    const renderLoop = () => {
+    let lastTime = 0;
+    const frameInterval = 1000 / effectiveMaxFPS;
+
+    const renderLoop = (timestamp = 0) => {
+      if (timestamp - lastTime < frameInterval) {
+        raf = requestAnimationFrame(renderLoop);
+        return;
+      }
+      lastTime = timestamp;
       uniforms.iTime.value = clock.getElapsedTime();
 
       if (effectiveInteractive) {
@@ -440,7 +453,7 @@ export default function FloatingLines({
       renderer.render(scene, camera);
       raf = requestAnimationFrame(renderLoop);
     };
-    renderLoop();
+    raf = requestAnimationFrame(renderLoop);
 
     return () => {
       cancelAnimationFrame(raf);
@@ -477,7 +490,10 @@ export default function FloatingLines({
     mouseDamping,
     parallax,
     parallaxStrength,
-    smoothMode
+    smoothMode,
+    effectiveMaxFPS,
+    pixelRatio,
+    enabled
   ]);
 
   return (
