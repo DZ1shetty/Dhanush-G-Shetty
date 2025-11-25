@@ -62,7 +62,8 @@ export const portfolioData = {
   { title: "Smart Insurance App", description: "React app for document adjudication in insurance.", tags: ["React", "JavaScript"], repoUrl: "https://github.com/DZ1shetty/smart-insurance-app" },
   { title: "Bus_Fleet_Management_System", description: "Web system to manage a fleet of buses in real-time.", tags: ["JavaScript", "HTML/CSS"], repoUrl: "https://github.com/DZ1shetty/Bus_Fleet_Management_System" },
   { title: "SDLC-of-a-Real-World-System", description: "Analysis of 'Hospital at Home' SDLC.", tags: ["HTML", "System Analysis"], repoUrl: "https://github.com/DZ1shetty/SDLC-of-a-Real-World-System" },
-  { title: "FinNovate", description: "Financial innovation project.", tags: ["JavaScript"], repoUrl: "https://github.com/DZ1shetty/FinNovate" }
+  { title: "FinNovate", description: "Financial innovation project.", tags: ["JavaScript"], repoUrl: "https://github.com/DZ1shetty/FinNovate" },
+  { title: "Unity-CAR_AR", description: "Augmented Reality car visualization application built with Unity.", tags: ["C#", "Unity", "AR"], repoUrl: "https://github.com/DZ1shetty/Unity-CAR_AR" }
   ],
   skills: ["JavaScript", "React", "Python", "HTML5 & CSS3", "Git & GitHub", "C", "Java"],
   certificates: {
