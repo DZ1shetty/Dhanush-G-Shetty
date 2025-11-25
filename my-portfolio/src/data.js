@@ -78,6 +78,7 @@ export const portfolioData = {
       { src: '/Microsoft AI Learning.jpg', title: 'Microsoft AI Learning' },
       { src: '/Microsoft Applied AI Learning.jpg', title: 'Microsoft Applied AI Learning' },
       { src: '/Microsoft Azure Learning.jpg', title: 'Microsoft Azure Learning' },
+      { src: '/Explore ML using Python.png', title: 'Explore Machine Learning using Python' },
     ],
     hackathons: [
       { src: '/ACEathon Participation Certificate.jpg', title: 'ACEathon Participation Certificate' },
