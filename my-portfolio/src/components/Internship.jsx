@@ -1,6 +1,6 @@
-import React from 'react';
-import { motion } from 'framer-motion';
-import { Building2, Images, ZoomIn, MonitorPlay } from 'lucide-react';
+import React, { useState, useRef } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { Building2, Images, ZoomIn, MonitorPlay, Play, Minimize2 } from 'lucide-react';
 
 const Heading = ({ label }) => (
   <div className="flex items-center gap-2 font-mono text-xs uppercase tracking-[0.3em] text-cyan-400 mb-3">
@@ -34,18 +34,109 @@ const ImageGallery = ({ project, openModal }) => (
   </div>
 );
 
-const VideoPanel = ({ project }) => (
-  <div className="relative rounded-xl overflow-hidden border border-white/10 bg-black/60">
-    <video
-      controls
-      className="w-full h-full object-cover"
-      {...(project.thumbnail ? { poster: project.thumbnail } : {})}
+const VideoPanel = ({ project }) => {
+  const [isExpanded, setIsExpanded] = useState(false);
+  const videoRef = useRef(null);
+
+  const toggleExpand = () => {
+    setIsExpanded(!isExpanded);
+    if (!isExpanded) {
+      setTimeout(() => {
+        if (videoRef.current) {
+          videoRef.current.currentTime = 0;
+          videoRef.current.play();
+        }
+      }, 300);
+    } else {
+      if (videoRef.current) {
+        videoRef.current.pause();
+      }
+    }
+  };
+
+  return (
+    <motion.div 
+      layout
+      transition={{ type: "spring", stiffness: 200, damping: 25 }}
+      className={`relative rounded-xl overflow-hidden border bg-black/80 backdrop-blur-sm ${
+        isExpanded 
+          ? 'border-cyan-500/50 shadow-[0_0_30px_rgba(6,182,212,0.15)] my-6' 
+          : 'border-white/10 hover:border-white/20'
+      }`}
     >
-      <source src={project.video} type="video/mp4" />
-      Your browser does not support the video tag.
-    </video>
-  </div>
-);
+      <motion.div
+        layout
+        className={`relative w-full overflow-hidden ${isExpanded ? 'aspect-video' : 'h-24 cursor-pointer'}`}
+        onClick={!isExpanded ? toggleExpand : undefined}
+      >
+        {/* Video Element */}
+        <motion.video
+          layout
+          ref={videoRef}
+          controls={isExpanded}
+          className={`w-full h-full object-cover ${!isExpanded ? 'pointer-events-none opacity-60 grayscale hover:grayscale-0 transition-all duration-500' : 'opacity-100'}`}
+          {...(project.thumbnail ? { poster: project.thumbnail } : {})}
+          onEnded={() => setIsExpanded(false)}
+        >
+          <source src={project.video} type="video/mp4" />
+          Your browser does not support the video tag.
+        </motion.video>
+
+        {/* Overlay for collapsed state */}
+        <AnimatePresence>
+          {!isExpanded && (
+            <motion.div 
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              className="absolute inset-0 flex items-center justify-center"
+            >
+              <div className="flex items-center gap-4 group">
+                <motion.div 
+                  whileHover={{ scale: 1.1 }}
+                  whileTap={{ scale: 0.95 }}
+                  className="w-10 h-10 rounded-full bg-cyan-500/10 border border-cyan-500/50 flex items-center justify-center text-cyan-400 shadow-[0_0_15px_rgba(6,182,212,0.2)] group-hover:bg-cyan-500 group-hover:text-black transition-all duration-300"
+                >
+                  <Play className="w-4 h-4 fill-current ml-0.5" />
+                </motion.div>
+                <div className="flex flex-col">
+                  <span className="text-xs font-mono font-bold text-white tracking-widest group-hover:text-cyan-400 transition-colors">
+                    WATCH THE VIDEO
+                  </span>
+                  <span className="text-[10px] font-mono text-slate-400 tracking-wider">
+                    CLICK TO EXPAND
+                  </span>
+                </div>
+              </div>
+              
+              {/* Tech decoration lines */}
+              <div className="absolute top-0 left-4 w-[1px] h-full bg-gradient-to-b from-transparent via-white/10 to-transparent" />
+              <div className="absolute top-0 right-4 w-[1px] h-full bg-gradient-to-b from-transparent via-white/10 to-transparent" />
+            </motion.div>
+          )}
+        </AnimatePresence>
+
+        {/* Collapse button for expanded state */}
+        <AnimatePresence>
+          {isExpanded && (
+            <motion.button
+              initial={{ opacity: 0, scale: 0.8 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.8 }}
+              onClick={(e) => {
+                e.stopPropagation();
+                toggleExpand();
+              }}
+              className="absolute top-4 right-4 p-2 bg-black/60 backdrop-blur-md rounded-full border border-white/10 text-white/70 hover:bg-red-500/20 hover:text-red-400 hover:border-red-500/50 transition-all z-10"
+            >
+              <Minimize2 className="w-5 h-5" />
+            </motion.button>
+          )}
+        </AnimatePresence>
+      </motion.div>
+    </motion.div>
+  );
+};
 
 const ProjectSection = ({ project, openModal }) => (
   <div className="p-6 rounded-xl bg-white/5 border border-white/5">
