@@ -21,14 +21,14 @@ export default function PerformanceHUD({ metrics = {}, longTasks = [], envInfo }
       <div className="bg-slate-900/80 border border-cyan-500/40 rounded-lg shadow-2xl backdrop-blur p-3 text-slate-200">
         <div className="flex items-center justify-between mb-2">
           <div>
-            <p className="text-[10px] uppercase tracking-[0.3em] text-cyan-400">Perf Monitor</p>
-            <p className="text-[11px] text-slate-400">
+            <p className="text-xs uppercase tracking-[0.3em] text-cyan-400">Perf Monitor</p>
+            <p className="text-xs text-slate-400">
               {envInfo.browser?.name} · {envInfo.deviceTier ?? 'tier?'}
             </p>
           </div>
           <button
             type="button"
-            className="px-2 py-1 rounded border border-white/10 text-[10px] uppercase tracking-widest hover:border-cyan-400 transition"
+            className="px-2 py-1 rounded border border-white/10 text-xs uppercase tracking-widest hover:border-cyan-400 transition"
             onClick={() => setCollapsed((prev) => !prev)}
           >
             {collapsed ? 'Expand' : 'Collapse'}
@@ -38,7 +38,7 @@ export default function PerformanceHUD({ metrics = {}, longTasks = [], envInfo }
         {!collapsed && (
           <div className="space-y-3 max-h-64 overflow-y-auto pr-1">
             <section>
-              <p className="text-[10px] text-cyan-300 mb-1">Web Vitals</p>
+              <p className="text-xs text-cyan-300 mb-1">Web Vitals</p>
               <ul className="space-y-0.5">
                 {metricRows.map(({ key, value }) => (
                   <li key={key} className="flex justify-between gap-2">

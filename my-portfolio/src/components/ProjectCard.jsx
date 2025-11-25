@@ -16,22 +16,22 @@ const ProjectCard = ({ project, index }) => {
       <div className="flex justify-between items-center mb-3 px-1">
         <div className="flex items-center gap-1.5">
           <div className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
-          <span className="text-[10px] font-mono text-emerald-500 tracking-wider">VERIFIED</span>
+          <span className="text-xs font-mono text-emerald-500 tracking-wider">VERIFIED</span>
         </div>
         <div className="flex items-center gap-2">
           <ShieldCheck className="w-3 h-3 text-slate-500 group-hover:text-cyan-400 transition-colors" />
-          <span className="text-[10px] font-mono text-slate-400 tracking-wider">PRJ.{index.toString().padStart(3, '0')}</span>
+          <span className="text-xs font-mono text-slate-400 tracking-wider">PRJ.{index.toString().padStart(3, '0')}</span>
         </div>
       </div>
 
       <div className={`relative rounded-xl overflow-hidden border border-white/5 bg-gradient-to-br ${gradient} aspect-[4/3]`}>
         <div className="absolute inset-0 flex flex-col gap-4 p-4 text-white/90">
-          <div className="flex items-center gap-2 text-[11px] font-mono uppercase tracking-[0.3em] text-white/70">
+          <div className="flex items-center gap-2 text-xs font-mono uppercase tracking-[0.3em] text-white/70">
             <FolderGit2 className="w-4 h-4" />
             {project.tags[0] || 'PROJECT'}
           </div>
-          <h3 className="text-lg font-semibold drop-shadow-lg leading-snug break-words">{project.title}</h3>
-          <div className="mt-auto flex flex-wrap gap-2 text-[10px] font-mono uppercase tracking-wider">
+          <h3 className="text-xl font-semibold drop-shadow-lg leading-snug break-words">{project.title}</h3>
+          <div className="mt-auto flex flex-wrap gap-2 text-xs font-mono uppercase tracking-wider">
             {project.tags.map((tag, i) => (
               <span key={i} className="px-2 py-1 rounded-full bg-black/35 border border-white/15">
                 {tag}

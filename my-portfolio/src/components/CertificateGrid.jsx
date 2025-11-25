@@ -13,7 +13,7 @@ const CertificateGrid = ({ certs = [], onImageClick = () => {}, smoothMode = fal
             <div className="flex justify-between items-center mb-3 px-1">
               <div className="flex items-center gap-1.5">
                 <div className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
-                <span className="text-[10px] font-mono text-emerald-500 tracking-wider">VERIFIED</span>
+                <span className="text-xs font-mono text-emerald-500 tracking-wider">VERIFIED</span>
               </div>
               <ShieldCheck className="w-3 h-3 text-slate-500 group-hover:text-cyan-400 transition-colors" />
             </div>

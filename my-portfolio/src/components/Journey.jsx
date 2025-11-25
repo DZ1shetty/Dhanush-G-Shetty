@@ -23,7 +23,7 @@ const JourneyCard = ({ item, index }) => {
           )}
           <div>
             <p className="text-xs font-mono text-slate-400 uppercase tracking-[0.3em]">{item.type}</p>
-            <h3 className="text-xl font-bold text-white">{item.title}</h3>
+            <h3 className="text-2xl font-bold text-white">{item.title}</h3>
           </div>
         </div>
         <div className="flex items-center gap-2 text-sm font-medium text-purple-300">
