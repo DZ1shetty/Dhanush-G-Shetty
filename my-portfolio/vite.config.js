@@ -5,7 +5,10 @@ import viteCompression from "vite-plugin-compression";
 export default defineConfig({
   base: "/",
   plugins: [
-    react(),
+    react({
+      // Faster HMR with SWC-style transform (babel fast-path)
+      fastRefresh: true,
+    }),
     viteCompression({
       algorithm: "brotliCompress",
       ext: ".br",
@@ -17,6 +20,16 @@ export default defineConfig({
       threshold: 1024
     })
   ],
+  optimizeDeps: {
+    // Pre-bundle heavy deps so dev server starts instantly
+    include: [
+      "react",
+      "react-dom",
+      "framer-motion",
+      "three",
+      "lucide-react"
+    ]
+  },
   server: {
     host: "0.0.0.0",
     port: 5173,
@@ -31,6 +44,14 @@ export default defineConfig({
     target: "es2018",
     reportCompressedSize: true,
     cssMinify: true,
+    minify: "terser",
+    terserOptions: {
+      compress: {
+        drop_console: true,   // Strip console.log from prod
+        drop_debugger: true,
+        passes: 2
+      }
+    },
     rollupOptions: {
       output: {
         manualChunks: {

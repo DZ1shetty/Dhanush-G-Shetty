@@ -9,7 +9,7 @@ const Preloader = ({ onDone, isActive }) => {
 
     const timer = setTimeout(() => {
       onDone?.();
-    }, 900); // ~0.9s, snappy but noticeable
+    }, 500); // 0.5s — fast, snappy
 
     return () => clearTimeout(timer);
   }, [isActive, onDone]);

@@ -1,25 +1,15 @@
 import React from 'react';
-import { motion } from 'framer-motion';
 import { Github, ArrowUpRight } from 'lucide-react';
 
 const ProjectCard = ({ project, index, smoothMode = false }) => {
-  // Index formatted as #01, #02, etc.
   const formattedIndex = (index + 1).toString().padStart(2, '0');
 
-  return (
-    <motion.div
-      className={`group relative bg-slate-950/30 hover:bg-slate-900/30 border border-white/5 hover:border-cyan-500/20 p-5 rounded-xl transition-all duration-300 w-full max-w-md flex flex-col justify-between h-full ${
-        smoothMode ? '' : 'hover:shadow-[0_8px_30px_rgba(0,0,0,0.4)]'
-      }`}
-      whileHover={smoothMode ? {} : { y: -4 }}
-      initial={smoothMode ? {} : { opacity: 0, y: 15 }}
-      whileInView={smoothMode ? {} : { opacity: 1, y: 0 }}
-      viewport={{ once: true }}
-      transition={{ duration: 0.4, delay: index * 0.02 }}
-      layout
-    >
+  const cardClasses = `group relative bg-slate-950/30 hover:bg-slate-900/30 border border-white/5 hover:border-cyan-500/20 p-5 rounded-xl transition-all duration-300 w-full flex flex-col justify-between h-full hover:shadow-[0_8px_30px_rgba(0,0,0,0.4)]`;
+
+  const inner = (
+    <>
       <div className="flex flex-col gap-2">
-        {/* Top bar with minimal index indicator */}
+        {/* Top bar */}
         <div className="flex items-center justify-between text-[11px] font-mono text-slate-500 select-none">
           <span>PROJECT {formattedIndex}</span>
           <span className="opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-cyan-400">
@@ -27,7 +17,7 @@ const ProjectCard = ({ project, index, smoothMode = false }) => {
           </span>
         </div>
 
-        {/* Project Title */}
+        {/* Title */}
         <h3 className="text-lg font-heading font-semibold text-slate-100 group-hover:text-cyan-400 transition-colors duration-200">
           {project.title}
         </h3>
@@ -39,7 +29,7 @@ const ProjectCard = ({ project, index, smoothMode = false }) => {
       </div>
 
       <div className="mt-5">
-        {/* Minimalist Tags Flex */}
+        {/* Tags */}
         <div className="flex flex-wrap gap-x-2 gap-y-1 text-[10px] font-mono text-slate-500 mb-3 select-none">
           {project.tags.map((tag, i) => (
             <span key={i} className="flex items-center gap-1.5">
@@ -49,7 +39,7 @@ const ProjectCard = ({ project, index, smoothMode = false }) => {
           ))}
         </div>
 
-        {/* Footer Link */}
+        {/* Footer */}
         <div className="flex items-center justify-end pt-3.5 border-t border-white/5">
           <a
             href={project.repoUrl}
@@ -63,7 +53,13 @@ const ProjectCard = ({ project, index, smoothMode = false }) => {
           </a>
         </div>
       </div>
-    </motion.div>
+    </>
+  );
+
+  return (
+    <div className={cardClasses}>
+      {inner}
+    </div>
   );
 };
 
