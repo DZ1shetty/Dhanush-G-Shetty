@@ -1,4 +1,4 @@
-﻿import { useEffect, useRef } from 'react';
+import { useEffect, useRef } from 'react';
 import {
   Scene,
   OrthographicCamera,
@@ -399,6 +399,7 @@ export default function FloatingLines({
     }
 
     const handlePointerMove = event => {
+      if (!renderer.domElement) return;
       const rect = renderer.domElement.getBoundingClientRect();
       const x = event.clientX - rect.left;
       const y = event.clientY - rect.top;
@@ -421,8 +422,8 @@ export default function FloatingLines({
     };
 
     if (effectiveInteractive) {
-      renderer.domElement.addEventListener('pointermove', handlePointerMove);
-      renderer.domElement.addEventListener('pointerleave', handlePointerLeave);
+      window.addEventListener('pointermove', handlePointerMove);
+      document.addEventListener('pointerleave', handlePointerLeave);
     }
 
     let raf = 0;
@@ -463,8 +464,8 @@ export default function FloatingLines({
       }
 
       if (effectiveInteractive) {
-        renderer.domElement.removeEventListener('pointermove', handlePointerMove);
-        renderer.domElement.removeEventListener('pointerleave', handlePointerLeave);
+        window.removeEventListener('pointermove', handlePointerMove);
+        document.removeEventListener('pointerleave', handlePointerLeave);
       }
 
       geometry.dispose();

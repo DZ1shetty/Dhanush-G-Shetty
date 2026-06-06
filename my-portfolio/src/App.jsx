@@ -14,6 +14,7 @@ import PageTransition from "./components/PageTransition";
 import { usePerformanceDiagnostics } from "./hooks/usePerformanceDiagnostics";
 import { useDeviceTier } from "./hooks/useDeviceTier";
 import Beams from "./components/Beams";
+import FloatingLines from "./components/FloatingLines";
 import Certificates from "./components/Certificates";
 import Journey from "./components/Journey";
 import Internship from "./components/Internship";
@@ -498,7 +499,7 @@ export default function App() {
     }
     const preset = beamPresets[beamQuality] ?? beamPresets.medium;
     return (
-      <div className="fixed inset-0 -z-10" style={{ width: '100vw', height: '100vh' }}>
+      <div className="fixed inset-0 -z-10 bg-slate-950" style={{ width: '100vw', height: '100vh' }}>
         <Beams
           beamWidth={preset.beamWidth}
           beamHeight={preset.beamHeight}
@@ -508,9 +509,19 @@ export default function App() {
           scale={preset.scale}
           rotation={0}
         />
+        <div className="absolute inset-0 z-10 opacity-30 mix-blend-screen pointer-events-none">
+          <FloatingLines
+            linesGradient={['#22d3ee', '#8b5cf6', '#ec4899']}
+            animationSpeed={1.2}
+            interactive={true}
+            parallax={true}
+            maxFPS={60}
+            smoothMode={smoothMode}
+          />
+        </div>
       </div>
     );
-  }, [beamPresets, beamQuality, disableBeams]);
+  }, [beamPresets, beamQuality, disableBeams, smoothMode]);
 
   // Memoize the header to only update when activeNav changes
   const header = useMemo(() => {
