@@ -6,7 +6,7 @@ export const portfolioData = {
     "Backend Engineer",
     "Problem Solver"
   ],
-  bio: "Hey there! I'm Dhanush, a developer who's passionate about building things for the web, from the user interface you see to the complex logic behind the scenes. I love diving into both frontend and backend challenges and turning ideas into reality. When I'm not coding, I'm probably exploring new tech or working on a fun side project.",
+  bio: "Hey there! I'm Dhanush, a coffee-fueled developer who loves building cool stuff for the web. I'm all about bridging the gap between polished, high-fidelity frontends and robust, modular backends. When my hands are off the keyboard, you'll probably find me experimenting with AR/VR scenes, learning new tech, or hacking away on a fun side project.",
   contact: {
     email: "dhanushgshetty666@gmail.com",
     social: {

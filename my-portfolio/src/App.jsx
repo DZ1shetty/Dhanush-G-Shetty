@@ -369,6 +369,7 @@ NavLink.displayName = 'NavLink';
 
 export default function App() {
   const [theme, _setTheme] = useState(() => localStorage.getItem("theme") || "dark");
+  const [activeAboutTab, setActiveAboutTab] = useState("bio");
   const deviceTier = useDeviceTier();
   const smoothMode = false;
   const [isPreloaderActive, setIsPreloaderActive] = useState(true);
@@ -672,16 +673,106 @@ export default function App() {
               <div className="absolute top-0 left-0 w-8 h-8 border-t-2 border-l-2 border-cyan-500/30 rounded-tl-lg"></div>
               <div className="absolute bottom-0 right-0 w-8 h-8 border-b-2 border-r-2 border-purple-500/30 rounded-br-lg"></div>
 
-              <h2 className="text-3xl font-heading font-bold text-center mb-4 flex items-center justify-center gap-x-3 text-white">
+              <h2 className="text-3xl font-heading font-bold text-center mb-6 flex items-center justify-center gap-x-3 text-white">
                 <User className="w-6 h-6 text-cyan-400"/>
                 <span className="font-mono tracking-tight">ABOUT_ME</span>
               </h2>
-              
-              <div className="space-y-4 text-slate-300 font-light leading-relaxed">
-                <p className="text-lg">
-                  <span className="text-cyan-400 font-bold text-2xl">Hey</span>
-                  {portfolioData.bio.substring(3)}
-                </p>
+
+              {/* Interactive Tabs Header */}
+              <div className="flex justify-center border-b border-white/10 mb-6 font-mono text-xs tracking-wider">
+                <button 
+                  onClick={() => setActiveAboutTab('bio')}
+                  className={`px-4 py-2 border-b-2 transition-all duration-300 ${activeAboutTab === 'bio' ? 'border-cyan-400 text-cyan-400' : 'border-transparent text-slate-400 hover:text-white'}`}
+                >
+                  [ 📂 BIO ]
+                </button>
+                <button 
+                  onClick={() => setActiveAboutTab('stack')}
+                  className={`px-4 py-2 border-b-2 transition-all duration-300 ${activeAboutTab === 'stack' ? 'border-cyan-400 text-cyan-400' : 'border-transparent text-slate-400 hover:text-white'}`}
+                >
+                  [ 🧬 TECH ]
+                </button>
+                <button 
+                  onClick={() => setActiveAboutTab('facts')}
+                  className={`px-4 py-2 border-b-2 transition-all duration-300 ${activeAboutTab === 'facts' ? 'border-cyan-400 text-cyan-400' : 'border-transparent text-slate-400 hover:text-white'}`}
+                >
+                  [ ⚡ FACTS ]
+                </button>
+              </div>
+
+              {/* Tab Content */}
+              <div className="min-h-[160px] flex items-center justify-center">
+                <AnimatePresence mode="wait">
+                  {activeAboutTab === 'bio' && (
+                    <Motion
+                      key="bio"
+                      initial={{ opacity: 0, y: 10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: -10 }}
+                      transition={{ duration: 0.2 }}
+                      className="w-full text-slate-300 font-light leading-relaxed text-left"
+                    >
+                      <p className="text-lg">
+                        <span className="text-cyan-400 font-bold text-2xl">Hey</span>
+                        {portfolioData.bio.substring(3)}
+                      </p>
+                    </Motion>
+                  )}
+
+                  {activeAboutTab === 'stack' && (
+                    <Motion
+                      key="stack"
+                      initial={{ opacity: 0, y: 10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: -10 }}
+                      transition={{ duration: 0.2 }}
+                      className="w-full text-slate-300 font-light text-left"
+                    >
+                      <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 font-mono text-xs">
+                        <div className="p-3 rounded-lg border border-white/5 bg-black/40">
+                          <span className="text-cyan-400 block mb-1">⚡ FRONTEND</span>
+                          React, Vite, JavaScript, HTML5/CSS3
+                        </div>
+                        <div className="p-3 rounded-lg border border-white/5 bg-black/40">
+                          <span className="text-purple-400 block mb-1">⚙️ BACKEND</span>
+                          Node.js, FastAPI, Python, C, Java
+                        </div>
+                        <div className="p-3 rounded-lg border border-white/5 bg-black/40">
+                          <span className="text-emerald-400 block mb-1">🎮 GRAPHICS & XR</span>
+                          Unity, AR/VR Development, Three.js
+                        </div>
+                      </div>
+                    </Motion>
+                  )}
+
+                  {activeAboutTab === 'facts' && (
+                    <Motion
+                      key="facts"
+                      initial={{ opacity: 0, y: 10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: -10 }}
+                      transition={{ duration: 0.2 }}
+                      className="w-full text-slate-300 font-mono text-xs text-left space-y-2.5"
+                    >
+                      <div className="flex items-start gap-2">
+                        <span className="text-cyan-400">☕</span>
+                        <span>Fuelled by coffee, curiosity, and code compiler warnings.</span>
+                      </div>
+                      <div className="flex items-start gap-2">
+                        <span className="text-cyan-400">🎯</span>
+                        <span>NMAMIT undergrad, maintaining an 8.37 CGPA (it is a sport!).</span>
+                      </div>
+                      <div className="flex items-start gap-2">
+                        <span className="text-cyan-400">🌙</span>
+                        <span>Dark mode only — light mode makes me look like a deer in headlights.</span>
+                      </div>
+                      <div className="flex items-start gap-2">
+                        <span className="text-cyan-400">🚀</span>
+                        <span>Always down to hack on random side projects or learn emerging tech.</span>
+                      </div>
+                    </Motion>
+                  )}
+                </AnimatePresence>
               </div>
             </div>
           </div>
@@ -709,7 +800,7 @@ export default function App() {
       </Section>
     </main>
     );
-  }, [openModal, smoothMode]);
+  }, [openModal, smoothMode, activeAboutTab, setActiveAboutTab]);
 
   const canonicalUrl = typeof window !== 'undefined' ? window.location.origin : 'https://portfolio.local';
 
