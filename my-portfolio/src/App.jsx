@@ -663,45 +663,62 @@ export default function App() {
           <div className="relative group">
             {/* Cyber Card Container */}
             <div className="absolute -inset-1 bg-gradient-to-r from-cyan-500/20 to-purple-600/20 rounded-2xl blur-xl opacity-50 group-hover:opacity-70 transition duration-1000"></div>
-            <div className="relative bg-black/60 backdrop-blur-xl p-8 md:p-10 rounded-2xl border border-white/10 shadow-2xl overflow-hidden">
+            <div className="relative bg-black/60 backdrop-blur-xl pt-16 pb-8 px-6 md:px-8 rounded-2xl border border-white/10 shadow-2xl overflow-hidden">
               
+              {/* Simulated Window Title Bar */}
+              <div className="absolute top-0 left-0 w-full bg-slate-950/80 backdrop-blur-md border-b border-white/5 px-4 py-3 flex items-center justify-between z-10">
+                <div className="flex items-center gap-1.5 select-none">
+                  <span className="w-3 h-3 rounded-full bg-rose-500/80 border border-rose-600/40 inline-block"></span>
+                  <span className="w-3 h-3 rounded-full bg-amber-500/80 border border-amber-600/40 inline-block"></span>
+                  <span className="w-3 h-3 rounded-full bg-emerald-500/80 border border-emerald-600/40 inline-block"></span>
+                </div>
+                <div className="text-xs font-mono text-slate-400 tracking-wider flex items-center gap-2 select-none">
+                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
+                  {activeAboutTab === 'bio' && 'bio.json'}
+                  {activeAboutTab === 'stack' && 'capabilities.sh'}
+                  {activeAboutTab === 'facts' && 'developer.log'}
+                </div>
+                <div className="w-12"></div>
+              </div>
+
               {/* Decorative Lines */}
               <div className="absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-cyan-500/50 to-transparent"></div>
               <div className="absolute bottom-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-purple-500/50 to-transparent"></div>
               
               {/* Corner Accents */}
-              <div className="absolute top-0 left-0 w-8 h-8 border-t-2 border-l-2 border-cyan-500/30 rounded-tl-lg"></div>
-              <div className="absolute bottom-0 right-0 w-8 h-8 border-b-2 border-r-2 border-purple-500/30 rounded-br-lg"></div>
+              <div className="absolute top-0 left-0 w-8 h-8 border-t-2 border-l-2 border-cyan-500/30 rounded-tl-lg pointer-events-none"></div>
+              <div className="absolute bottom-0 right-0 w-8 h-8 border-b-2 border-r-2 border-purple-500/30 rounded-br-lg pointer-events-none"></div>
 
-              <h2 className="text-3xl font-heading font-bold text-center mb-6 flex items-center justify-center gap-x-3 text-white">
-                <User className="w-6 h-6 text-cyan-400"/>
-                <span className="font-mono tracking-tight">ABOUT_ME</span>
+              <h2 className="text-2xl font-mono font-bold text-center mb-6 flex items-center justify-center gap-x-2 text-white">
+                <span className="text-cyan-400 font-semibold select-none">&lt;</span>
+                <span>ABOUT_ME</span>
+                <span className="text-cyan-400 font-semibold select-none">/&gt;</span>
               </h2>
 
-              {/* Interactive Tabs Header */}
-              <div className="flex justify-center border-b border-white/10 mb-6 font-mono text-xs tracking-wider">
+              {/* Interactive Tabs Header (Simulated open files in editor) */}
+              <div className="flex justify-center border-b border-white/5 mb-6 font-mono text-xs tracking-wider">
                 <button 
                   onClick={() => setActiveAboutTab('bio')}
-                  className={`px-4 py-2 border-b-2 transition-all duration-300 ${activeAboutTab === 'bio' ? 'border-cyan-400 text-cyan-400' : 'border-transparent text-slate-400 hover:text-white'}`}
+                  className={`flex items-center gap-1.5 px-4 py-2 border-b-2 transition-all duration-300 ${activeAboutTab === 'bio' ? 'border-cyan-400 text-cyan-400 bg-white/5' : 'border-transparent text-slate-400 hover:text-slate-200'}`}
                 >
-                  [ 📂 BIO ]
+                  <span className={activeAboutTab === 'bio' ? 'text-cyan-400' : 'text-slate-500'}>📄</span> bio.json
                 </button>
                 <button 
                   onClick={() => setActiveAboutTab('stack')}
-                  className={`px-4 py-2 border-b-2 transition-all duration-300 ${activeAboutTab === 'stack' ? 'border-cyan-400 text-cyan-400' : 'border-transparent text-slate-400 hover:text-white'}`}
+                  className={`flex items-center gap-1.5 px-4 py-2 border-b-2 transition-all duration-300 ${activeAboutTab === 'stack' ? 'border-purple-400 text-purple-400 bg-white/5' : 'border-transparent text-slate-400 hover:text-slate-200'}`}
                 >
-                  [ 🧬 TECH ]
+                  <span className={activeAboutTab === 'stack' ? 'text-purple-400' : 'text-slate-500'}>⚡</span> capabilities.sh
                 </button>
                 <button 
                   onClick={() => setActiveAboutTab('facts')}
-                  className={`px-4 py-2 border-b-2 transition-all duration-300 ${activeAboutTab === 'facts' ? 'border-cyan-400 text-cyan-400' : 'border-transparent text-slate-400 hover:text-white'}`}
+                  className={`flex items-center gap-1.5 px-4 py-2 border-b-2 transition-all duration-300 ${activeAboutTab === 'facts' ? 'border-emerald-400 text-emerald-400 bg-white/5' : 'border-transparent text-slate-400 hover:text-slate-200'}`}
                 >
-                  [ ⚡ FACTS ]
+                  <span className={activeAboutTab === 'facts' ? 'text-emerald-400' : 'text-slate-500'}>📋</span> developer.log
                 </button>
               </div>
 
               {/* Tab Content */}
-              <div className="min-h-[160px] flex items-center justify-center">
+              <div className="min-h-[200px] flex items-center justify-center">
                 <AnimatePresence mode="wait">
                   {activeAboutTab === 'bio' && (
                     <Motion
@@ -710,12 +727,46 @@ export default function App() {
                       animate={{ opacity: 1, y: 0 }}
                       exit={{ opacity: 0, y: -10 }}
                       transition={{ duration: 0.2 }}
-                      className="w-full text-slate-300 font-light leading-relaxed text-left"
+                      className="w-full text-slate-300 font-mono leading-relaxed text-left text-xs sm:text-sm"
                     >
-                      <p className="text-lg">
-                        <span className="text-cyan-400 font-bold text-2xl">Hey</span>
-                        {portfolioData.bio.substring(3)}
-                      </p>
+                      <div className="flex gap-4">
+                        {/* Line Numbers */}
+                        <div className="hidden sm:flex flex-col text-slate-600 select-none text-right font-mono pr-3 border-r border-white/5">
+                          <span>1</span>
+                          <span>2</span>
+                          <span>3</span>
+                          <span>4</span>
+                          <span>5</span>
+                          <span>6</span>
+                          <span>7</span>
+                          <span>8</span>
+                          <span>9</span>
+                          <span>10</span>
+                          <span>11</span>
+                          <span>12</span>
+                        </div>
+                        {/* JSON block & Text */}
+                        <div className="flex-1 space-y-4">
+                          <div>
+                            <span className="text-pink-500">const</span> <span className="text-cyan-400">developer</span> = <span className="text-yellow-300">{`{`}</span>
+                            <div className="pl-4">
+                              <span className="text-purple-400">name</span>: <span className="text-emerald-400">"Dhanush G Shetty"</span>,
+                              <br />
+                              <span className="text-purple-400">role</span>: <span className="text-emerald-400">"Full-Stack Dev & XR Specialist"</span>,
+                              <br />
+                              <span className="text-purple-400">fuel</span>: <span className="text-emerald-400">"Caffeine & Compiler Warnings"</span>,
+                              <br />
+                              <span className="text-purple-400">loves</span>: <span className="text-yellow-300">{`[`}</span><span className="text-emerald-400">"Slick Frontends"</span>, <span className="text-emerald-400">"Robust Backends"</span>, <span className="text-emerald-400">"AR/VR"</span><span className="text-yellow-300">{`]`}</span>
+                            </div>
+                            <span className="text-yellow-300">{`};`}</span>
+                          </div>
+                          
+                          <p className="text-slate-300 font-sans font-light leading-relaxed text-sm sm:text-base border-t border-white/5 pt-4">
+                            <span className="text-cyan-400 font-bold font-heading text-lg mr-1.5">Hey there!</span>
+                            I'm Dhanush, a coffee-fueled developer who loves building cool stuff for the web. I'm all about bridging the gap between polished, high-fidelity frontends (making things look nice) and robust, modular backends (making sure they actually work). When my hands are off the keyboard, you'll probably find me experimenting with AR/VR scenes, learning new tech, or hacking away on a fun side project.
+                          </p>
+                        </div>
+                      </div>
                     </Motion>
                   )}
 
@@ -726,20 +777,57 @@ export default function App() {
                       animate={{ opacity: 1, y: 0 }}
                       exit={{ opacity: 0, y: -10 }}
                       transition={{ duration: 0.2 }}
-                      className="w-full text-slate-300 font-light text-left"
+                      className="w-full text-slate-300 font-mono text-left text-xs sm:text-sm"
                     >
-                      <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 font-mono text-xs">
-                        <div className="p-3 rounded-lg border border-white/5 bg-black/40">
-                          <span className="text-cyan-400 block mb-1">⚡ FRONTEND</span>
-                          React, Vite, JavaScript, HTML5/CSS3
+                      <div className="flex gap-4">
+                        {/* Line Numbers */}
+                        <div className="hidden sm:flex flex-col text-slate-600 select-none text-right font-mono pr-3 border-r border-white/5">
+                          <span>1</span>
+                          <span>2</span>
+                          <span>3</span>
+                          <span>4</span>
+                          <span>5</span>
+                          <span>6</span>
+                          <span>7</span>
+                          <span>8</span>
+                          <span>9</span>
                         </div>
-                        <div className="p-3 rounded-lg border border-white/5 bg-black/40">
-                          <span className="text-purple-400 block mb-1">⚙️ BACKEND</span>
-                          Node.js, FastAPI, Python, C, Java
-                        </div>
-                        <div className="p-3 rounded-lg border border-white/5 bg-black/40">
-                          <span className="text-emerald-400 block mb-1">🎮 GRAPHICS & XR</span>
-                          Unity, AR/VR Development, Three.js
+                        <div className="flex-1 space-y-4">
+                          <div>
+                            <span className="text-slate-500 select-none">dhanush@portfolio:~$</span> <span className="text-cyan-400">./capabilities.sh</span>
+                          </div>
+                          
+                          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 border-t border-white/5 pt-4">
+                            <div className="space-y-3">
+                              <div>
+                                <span className="text-cyan-400 font-bold block mb-1">⚡ FRONTEND</span>
+                                <div className="text-slate-400 pl-3 border-l-2 border-cyan-500/30">
+                                  React, Vite, JavaScript, HTML5/CSS3
+                                </div>
+                              </div>
+                              <div>
+                                <span className="text-purple-400 font-bold block mb-1">⚙️ BACKEND</span>
+                                <div className="text-slate-400 pl-3 border-l-2 border-purple-500/30">
+                                  Node.js, FastAPI, Python, C, Java
+                                </div>
+                              </div>
+                            </div>
+                            
+                            <div className="space-y-3">
+                              <div>
+                                <span className="text-emerald-400 font-bold block mb-1">🎮 GRAPHICS & XR</span>
+                                <div className="text-slate-400 pl-3 border-l-2 border-emerald-500/30">
+                                  Unity, AR/VR Development, Three.js
+                                </div>
+                              </div>
+                              <div>
+                                <span className="text-yellow-400 font-bold block mb-1">🛠️ ENV & TOOLS</span>
+                                <div className="text-slate-400 pl-3 border-l-2 border-yellow-500/30">
+                                  Git, GitHub, Vercel, VS Code, Postman
+                                </div>
+                              </div>
+                            </div>
+                          </div>
                         </div>
                       </div>
                     </Motion>
@@ -752,23 +840,46 @@ export default function App() {
                       animate={{ opacity: 1, y: 0 }}
                       exit={{ opacity: 0, y: -10 }}
                       transition={{ duration: 0.2 }}
-                      className="w-full text-slate-300 font-mono text-xs text-left space-y-2.5"
+                      className="w-full text-slate-300 font-mono text-left text-xs sm:text-sm"
                     >
-                      <div className="flex items-start gap-2">
-                        <span className="text-cyan-400">☕</span>
-                        <span>Fuelled by coffee, curiosity, and code compiler warnings.</span>
-                      </div>
-                      <div className="flex items-start gap-2">
-                        <span className="text-cyan-400">🎯</span>
-                        <span>NMAMIT undergrad, maintaining an 8.37 CGPA (it is a sport!).</span>
-                      </div>
-                      <div className="flex items-start gap-2">
-                        <span className="text-cyan-400">🌙</span>
-                        <span>Dark mode only — light mode makes me look like a deer in headlights.</span>
-                      </div>
-                      <div className="flex items-start gap-2">
-                        <span className="text-cyan-400">🚀</span>
-                        <span>Always down to hack on random side projects or learn emerging tech.</span>
+                      <div className="flex gap-4">
+                        {/* Line Numbers */}
+                        <div className="hidden sm:flex flex-col text-slate-600 select-none text-right font-mono pr-3 border-r border-white/5">
+                          <span>1</span>
+                          <span>2</span>
+                          <span>3</span>
+                          <span>4</span>
+                          <span>5</span>
+                          <span>6</span>
+                        </div>
+                        <div className="flex-1 space-y-4">
+                          <div>
+                            <span className="text-slate-500 select-none">dhanush@portfolio:~$</span> <span className="text-cyan-400">tail -n 4 developer.log</span>
+                          </div>
+                          
+                          <div className="space-y-3 border-t border-white/5 pt-4">
+                            <div className="flex items-start gap-2.5">
+                              <span className="text-cyan-400 font-bold select-none">[INFO]</span>
+                              <span className="text-slate-600 select-none">|</span>
+                              <span>Fuelled by coffee, curiosity, and code compiler warnings. ☕</span>
+                            </div>
+                            <div className="flex items-start gap-2.5">
+                              <span className="text-amber-400 font-bold select-none">[WARN]</span>
+                              <span className="text-slate-600 select-none">|</span>
+                              <span>Light mode disabled. Eye protection active (Dark mode only). 🌙</span>
+                            </div>
+                            <div className="flex items-start gap-2.5">
+                              <span className="text-purple-400 font-bold select-none">[DEBUG]</span>
+                              <span className="text-slate-600 select-none">|</span>
+                              <span>Maintaining an 8.37 CGPA at NMAMIT (it's basically a competitive sport). 🎯</span>
+                            </div>
+                            <div className="flex items-start gap-2.5">
+                              <span className="text-emerald-400 font-bold select-none">[SUCCESS]</span>
+                              <span className="text-slate-600 select-none">|</span>
+                              <span>Always down to hack on random side projects or learn emerging tech. 🚀</span>
+                            </div>
+                          </div>
+                        </div>
                       </div>
                     </Motion>
                   )}
