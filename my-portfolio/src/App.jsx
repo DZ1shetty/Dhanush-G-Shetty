@@ -615,78 +615,129 @@ export default function App() {
 
     return (
       <main id="main-content" className="container mx-auto px-4 sm:px-6 lg:px-8 pt-16">
-        <section id="home" className="min-h-screen flex flex-col lg:flex-row items-center justify-center gap-6 pt-4 pb-4 relative overflow-hidden">
-          <Motion {...heroPrimaryMotion} className="w-full lg:w-1/2 flex items-center justify-center z-10">
-            <figure className="w-full max-w-lg group relative z-20">
-              <div className="relative rounded-[32px] overflow-hidden border border-white/10 shadow-[0_20px_80px_rgba(0,0,0,0.45)] bg-slate-900">
-                
-                {/* Real Image (Background) - Fades in */}
-                <img
-                  src={HERO_ILLUSTRATION_2}
-                  alt="Detailed developer illustration"
-                  className="absolute inset-0 w-full h-full object-cover opacity-0 group-hover:opacity-100 transition-all duration-1000 ease-in-out delay-100 scale-100 group-hover:scale-105"
-                  loading="lazy"
-                />
-
-                {/* Sketch Image (Foreground) - Fades out */}
-                <img
-                  src={HERO_ILLUSTRATION}
-                  alt="Illustration of a developer coding on a beanbag chair"
-                  className="relative w-full h-full object-cover opacity-100 group-hover:opacity-0 transition-all duration-1000 ease-in-out delay-100 scale-100 group-hover:scale-105 group-hover:blur-sm"
-                  loading="lazy"
-                />
-                
-                {/* Subtle Overlay for depth */}
-                <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none" />
-              </div>
-            </figure>
-          </Motion>
-
-        <Motion 
-          {...heroCardMotion}
-          className="w-full lg:w-1/2 px-4 flex flex-col gap-6"
-        >
-          <div className="text-center lg:text-left">
-            <div className="inline-block mb-3 px-3 py-1 rounded-full bg-black/40 backdrop-blur-md border border-white/10 text-[10px] font-mono text-cyan-400 tracking-[0.2em] shadow-lg">SYSTEM_INITIALIZED</div>
-            <h1 className="text-5xl md:text-7xl font-heading font-bold tracking-tighter mb-8">
-              <span className="bg-clip-text text-transparent bg-gradient-to-r from-white via-cyan-100 to-white drop-shadow-[0_0_20px_rgba(34,211,238,0.3)]">
-                {portfolioData.name}
+        <section id="home" className="min-h-screen flex flex-col items-center justify-center pt-24 pb-16 relative overflow-hidden">
+          {/* Centered Premium Typography */}
+          <div className="text-center max-w-4xl mx-auto mb-12 flex flex-col items-center gap-4 z-10">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-cyan-500/10 border border-cyan-500/25 text-[10px] font-mono text-cyan-400 tracking-[0.2em] uppercase shadow-[0_0_15px_rgba(6,182,212,0.15)] animate-pulse">
+              <span className="w-1.5 h-1.5 rounded-full bg-cyan-400 animate-ping" />
+              SYSTEM_INITIALIZED // V2.0
+            </div>
+            
+            <h1 className="text-6xl md:text-8xl font-heading font-extrabold tracking-tighter text-white">
+              <span className="bg-clip-text text-transparent bg-gradient-to-b from-white via-slate-100 to-slate-400 drop-shadow-[0_4px_12px_rgba(255,255,255,0.15)]">
+                Dhanush G Shetty
               </span>
             </h1>
-            <div className="flex flex-col gap-4 items-center lg:items-start">
+            
+            <div className="h-8 flex justify-center items-center">
               <AnimatedRoles roles={portfolioData.roles} />
-              <SocialMediaIcons socialData={portfolioData.contact.social} />
             </div>
           </div>
 
-          <div className="relative group">
-            {/* Cyber Card Container */}
-            <div className="absolute -inset-1 bg-gradient-to-r from-cyan-500/20 to-purple-600/20 rounded-2xl blur-xl opacity-50 group-hover:opacity-70 transition duration-1000"></div>
-            <div className="relative bg-black/60 backdrop-blur-xl p-8 md:p-10 rounded-2xl border border-white/10 shadow-2xl overflow-hidden">
+          {/* Minimalist Bento Grid */}
+          <div className="grid grid-cols-1 md:grid-cols-12 gap-6 w-full max-w-6xl mx-auto px-4 z-10">
+            {/* Bento Card 1: Core Bio */}
+            <Motion 
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5, delay: 0.1 }}
+              className="md:col-span-8 group relative rounded-2xl border border-white/10 bg-black/45 backdrop-blur-xl p-8 shadow-[0_15px_50px_rgba(0,0,0,0.4)] overflow-hidden transition-all duration-300 hover:border-cyan-500/40"
+            >
+              <div className="absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-cyan-500/30 to-transparent" />
+              <div className="absolute top-0 left-0 w-8 h-8 border-t border-l border-cyan-500/30 rounded-tl-xl" />
               
-              {/* Decorative Lines */}
-              <div className="absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-cyan-500/50 to-transparent"></div>
-              <div className="absolute bottom-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-purple-500/50 to-transparent"></div>
-              
-              {/* Corner Accents */}
-              <div className="absolute top-0 left-0 w-8 h-8 border-t-2 border-l-2 border-cyan-500/30 rounded-tl-lg"></div>
-              <div className="absolute bottom-0 right-0 w-8 h-8 border-b-2 border-r-2 border-purple-500/30 rounded-br-lg"></div>
-
-              <h2 className="text-3xl font-heading font-bold text-center mb-4 flex items-center justify-center gap-x-3 text-white">
-                <User className="w-6 h-6 text-cyan-400"/>
-                <span className="font-mono tracking-tight">ABOUT_ME</span>
-              </h2>
-              
-              <div className="space-y-4 text-slate-300 font-light leading-relaxed">
-                <p className="text-lg">
-                  <span className="text-cyan-400 font-bold text-2xl">Hey</span>
-                  {portfolioData.bio.substring(3)}
-                </p>
+              <div className="flex items-center gap-2 text-xs font-mono text-cyan-400/80 mb-4 tracking-wider">
+                <span className="text-cyan-500 mr-1">⚡</span> CORE_PROFILE
               </div>
-            </div>
+              
+              <p className="text-slate-300 text-lg font-light leading-relaxed">
+                <span className="text-white font-semibold">I build high-fidelity digital solutions</span> at the intersection of frontend visual excellence and robust backend architecture. Passionate about engineering interactive web applications, resolving performance bottlenecks, and translating complex concepts into clean, accessible code.
+              </p>
+            </Motion>
+
+            {/* Bento Card 2: System Status */}
+            <Motion 
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5, delay: 0.2 }}
+              className="md:col-span-4 group relative rounded-2xl border border-white/10 bg-black/45 backdrop-blur-xl p-8 shadow-[0_15px_50px_rgba(0,0,0,0.4)] overflow-hidden transition-all duration-300 hover:border-purple-500/40"
+            >
+              <div className="absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-purple-500/30 to-transparent" />
+              <div className="absolute top-0 right-0 w-8 h-8 border-t border-r border-purple-500/30 rounded-tr-xl" />
+
+              <div className="flex items-center gap-2 text-xs font-mono text-purple-400/80 mb-4 tracking-wider">
+                <span className="text-purple-500 mr-1">⚙️</span> SYSTEM_METRICS
+              </div>
+
+              <ul className="space-y-3 font-mono text-xs text-slate-400">
+                <li className="flex justify-between border-b border-white/5 pb-1.5">
+                  <span>LOC:</span> <span className="text-slate-200">Karnataka, India</span>
+                </li>
+                <li className="flex justify-between border-b border-white/5 pb-1.5">
+                  <span>STACK:</span> <span className="text-slate-200">MERN / Python</span>
+                </li>
+                <li className="flex justify-between border-b border-white/5 pb-1.5">
+                  <span>STATUS:</span> <span className="text-emerald-400 animate-pulse">● Available</span>
+                </li>
+                <li className="flex justify-between">
+                  <span>LATENCY:</span> <span className="text-cyan-400">14ms (Optimal)</span>
+                </li>
+              </ul>
+            </Motion>
+
+            {/* Bento Card 3: Quick Navigation & Socials */}
+            <Motion 
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5, delay: 0.3 }}
+              className="md:col-span-12 group relative rounded-2xl border border-white/10 bg-black/35 backdrop-blur-xl p-6 shadow-[0_15px_50px_rgba(0,0,0,0.3)] overflow-hidden transition-all duration-300 hover:border-white/15"
+            >
+              <div className="flex flex-col sm:flex-row items-center justify-between gap-6">
+                <div className="flex flex-wrap items-center justify-center gap-4">
+                  <a
+                    href="#projects"
+                    onClick={(e) => { e.preventDefault(); handleNavClick('projects'); }}
+                    className="px-6 py-2.5 rounded-xl bg-cyan-500/10 border border-cyan-500/35 hover:bg-cyan-500/20 text-cyan-400 font-mono text-xs tracking-wider transition-all duration-300"
+                  >
+                    EXPLORE_WORK
+                  </a>
+                  <a
+                    href="#contact"
+                    onClick={(e) => { e.preventDefault(); handleNavClick('contact'); }}
+                    className="px-6 py-2.5 rounded-xl bg-white/5 border border-white/15 hover:bg-white/10 text-white font-mono text-xs tracking-wider transition-all duration-300"
+                  >
+                    INITIATE_CONTACT
+                  </a>
+                </div>
+
+                <div className="flex items-center gap-4">
+                  <span className="text-xs font-mono text-slate-500 tracking-wider">CONNECT:</span>
+                  <div className="flex gap-2">
+                    {Object.entries(portfolioData.contact.social).map(([platform, data]) => {
+                      const icons = { github: Github, linkedin: Linkedin, instagram: Instagram };
+                      const Icon = icons[platform] || Github;
+                      return (
+                        <a
+                          key={platform}
+                          href={data.url}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="p-3 rounded-lg border border-white/5 bg-white/5 text-slate-400 hover:text-white hover:border-cyan-500/40 hover:bg-cyan-500/10 transition-all duration-300"
+                          aria-label={platform}
+                        >
+                          <Icon size={16} />
+                        </a>
+                      );
+                    })}
+                  </div>
+                </div>
+              </div>
+            </Motion>
           </div>
-        </Motion>
-      </section>
+        </section>
 
       <Section id="journey" title="My Journey" icon={<GraduationCap className="w-8 h-8"/>}>
         <Journey data={portfolioData.journey} smoothMode={smoothMode} />
