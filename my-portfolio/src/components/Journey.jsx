@@ -3,7 +3,7 @@ import { GraduationCap, Building2, Calendar, Terminal } from 'lucide-react';
 
 const JourneyCard = ({ item, index }) => {
   return (
-    <div className="relative overflow-hidden rounded-2xl bg-black/70 border border-white/10 backdrop-blur-xl shadow-[0_0_30px_rgba(8,7,31,0.3)]">
+    <div className="skew-on-scroll relative overflow-hidden rounded-2xl bg-black/70 border border-white/10 backdrop-blur-xl shadow-[0_0_30px_rgba(8,7,31,0.3)]">
       <div className="flex items-center justify-between px-4 py-3 bg-white/5 border-b border-white/5">
         <div className="flex items-center gap-2">
           <Terminal className="w-4 h-4 text-cyan-400" />

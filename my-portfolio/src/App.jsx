@@ -458,6 +458,47 @@ export default function App() {
     return ()=> observer.disconnect();
   },[]);
 
+  // Organic Scroll Skew Effect
+  useEffect(() => {
+    if (prefersReducedMotion()) return;
+
+    let lastScrollY = window.pageYOffset || document.documentElement.scrollTop;
+    let targetSkew = 0;
+    let currentSkew = 0;
+    let rafId = null;
+
+    const handleScroll = () => {
+      const scrollY = window.pageYOffset || document.documentElement.scrollTop;
+      const velocity = scrollY - lastScrollY;
+      lastScrollY = scrollY;
+      
+      // Calculate target skew based on speed (capped to avoid visual breaks)
+      targetSkew = Math.max(-6, Math.min(6, velocity * 0.04));
+    };
+
+    const update = () => {
+      // Lerp to smooth out the transition back to normal
+      currentSkew += (targetSkew - currentSkew) * 0.1;
+      
+      // Decelerate target skew back to 0
+      targetSkew *= 0.88;
+
+      // Apply to document root CSS variable
+      document.documentElement.style.setProperty('--scroll-skew', `${currentSkew}deg`);
+
+      rafId = requestAnimationFrame(update);
+    };
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    rafId = requestAnimationFrame(update);
+
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+      if (rafId) cancelAnimationFrame(rafId);
+      document.documentElement.style.removeProperty('--scroll-skew');
+    };
+  }, []);
+
   // Modal handlers
   const openModal = useCallback((images, startIndex = 0) => {
     setModalImages(images);
