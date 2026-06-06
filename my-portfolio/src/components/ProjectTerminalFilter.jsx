@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Folder, Code } from 'lucide-react';
 import ProjectCard from './ProjectCard';
@@ -6,6 +6,24 @@ import './ProjectTerminalFilter.css';
 
 const ProjectTerminalFilter = ({ projects, smoothMode = false }) => {
   const [activeCategory, setActiveCategory] = useState('All');
+  const filterBarRef = useRef(null);
+
+  useEffect(() => {
+    const el = filterBarRef.current;
+    if (!el) return;
+
+    const handleWheel = (e) => {
+      if (e.deltaY !== 0) {
+        el.scrollLeft += e.deltaY * 0.8; // Scroll horizontally
+        e.preventDefault(); // Prevent standard vertical page scroll
+      }
+    };
+
+    el.addEventListener('wheel', handleWheel, { passive: false });
+    return () => {
+      el.removeEventListener('wheel', handleWheel);
+    };
+  }, []);
 
   // Extract unique tags and map them to categories with taglines
   const categories = useMemo(() => {
@@ -44,6 +62,7 @@ const ProjectTerminalFilter = ({ projects, smoothMode = false }) => {
   return (
     <div className="project-terminal">
       <motion.div 
+        ref={filterBarRef}
         className="project-filter-bar"
         initial={smoothMode ? false : { opacity: 0, y: 20 }}
         whileInView={smoothMode ? {} : { opacity: 1, y: 0 }}

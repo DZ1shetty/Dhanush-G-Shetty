@@ -53,17 +53,24 @@ export const portfolioData = {
     { type: 'Education', date: '2010 - 2020', title: 'Primary & High School', institution: 'Gurukula Public School, Koteshwara, Kundapura', description: 'Completed SSLC with 93.60%.' }
   ],
   projects: [
-  { title: "phishguard-ai", description: "Frontend for a phishing detection project.", tags: ["CSS"], repoUrl: "https://github.com/DZ1shetty/phishguard-ai" },
-  { title: "vite-react", description: "Vite + React starter/project (private).", tags: ["CSS"], repoUrl: "https://github.com/DZ1shetty/vite-react" },
-  { title: "Chill-Dev", description: "Collection of demo projects and experiments.", tags: ["TypeScript"], repoUrl: "https://github.com/DZ1shetty/Chill-Dev" },
-  { title: "Simple-Face-Detection", description: "Real-time face detection using OpenCV and Python.", tags: ["Python", "OpenCV"], repoUrl: "https://github.com/DZ1shetty/Simple-Face-Detection" },
-    
-  { title: "Network-Speed-Heatmap", description: "Network speed heatmap visualizer.", tags: ["TypeScript"], repoUrl: "https://github.com/DZ1shetty/Network-Speed-Heatmap" },
-  { title: "Smart Insurance App", description: "React app for document adjudication in insurance.", tags: ["React", "JavaScript"], repoUrl: "https://github.com/DZ1shetty/smart-insurance-app" },
-  { title: "Bus_Fleet_Management_System", description: "Web system to manage a fleet of buses in real-time.", tags: ["JavaScript", "HTML/CSS"], repoUrl: "https://github.com/DZ1shetty/Bus_Fleet_Management_System" },
-  { title: "SDLC-of-a-Real-World-System", description: "Analysis of 'Hospital at Home' SDLC.", tags: ["HTML", "System Analysis"], repoUrl: "https://github.com/DZ1shetty/SDLC-of-a-Real-World-System" },
-  { title: "FinNovate", description: "Financial innovation project.", tags: ["JavaScript"], repoUrl: "https://github.com/DZ1shetty/FinNovate" },
-  { title: "Unity-CAR_AR", description: "Augmented Reality car visualization application built with Unity.", tags: ["C#", "Unity", "AR"], repoUrl: "https://github.com/DZ1shetty/Unity-CAR_AR" }
+    { title: "react_frontend_setup", description: "Production-ready React frontend boilerplate with Vite and modern setup.", tags: ["React", "Vite"], repoUrl: "https://github.com/DZ1shetty/react_frontend_setup" },
+    { title: "fastapi_crud", description: "Futuristic FastAPI CRUD backend API with modular architecture.", tags: ["Python", "FastAPI"], repoUrl: "https://github.com/DZ1shetty/fastapi_crud" },
+    { title: "DSA_TRAINING_NITTE-14-days-", description: "Comprehensive solutions and practice problems from the 14-days DSA training program.", tags: ["DSA", "Java", "C++"], repoUrl: "https://github.com/DZ1shetty/DSA_TRAINING_NITTE-14-days-" },
+    { title: "github_basics", description: "Hands-on projects and guides covering fundamental Git and GitHub workflows.", tags: ["Git"], repoUrl: "https://github.com/DZ1shetty/github_basics" },
+    { title: "neetcode-submissions", description: "My NeetCode.io problem submissions covering key data structures and algorithms.", tags: ["Algorithms", "Python"], repoUrl: "https://github.com/DZ1shetty/neetcode-submissions" },
+    { title: "python-questions", description: "Collection of curated Python programming practice questions and solutions.", tags: ["Python"], repoUrl: "https://github.com/DZ1shetty/python-questions" },
+    { title: "Smart_Nav", description: "A sleek, responsive smart navigation dashboard interface.", tags: ["JavaScript", "CSS"], repoUrl: "https://github.com/DZ1shetty/Smart_Nav" },
+    { title: "GreenArchive", description: "A digital archive tracking environment-focused activities and metrics.", tags: ["JavaScript", "HTML/CSS"], repoUrl: "https://github.com/DZ1shetty/GreenArchive" },
+    { title: "Major_Project", description: "The central repository for university/personal major capstone projects.", tags: ["JavaScript", "Full-Stack"], repoUrl: "https://github.com/DZ1shetty/Major_Project" },
+    { title: "PopcornIQ", description: "PopcornIQ - Movie trivia and recommendation interface built on React.", tags: ["React", "JavaScript"], repoUrl: "https://github.com/DZ1shetty/PopcornIQ" },
+    { title: "BUS_FMS", description: "Real-time Bus Fleet Management System interface showcasing transit logistics.", tags: ["JavaScript", "HTML/CSS"], repoUrl: "https://github.com/DZ1shetty/BUS_FMS" },
+    { title: "Dhanush-G-Shetty", description: "Sleek and premium developer portfolio website with interactive cyber terminal themes.", tags: ["React", "Portfolio"], repoUrl: "https://github.com/DZ1shetty/Dhanush-G-Shetty" },
+    { title: "Simple-Face-Detection", description: "Real-time face detection system using Python and OpenCV computer vision library.", tags: ["Python", "OpenCV", "AI"], repoUrl: "https://github.com/DZ1shetty/Simple-Face-Detection" },
+    { title: "Unity-CAR_AR", description: "Augmented Reality car visualization application built with Unity.", tags: ["Unity", "AR"], repoUrl: "https://github.com/DZ1shetty/Unity-CAR_AR" },
+    { title: "FinNovate", description: "An interactive, innovative financial dashboard visualization application.", tags: ["JavaScript", "FinTech"], repoUrl: "https://github.com/DZ1shetty/FinNovate" },
+    { title: "phishguard-ai", description: "Frontend interface for a phishing detection application.", tags: ["CSS", "AI"], repoUrl: "https://github.com/DZ1shetty/phishguard-ai" },
+    { title: "Chill-Dev", description: "A sandbox repository for testing, playing, and experimenting with various web stacks.", tags: ["TypeScript"], repoUrl: "https://github.com/DZ1shetty/Chill-Dev" },
+    { title: "SDLC-of-a-Real-World-System", description: "Comprehensive analysis of Atrium Health's Hospital at Home SDLC program.", tags: ["HTML"], repoUrl: "https://github.com/DZ1shetty/SDLC-of-a-Real-World-System" }
   ],
   skills: ["JavaScript", "React", "Python", "HTML5 & CSS3", "Git & GitHub", "C", "Java"],
   certificates: {

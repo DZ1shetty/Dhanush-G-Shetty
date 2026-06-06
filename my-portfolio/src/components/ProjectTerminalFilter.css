@@ -6,15 +6,21 @@
 
 .project-filter-bar {
   display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
+  flex-wrap: nowrap;
+  justify-content: flex-start;
   gap: 12px;
-  padding: 18px 20px;
+  padding: 14px 20px;
   border-radius: 999px;
   border: 1px solid rgba(255, 255, 255, 0.08);
   background: rgba(9, 10, 25, 0.7);
   position: relative;
-  overflow: hidden;
+  overflow-x: auto;
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none;  /* IE/Edge */
+}
+
+.project-filter-bar::-webkit-scrollbar {
+  display: none; /* Chrome/Safari/Opera */
 }
 
 .project-filter-bar::before {
@@ -42,6 +48,8 @@
   text-transform: uppercase;
   cursor: pointer;
   transition: all 0.35s ease;
+  flex-shrink: 0;
+  white-space: nowrap;
 }
 
 .project-filter-button .filter-icon {
@@ -99,12 +107,15 @@
 
 @media (max-width: 768px) {
   .project-filter-bar {
-    border-radius: 32px;
+    border-radius: 999px;
+    padding: 10px 14px;
   }
   
   .project-filter-button {
-    width: 100%;
+    width: auto;
     justify-content: center;
+    padding: 8px 16px;
+    font-size: 0.8rem;
   }
   
   .project-stats {
