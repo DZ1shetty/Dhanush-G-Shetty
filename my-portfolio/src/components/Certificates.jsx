@@ -7,7 +7,7 @@ const Certificates = ({ data, smoothMode }) => {
   const [activeTab, setActiveTab] = useState('all');
 
   const tabs = [
-    { id: 'all', label: 'ALL_CREDENTIALS', icon: Award },
+    { id: 'all', label: 'ALL', icon: Award },
     { id: 'courses', label: 'COURSES', icon: BookOpen },
     { id: 'hackathons', label: 'HACKATHONS', icon: Code },
     { id: 'internships', label: 'INTERNSHIPS', icon: Briefcase },
@@ -28,47 +28,45 @@ const Certificates = ({ data, smoothMode }) => {
 
   return (
     <div className="w-full max-w-7xl mx-auto px-4">
-      {/* Certificate Navbar */}
-      <div className="flex justify-center mb-16">
-        <div className="flex flex-wrap justify-center gap-4 p-2 bg-black/40 backdrop-blur-xl rounded-full border border-white/10 shadow-[0_0_20px_rgba(0,0,0,0.5)]">
+      {/* Minimalist Tab Nav */}
+      <div className="flex items-center justify-between mb-10 border-b border-white/5">
+        <div className="flex items-center gap-1">
           {tabs.map((tab) => {
             const Icon = tab.icon;
             const isActive = activeTab === tab.id;
-            
+
             return (
               <button
                 key={tab.id}
                 onClick={() => setActiveTab(tab.id)}
-                className={`relative px-6 py-3 text-sm font-mono font-bold rounded-full transition-all duration-300 flex items-center gap-2 z-10 overflow-hidden group ${
-                  isActive 
-                    ? 'text-black' 
-                    : 'text-slate-400 hover:text-cyan-400'
+                className={`relative px-4 py-3 text-[11px] font-mono tracking-widest uppercase transition-colors duration-200 flex items-center gap-1.5 ${
+                  isActive
+                    ? 'text-cyan-400'
+                    : 'text-slate-500 hover:text-slate-300'
                 }`}
               >
+                <Icon className="w-3 h-3" />
+                {tab.label}
                 {isActive && (
                   smoothMode ? (
-                    <div className="absolute inset-0 bg-cyan-400 shadow-[0_0_20px_rgba(34,211,238,0.6)]" />
+                    <span className="absolute bottom-0 left-0 right-0 h-[1px] bg-cyan-400" />
                   ) : (
-                    <motion.div
+                    <motion.span
                       layoutId="activeCertTab"
-                      className="absolute inset-0 bg-cyan-400 shadow-[0_0_20px_rgba(34,211,238,0.6)]"
-                      transition={{ type: "spring", stiffness: 200, damping: 25 }}
+                      className="absolute bottom-0 left-0 right-0 h-[1px] bg-cyan-400"
+                      transition={{ type: 'spring', stiffness: 400, damping: 30 }}
                     />
                   )
                 )}
-                <Icon className={`w-4 h-4 relative z-10 ${isActive ? 'text-black' : 'group-hover:text-cyan-400'}`} />
-                <span className="relative z-10 tracking-wider">{tab.label}</span>
               </button>
             );
           })}
         </div>
-      </div>
 
-      {/* Stats Bar */}
-      <div className="flex justify-end mb-8 px-4">
-        <div className="flex items-center gap-2 text-xs font-mono text-cyan-500/70 bg-cyan-900/10 px-4 py-2 rounded-full border border-cyan-500/20">
-          <ShieldCheck className="w-3 h-3" />
-          <span>VERIFIED_RECORDS: {filteredCerts.length}</span>
+        {/* Record count */}
+        <div className="flex items-center gap-1.5 text-[10px] font-mono text-slate-600 select-none pb-3">
+          <ShieldCheck className="w-3 h-3 text-slate-700" />
+          <span>{filteredCerts.length}_RECORDS</span>
         </div>
       </div>
 
@@ -80,10 +78,10 @@ const Certificates = ({ data, smoothMode }) => {
       ) : (
         <motion.div
           key={activeTab}
-          initial={{ opacity: 0, y: 20 }}
+          initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
-          exit={{ opacity: 0, y: -20 }}
-          transition={{ duration: 0.3 }}
+          exit={{ opacity: 0, y: -10 }}
+          transition={{ duration: 0.2 }}
           className="min-h-[400px]"
         >
           <CertificateGrid certs={filteredCerts} smoothMode={smoothMode} />

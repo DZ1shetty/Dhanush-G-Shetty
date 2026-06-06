@@ -1,54 +1,40 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Mail, Send, User, MessageSquare, FileText, Download, Eye, EyeOff, CheckCircle, Loader2, Sparkles, Terminal, Shield, Wifi } from 'lucide-react';
+import { Mail, Send, User, MessageSquare, FileText, Download, Eye, EyeOff, CheckCircle, Loader2 } from 'lucide-react';
 
 const InputField = ({ label, name, type = "text", value, onChange, error, icon: Icon, placeholder }) => (
-  <div className="relative mb-6 group">
-    <label className="text-xs font-bold text-cyan-400 mb-2 ml-1 flex items-center gap-2 uppercase tracking-wider">
-      {Icon && <Icon size={12} />}
+  <div className="relative mb-5 group">
+    <label className="text-[10px] font-mono text-slate-500 mb-1.5 ml-0.5 flex items-center gap-1.5 uppercase tracking-widest">
+      {Icon && <Icon size={10} className="text-slate-600" />}
       {label}
     </label>
-    <div className="relative">
-      <input
-        type={type}
-        name={name}
-        value={value}
-        onChange={onChange}
-        placeholder={placeholder}
-        className={`w-full bg-slate-900/50 border ${error ? 'border-red-500/50' : 'border-white/10'} rounded-lg px-5 py-4 text-white placeholder-slate-600 focus:outline-none focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500 transition-all duration-300 group-hover:border-white/20 font-mono text-sm`}
-      />
-      {/* Corner Accents */}
-      <div className="absolute top-0 left-0 w-2 h-2 border-t border-l border-cyan-500/50 opacity-0 group-hover:opacity-100 transition-opacity" />
-      <div className="absolute top-0 right-0 w-2 h-2 border-t border-r border-cyan-500/50 opacity-0 group-hover:opacity-100 transition-opacity" />
-      <div className="absolute bottom-0 left-0 w-2 h-2 border-b border-l border-cyan-500/50 opacity-0 group-hover:opacity-100 transition-opacity" />
-      <div className="absolute bottom-0 right-0 w-2 h-2 border-b border-r border-cyan-500/50 opacity-0 group-hover:opacity-100 transition-opacity" />
-    </div>
-    {error && <p className="text-red-400 text-xs mt-1 ml-1 font-mono">{error}</p>}
+    <input
+      type={type}
+      name={name}
+      value={value}
+      onChange={onChange}
+      placeholder={placeholder}
+      className={`w-full bg-transparent border-b ${error ? 'border-red-500/50' : 'border-white/10'} py-2.5 text-slate-200 placeholder-slate-700 focus:outline-none focus:border-cyan-500/60 transition-colors duration-200 font-mono text-sm`}
+    />
+    {error && <p className="text-red-400/80 text-[10px] mt-1 font-mono">{error}</p>}
   </div>
 );
 
 const TextAreaField = ({ label, name, value, onChange, error, icon: Icon, placeholder }) => (
-  <div className="relative mb-6 group">
-    <label className="text-xs font-bold text-cyan-400 mb-2 ml-1 flex items-center gap-2 uppercase tracking-wider">
-      {Icon && <Icon size={12} />}
+  <div className="relative mb-5 group">
+    <label className="text-[10px] font-mono text-slate-500 mb-1.5 ml-0.5 flex items-center gap-1.5 uppercase tracking-widest">
+      {Icon && <Icon size={10} className="text-slate-600" />}
       {label}
     </label>
-    <div className="relative">
-      <textarea
-        name={name}
-        value={value}
-        onChange={onChange}
-        placeholder={placeholder}
-        rows="5"
-        className={`w-full bg-slate-900/50 border ${error ? 'border-red-500/50' : 'border-white/10'} rounded-lg px-5 py-4 text-white placeholder-slate-600 focus:outline-none focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500 transition-all duration-300 resize-none group-hover:border-white/20 font-mono text-sm`}
-      />
-      {/* Corner Accents */}
-      <div className="absolute top-0 left-0 w-2 h-2 border-t border-l border-cyan-500/50 opacity-0 group-hover:opacity-100 transition-opacity" />
-      <div className="absolute top-0 right-0 w-2 h-2 border-t border-r border-cyan-500/50 opacity-0 group-hover:opacity-100 transition-opacity" />
-      <div className="absolute bottom-0 left-0 w-2 h-2 border-b border-l border-cyan-500/50 opacity-0 group-hover:opacity-100 transition-opacity" />
-      <div className="absolute bottom-0 right-0 w-2 h-2 border-b border-r border-cyan-500/50 opacity-0 group-hover:opacity-100 transition-opacity" />
-    </div>
-    {error && <p className="text-red-400 text-xs mt-1 ml-1 font-mono">{error}</p>}
+    <textarea
+      name={name}
+      value={value}
+      onChange={onChange}
+      placeholder={placeholder}
+      rows="4"
+      className={`w-full bg-transparent border-b ${error ? 'border-red-500/50' : 'border-white/10'} py-2.5 text-slate-200 placeholder-slate-700 focus:outline-none focus:border-cyan-500/60 transition-colors duration-200 resize-none font-mono text-sm`}
+    />
+    {error && <p className="text-red-400/80 text-[10px] mt-1 font-mono">{error}</p>}
   </div>
 );
 
@@ -72,7 +58,7 @@ const Contact = ({ smoothMode }) => {
     if (!formData.subject.trim()) newErrors.subject = 'SUBJECT_REQUIRED';
     if (!formData.message.trim()) newErrors.message = 'MESSAGE_REQUIRED';
     else if (formData.message.trim().length < 10) newErrors.message = 'MIN_LENGTH_10';
-    
+
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
@@ -86,12 +72,12 @@ const Contact = ({ smoothMode }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!validateForm()) return;
-    
+
     setIsSubmitting(true);
     try {
       const response = await fetch("https://formsubmit.co/ajax/dhanushgshetty666@gmail.com", {
         method: "POST",
-        headers: { 
+        headers: {
           'Content-Type': 'application/json',
           'Accept': 'application/json'
         },
@@ -112,293 +98,184 @@ const Contact = ({ smoothMode }) => {
       }
     } catch (error) {
       console.error('Error:', error);
-      // Fallback for error handling if needed
     } finally {
       setIsSubmitting(false);
     }
   };
 
-  const MotionDiv = smoothMode ? 'div' : motion.div;
-  const motionProps = (props) => smoothMode ? {} : props;
-
   return (
-    <div className="max-w-7xl mx-auto px-4 relative">
-      <div className="grid lg:grid-cols-2 gap-12 items-start">
-        {/* Resume Section - Cyber Terminal Style */}
-        <MotionDiv
-          {...motionProps({
-            initial: { opacity: 0, x: -50 },
-            whileInView: { opacity: 1, x: 0 },
-            viewport: { once: true },
-            transition: { duration: 0.6 }
-          })}
-          className="relative group"
-        >
-          <div className="relative bg-slate-900/80 backdrop-blur-xl rounded-2xl border border-white/10 p-1 overflow-hidden">
-            {/* Terminal Header */}
-            <div className="bg-white/5 px-4 py-2 flex items-center justify-between border-b border-white/5">
-              <div className="flex items-center gap-2">
-                <div className="w-3 h-3 rounded-full bg-red-500/50" />
-                <div className="w-3 h-3 rounded-full bg-yellow-500/50" />
-                <div className="w-3 h-3 rounded-full bg-green-500/50" />
-              </div>
-              <div className="text-xs font-mono text-slate-500 flex items-center gap-2">
-                <Shield size={10} />
-                SECURE_ACCESS_V1.0
-              </div>
-            </div>
+    <div className="max-w-5xl mx-auto px-4">
+      <div className="grid lg:grid-cols-2 gap-16 items-start">
 
-            <div className="p-8">
-              <div className="flex items-center gap-6 mb-8">
-                <div className="relative">
-                  <div className="relative p-4 bg-black/50 rounded-xl border border-cyan-500/30 text-cyan-400">
-                    <Terminal size={32} />
-                  </div>
-                </div>
-                <div>
-                  <h3 className="text-2xl font-bold text-white font-mono tracking-tight">RESUME_DATA</h3>
-                  <p className="text-slate-400 text-sm font-mono mt-1 text-cyan-300/70">
-                    &gt; Access professional credentials
-                  </p>
-                </div>
-              </div>
-
-              <div className="space-y-4">
-                <a
-                  href="/Resume.pdf"
-                  download="Resume.pdf"
-                  className="relative overflow-hidden flex items-center justify-center gap-3 w-full py-4 bg-cyan-600 hover:bg-cyan-500 text-white rounded-lg font-bold font-mono tracking-wide transition-all duration-300 group/btn"
-                >
-                  <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-20" />
-                  <Download className="relative z-10 group-hover/btn:animate-bounce" size={18} />
-                  <span className="relative z-10">INITIATE_DOWNLOAD</span>
-                </a>
-                
-                <button
-                  onClick={() => setShowResume(!showResume)}
-                  className="flex items-center justify-center gap-3 w-full py-4 bg-black/50 hover:bg-white/5 border border-white/10 hover:border-cyan-500/30 text-slate-300 hover:text-white rounded-lg font-mono font-medium transition-all duration-300"
-                >
-                  {showResume ? <EyeOff size={18} /> : <Eye size={18} />}
-                  {showResume ? 'TERMINATE_PREVIEW' : 'EXECUTE_PREVIEW'}
-                </button>
-              </div>
-
-              {/* Resume Preview Area */}
-              <AnimatePresence>
-                {showResume && (
-                  <motion.div
-                    initial={{ opacity: 0, height: 0, marginTop: 0 }}
-                    animate={{ opacity: 1, height: '500px', marginTop: 24 }}
-                    exit={{ opacity: 0, height: 0, marginTop: 0 }}
-                    className="relative rounded-lg overflow-hidden border border-white/10 bg-black"
-                  >
-                    {/* Scanline Overlay */}
-                    <div className="absolute inset-0 bg-[linear-gradient(transparent_50%,rgba(0,0,0,0.5)_50%)] bg-[length:100%_4px] pointer-events-none z-10 opacity-20" />
-                    <iframe
-                      src="/Resume.pdf#toolbar=0"
-                      className="w-full h-full relative z-0"
-                      title="Resume Preview"
-                    />
-                  </motion.div>
-                )}
-              </AnimatePresence>
-            </div>
+        {/* Resume Panel */}
+        <div className="space-y-6">
+          {/* Section label */}
+          <div className="flex items-center gap-2 font-mono text-[10px] uppercase tracking-wider text-slate-600 select-none">
+            <span className="h-[1px] w-4 bg-white/10" />
+            RESUME
           </div>
 
-          {/* Status Bar */}
-          <div className="mt-6 flex items-center justify-between px-4 py-3 bg-black/40 rounded-lg border border-white/5 backdrop-blur-sm">
-            <div className="flex items-center gap-2 text-emerald-400 text-xs font-mono">
-              <span className="relative flex h-2 w-2">
-                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-                <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+          <div>
+            <h3 className="text-xl font-mono font-semibold text-slate-100 mb-1">resume_data.pdf</h3>
+            <p className="text-slate-500 text-xs font-mono">Professional credentials &amp; experience</p>
+          </div>
+
+          <div className="space-y-3">
+            <a
+              href="/Resume.pdf"
+              download="Resume.pdf"
+              className="flex items-center justify-between w-full py-3 px-4 border border-white/10 hover:border-cyan-500/30 rounded-lg text-slate-300 hover:text-cyan-400 font-mono text-xs tracking-wider transition-all duration-200 group"
+            >
+              <span className="flex items-center gap-2">
+                <Download className="w-3.5 h-3.5" />
+                DOWNLOAD_PDF
               </span>
-              SYSTEM_ONLINE
-            </div>
-            <div className="flex items-center gap-2 text-slate-500 text-xs font-mono">
-              <Wifi size={12} />
-              ENCRYPTED_CONNECTION
-            </div>
+              <span className="text-slate-600 group-hover:text-cyan-500 transition-colors">→</span>
+            </a>
+
+            <button
+              onClick={() => setShowResume(!showResume)}
+              className="flex items-center justify-between w-full py-3 px-4 border border-white/5 hover:border-white/10 rounded-lg text-slate-500 hover:text-slate-300 font-mono text-xs tracking-wider transition-all duration-200 group"
+            >
+              <span className="flex items-center gap-2">
+                {showResume ? <EyeOff className="w-3.5 h-3.5" /> : <Eye className="w-3.5 h-3.5" />}
+                {showResume ? 'CLOSE_PREVIEW' : 'PREVIEW_RESUME'}
+              </span>
+              <span className="text-slate-700 group-hover:text-slate-500 transition-colors">{showResume ? '−' : '+'}</span>
+            </button>
           </div>
-        </MotionDiv>
 
-        {/* Contact Form Section */}
-        <MotionDiv
-          {...motionProps({
-            initial: { opacity: 0, x: 50 },
-            whileInView: { opacity: 1, x: 0 },
-            viewport: { once: true },
-            transition: { duration: 0.6, delay: 0.2 }
-          })}
-          className="relative"
-        >
-          <div className="relative bg-slate-900/80 backdrop-blur-xl rounded-2xl border border-white/10 p-8 shadow-2xl overflow-hidden">
-            
-            <div className="relative z-10">
-              <div className="mb-8 border-b border-white/5 pb-6">
-                <h3 className="text-3xl font-bold text-white mb-2 font-mono tracking-tight">
-                  <span className="text-cyan-500">&lt;</span>
-                  Contact_Me
-                  <span className="text-cyan-500">/&gt;</span>
-                </h3>
-                <p className="text-slate-400 text-sm">Initialize communication protocol.</p>
-              </div>
+          {/* Resume Preview */}
+          <AnimatePresence>
+            {showResume && (
+              <motion.div
+                initial={{ opacity: 0, height: 0 }}
+                animate={{ opacity: 1, height: '400px' }}
+                exit={{ opacity: 0, height: 0 }}
+                transition={{ duration: 0.25 }}
+                className="relative rounded-lg overflow-hidden border border-white/10 bg-black"
+              >
+                <iframe
+                  src="/Resume.pdf#toolbar=0"
+                  className="w-full h-full"
+                  title="Resume Preview"
+                />
+              </motion.div>
+            )}
+          </AnimatePresence>
 
-              <AnimatePresence mode="wait">
-                {isSubmitted ? (
-                  <MotionDiv
-                    {...motionProps({
-                      initial: { opacity: 0, scale: 0.9 },
-                      animate: { opacity: 1, scale: 1 },
-                      exit: { opacity: 0, scale: 0.9 }
-                    })}
-                    className="flex flex-col items-center justify-center py-12 text-center"
+          {/* Status */}
+          <div className="flex items-center gap-2 text-[10px] font-mono text-slate-600 pt-2 border-t border-white/5 select-none">
+            <span className="flex h-1.5 w-1.5">
+              <span className="animate-ping absolute inline-flex h-1.5 w-1.5 rounded-full bg-emerald-500 opacity-60" />
+              <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-emerald-500" />
+            </span>
+            AVAILABLE_FOR_HIRE
+          </div>
+        </div>
+
+        {/* Contact Form */}
+        <div className="space-y-6">
+          {/* Section label */}
+          <div className="flex items-center gap-2 font-mono text-[10px] uppercase tracking-wider text-slate-600 select-none">
+            <span className="h-[1px] w-4 bg-white/10" />
+            CONTACT
+          </div>
+
+          <div>
+            <h3 className="text-xl font-mono font-semibold text-slate-100 mb-1">send_message.sh</h3>
+            <p className="text-slate-500 text-xs font-mono">Initialize communication</p>
+          </div>
+
+          <AnimatePresence mode="wait">
+            {isSubmitted ? (
+              <motion.div
+                key="success"
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0 }}
+                className="py-12 flex flex-col items-center gap-4 text-center"
+              >
+                <CheckCircle className="w-8 h-8 text-emerald-500" />
+                <div>
+                  <p className="font-mono text-sm text-slate-200">TRANSMISSION_SENT</p>
+                  <p className="font-mono text-[10px] text-slate-600 mt-1">&gt; Message queued for delivery</p>
+                </div>
+              </motion.div>
+            ) : (
+              <motion.form
+                key="form"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                onSubmit={handleSubmit}
+                className="space-y-1"
+              >
+                <div className="grid sm:grid-cols-2 gap-x-6">
+                  <InputField
+                    label="NAME"
+                    name="name"
+                    icon={User}
+                    value={formData.name}
+                    onChange={handleChange}
+                    error={errors.name}
+                    placeholder="John Doe"
+                  />
+                  <InputField
+                    label="EMAIL"
+                    name="email"
+                    type="email"
+                    icon={Mail}
+                    value={formData.email}
+                    onChange={handleChange}
+                    error={errors.email}
+                    placeholder="john@example.com"
+                  />
+                </div>
+
+                <InputField
+                  label="SUBJECT"
+                  name="subject"
+                  icon={MessageSquare}
+                  value={formData.subject}
+                  onChange={handleChange}
+                  error={errors.subject}
+                  placeholder="Project inquiry..."
+                />
+
+                <TextAreaField
+                  label="MESSAGE"
+                  name="message"
+                  icon={FileText}
+                  value={formData.message}
+                  onChange={handleChange}
+                  error={errors.message}
+                  placeholder="Type your message here..."
+                />
+
+                <div className="pt-2">
+                  <button
+                    type="submit"
+                    disabled={isSubmitting}
+                    className="flex items-center gap-2 px-6 py-3 border border-white/10 hover:border-cyan-500/30 text-slate-300 hover:text-cyan-400 rounded-lg font-mono text-xs tracking-wider transition-all duration-200 disabled:opacity-40 disabled:cursor-not-allowed group"
                   >
-                    <div className="relative mb-6">
-                      <div className="relative w-24 h-24 bg-black/50 border border-green-500/50 text-green-400 rounded-full flex items-center justify-center">
-                        <CheckCircle size={48} />
-                      </div>
-                    </div>
-                    <h4 className="text-2xl font-bold text-white mb-2 font-mono">TRANSMISSION_SENT</h4>
-                    <p className="text-slate-400 font-mono text-sm">
-                      &gt; Message successfully queued for delivery.
-                    </p>
-                  </MotionDiv>
-                ) : (
-                  smoothMode ? (
-                    <form onSubmit={handleSubmit}>
-                      <div className="grid md:grid-cols-2 gap-4">
-                        <InputField
-                          label="IDENTIFIER"
-                          name="name"
-                          icon={User}
-                          value={formData.name}
-                          onChange={handleChange}
-                          error={errors.name}
-                          placeholder="John Doe"
-                        />
-                        <InputField
-                          label="CONTACT_LINK"
-                          name="email"
-                          type="email"
-                          icon={Mail}
-                          value={formData.email}
-                          onChange={handleChange}
-                          error={errors.email}
-                          placeholder="john@example.com"
-                        />
-                      </div>
-                      
-                      <InputField
-                        label="SUBJECT_LINE"
-                        name="subject"
-                        icon={MessageSquare}
-                        value={formData.subject}
-                        onChange={handleChange}
-                        error={errors.subject}
-                        placeholder="Project Inquiry"
-                      />
-                      
-                      <TextAreaField
-                        label="DATA_PACKET"
-                        name="message"
-                        icon={FileText}
-                        value={formData.message}
-                        onChange={handleChange}
-                        error={errors.message}
-                        placeholder="Input message content..."
-                      />
-
-                      <button
-                        type="submit"
-                        disabled={isSubmitting}
-                        className="w-full py-4 bg-white text-black hover:bg-cyan-400 hover:text-black rounded-lg font-bold font-mono tracking-wider shadow-lg transition-all duration-300 hover:scale-[1.01] disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 group"
-                      >
-                        {isSubmitting ? (
-                          <>
-                            <Loader2 className="animate-spin" size={20} />
-                            TRANSMITTING...
-                          </>
-                        ) : (
-                          <>
-                            <Send size={20} className="group-hover:translate-x-1 transition-transform" />
-                            SEND_TRANSMISSION
-                          </>
-                        )}
-                      </button>
-                    </form>
-                  ) : (
-                    <motion.form
-                      initial={{ opacity: 0 }}
-                      animate={{ opacity: 1 }}
-                      exit={{ opacity: 0 }}
-                      onSubmit={handleSubmit}
-                    >
-                      <div className="grid md:grid-cols-2 gap-4">
-                        <InputField
-                          label="IDENTIFIER"
-                          name="name"
-                          icon={User}
-                          value={formData.name}
-                          onChange={handleChange}
-                          error={errors.name}
-                          placeholder="John Doe"
-                        />
-                        <InputField
-                          label="CONTACT_LINK"
-                          name="email"
-                          type="email"
-                          icon={Mail}
-                          value={formData.email}
-                          onChange={handleChange}
-                          error={errors.email}
-                          placeholder="john@example.com"
-                        />
-                      </div>
-                      
-                      <InputField
-                        label="SUBJECT_LINE"
-                        name="subject"
-                        icon={MessageSquare}
-                        value={formData.subject}
-                        onChange={handleChange}
-                        error={errors.subject}
-                        placeholder="Project Inquiry"
-                      />
-                      
-                      <TextAreaField
-                        label="DATA_PACKET"
-                        name="message"
-                        icon={FileText}
-                        value={formData.message}
-                        onChange={handleChange}
-                        error={errors.message}
-                        placeholder="Input message content..."
-                      />
-
-                      <button
-                        type="submit"
-                        disabled={isSubmitting}
-                        className="w-full py-4 bg-white text-black hover:bg-cyan-400 hover:text-black rounded-lg font-bold font-mono tracking-wider shadow-lg transition-all duration-300 hover:scale-[1.01] disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 group"
-                      >
-                        {isSubmitting ? (
-                          <>
-                            <Loader2 className="animate-spin" size={20} />
-                            TRANSMITTING...
-                          </>
-                        ) : (
-                          <>
-                            <Send size={20} className="group-hover:translate-x-1 transition-transform" />
-                            SEND_TRANSMISSION
-                          </>
-                        )}
-                      </button>
-                    </motion.form>
-                  )
-                )}
-              </AnimatePresence>
-            </div>
-          </div>
-        </MotionDiv>
+                    {isSubmitting ? (
+                      <>
+                        <Loader2 className="animate-spin w-3.5 h-3.5" />
+                        TRANSMITTING...
+                      </>
+                    ) : (
+                      <>
+                        <Send className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform" />
+                        SEND_MESSAGE
+                      </>
+                    )}
+                  </button>
+                </div>
+              </motion.form>
+            )}
+          </AnimatePresence>
+        </div>
       </div>
     </div>
   );
