@@ -96,7 +96,7 @@ const ProjectTerminalFilter = ({ projects, smoothMode = false }) => {
               layout
               {...getProjectMotionProps(index)}
             >
-              <ProjectCard project={project} index={index} />
+              <ProjectCard project={project} index={index} smoothMode={smoothMode} />
             </motion.div>
           ))}
         </AnimatePresence>

@@ -87,41 +87,7 @@ const Section = React.memo(({ id, title, icon, children }) => {
 });
 Section.displayName = 'Section';
 
-const AnimatedRoles = React.memo(({ roles }) => {
-  const [index, setIndex] = useState(0);
-  const [displayText, setDisplayText] = useState('');
-  const [isTyping, setIsTyping] = useState(true);
 
-  useEffect(() => {
-    if (isTyping) {
-      const currentRole = roles[index];
-      if (displayText.length < currentRole.length) {
-        const timer = setTimeout(() => {
-          setDisplayText(currentRole.slice(0, displayText.length + 1));
-        }, 50); // Faster typing
-        return () => clearTimeout(timer);
-      } else {
-        setIsTyping(false);
-        setTimeout(() => {
-          setIsTyping(true);
-          setIndex((p) => (p + 1) % roles.length);
-          setDisplayText('');
-        }, 2000);
-      }
-    }
-  }, [displayText, index, roles, isTyping]);
-
-  return (
-    <div className="text-xl md:text-2xl font-mono h-8 flex justify-center items-center tracking-wider">
-      <span className="text-cyan-500 mr-2">{'>'}</span>
-      <span className="text-slate-300">
-        {displayText}
-      </span>
-      <span className="w-2 h-5 bg-cyan-500 ml-1 animate-pulse shadow-[0_0_8px_rgba(34,211,238,0.8)]" />
-    </div>
-  );
-});
-AnimatedRoles.displayName = 'AnimatedRoles';
 
 const SocialMediaIcons = React.memo(({ socialData }) => {
   const socialPlatforms = [
@@ -680,8 +646,15 @@ export default function App() {
                 {portfolioData.name}
               </span>
             </h1>
-            <div className="flex flex-col gap-3 lg:gap-2 items-center lg:items-start">
-              <AnimatedRoles roles={portfolioData.roles} />
+            <div className="flex flex-col gap-4 lg:gap-3 items-center lg:items-start">
+              <div className="text-xs md:text-sm font-mono tracking-widest text-cyan-400 flex flex-wrap justify-center lg:justify-start gap-x-3 gap-y-1.5 uppercase font-medium select-none h-8 items-center">
+                {portfolioData.roles.map((role, idx) => (
+                  <React.Fragment key={role}>
+                    {idx > 0 && <span className="text-slate-600 font-sans font-normal">/</span>}
+                    <span>{role.replace(' ', '_')}</span>
+                  </React.Fragment>
+                ))}
+              </div>
               <SocialMediaIcons socialData={portfolioData.contact.social} />
             </div>
           </div>
