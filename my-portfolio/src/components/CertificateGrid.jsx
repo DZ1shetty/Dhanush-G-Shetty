@@ -49,7 +49,7 @@ const CertificateGrid = ({ certs = [], onImageClick = () => {}, smoothMode = fal
           return (
             <div
               key={idx}
-              className="skew-on-scroll group relative bg-black/60 backdrop-blur-xl p-3 rounded-xl shadow-lg border border-white/10 overflow-hidden hover:border-cyan-500/50 transition-all duration-500"
+              className="group relative bg-black/60 backdrop-blur-xl p-3 rounded-xl shadow-lg border border-white/10 overflow-hidden hover:border-cyan-500/50 transition-all duration-500"
             >
               {content}
             </div>
@@ -57,18 +57,17 @@ const CertificateGrid = ({ certs = [], onImageClick = () => {}, smoothMode = fal
         }
 
         return (
-          <div key={idx} className="skew-on-scroll">
-            <motion.div
-              className="group relative bg-black/60 backdrop-blur-xl p-3 rounded-xl shadow-lg border border-white/10 overflow-hidden hover:border-cyan-500/50 transition-all duration-500"
-              whileHover={{ y: -5 }}
-              initial={{ opacity: 0, scale: 0.9 }}
-              whileInView={{ opacity: 1, scale: 1 }}
-              viewport={{ once: true }}
-              transition={{ delay: idx * 0.05 }}
-            >
-              {content}
-            </motion.div>
-          </div>
+          <motion.div
+            key={idx}
+            className="group relative bg-black/60 backdrop-blur-xl p-3 rounded-xl shadow-lg border border-white/10 overflow-hidden hover:border-cyan-500/50 transition-all duration-500"
+            whileHover={{ y: -5 }}
+            initial={{ opacity: 0, scale: 0.9 }}
+            whileInView={{ opacity: 1, scale: 1 }}
+            viewport={{ once: true }}
+            transition={{ delay: idx * 0.05 }}
+          >
+            {content}
+          </motion.div>
         );
       })}
     </div>

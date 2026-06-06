@@ -122,10 +122,3 @@ svg {
 .preloader-dot.delay-400 { animation-delay: 0.4s; }
 
 .preloader-bar-moving { animation: preloader-bar 0.9s ease-in-out infinite; }
-
-/* Organic Scroll Skew Effect */
-.skew-on-scroll {
-  transform: skewY(var(--scroll-skew, 0deg));
-  transition: transform 0.12s cubic-bezier(0.25, 1, 0.5, 1);
-  will-change: transform;
-}

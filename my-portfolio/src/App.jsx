@@ -13,7 +13,6 @@ import SkillChart from "./components/SkillChart";
 import PageTransition from "./components/PageTransition";
 import { usePerformanceDiagnostics } from "./hooks/usePerformanceDiagnostics";
 import { useDeviceTier } from "./hooks/useDeviceTier";
-import Beams from "./components/Beams";
 import FloatingLines from "./components/FloatingLines";
 import Certificates from "./components/Certificates";
 import Journey from "./components/Journey";
@@ -372,8 +371,15 @@ export default function App() {
   const [theme, _setTheme] = useState(() => localStorage.getItem("theme") || "dark");
   const [activeAboutTab, setActiveAboutTab] = useState("bio");
   const deviceTier = useDeviceTier();
-  const smoothMode = false;
+  const [smoothMode, setSmoothMode] = useState(false);
   const [isPreloaderActive, setIsPreloaderActive] = useState(true);
+
+  // Auto-detect and set default smoothMode based on device capability
+  useEffect(() => {
+    if (deviceTier && deviceTier.deviceTier !== 'unknown') {
+      setSmoothMode(deviceTier.defaultSmoothMode);
+    }
+  }, [deviceTier]);
   usePerformanceDiagnostics({
     enabled: import.meta.env.DEV,
     consoleReporter: true
@@ -458,47 +464,6 @@ export default function App() {
     return ()=> observer.disconnect();
   },[]);
 
-  // Organic Scroll Skew Effect
-  useEffect(() => {
-    if (prefersReducedMotion()) return;
-
-    let lastScrollY = window.pageYOffset || document.documentElement.scrollTop;
-    let targetSkew = 0;
-    let currentSkew = 0;
-    let rafId = null;
-
-    const handleScroll = () => {
-      const scrollY = window.pageYOffset || document.documentElement.scrollTop;
-      const velocity = scrollY - lastScrollY;
-      lastScrollY = scrollY;
-      
-      // Calculate target skew based on speed (capped to avoid visual breaks)
-      targetSkew = Math.max(-6, Math.min(6, velocity * 0.04));
-    };
-
-    const update = () => {
-      // Lerp to smooth out the transition back to normal
-      currentSkew += (targetSkew - currentSkew) * 0.1;
-      
-      // Decelerate target skew back to 0
-      targetSkew *= 0.88;
-
-      // Apply to document root CSS variable
-      document.documentElement.style.setProperty('--scroll-skew', `${currentSkew}deg`);
-
-      rafId = requestAnimationFrame(update);
-    };
-
-    window.addEventListener('scroll', handleScroll, { passive: true });
-    rafId = requestAnimationFrame(update);
-
-    return () => {
-      window.removeEventListener('scroll', handleScroll);
-      if (rafId) cancelAnimationFrame(rafId);
-      document.documentElement.style.removeProperty('--scroll-skew');
-    };
-  }, []);
-
   // Modal handlers
   const openModal = useCallback((images, startIndex = 0) => {
     setModalImages(images);
@@ -519,18 +484,9 @@ export default function App() {
   }, [modalImages.length]);
 
   // Memoize the background to prevent re-renders on scroll
-  const beamQuality = deviceTier.deviceTier === 'unknown' ? 'medium' : deviceTier.deviceTier;
-  const disableBeams = prefersReducedMotion();
-  const beamPresets = useMemo(
-    () => ({
-      high: { beamWidth: 3, beamHeight: 22, beamNumber: 16, speed: 2.4, noiseIntensity: 2, scale: 0.25 },
-      medium: { beamWidth: 2.4, beamHeight: 18, beamNumber: 12, speed: 2, noiseIntensity: 1.8, scale: 0.22 },
-      low: { beamWidth: 2, beamHeight: 14, beamNumber: 8, speed: 1.6, noiseIntensity: 1.4, scale: 0.18 }
-    }),
-    []
-  );
+  const disableAnimations = prefersReducedMotion();
   const background = useMemo(() => {
-    if (disableBeams) {
+    if (disableAnimations) {
       return (
         <div
           className="fixed inset-0 -z-10 bg-gradient-to-b from-[#03001e] via-[#7303c0]/70 to-[#ec38bc]/60"
@@ -538,22 +494,12 @@ export default function App() {
         />
       );
     }
-    const preset = beamPresets[beamQuality] ?? beamPresets.medium;
     return (
-      <div className="fixed inset-0 -z-10 bg-slate-950" style={{ width: '100vw', height: '100vh' }}>
-        <Beams
-          beamWidth={preset.beamWidth}
-          beamHeight={preset.beamHeight}
-          beamNumber={preset.beamNumber}
-          speed={preset.speed}
-          noiseIntensity={preset.noiseIntensity}
-          scale={preset.scale}
-          rotation={0}
-        />
-        <div className="absolute inset-0 z-10 opacity-30 mix-blend-screen pointer-events-none">
+      <div className="fixed inset-0 -z-10 bg-[#020205] bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-slate-900/60 via-black to-[#020205]" style={{ width: '100vw', height: '100vh' }}>
+        <div className="absolute inset-0 z-10 opacity-35 mix-blend-screen pointer-events-none">
           <FloatingLines
             linesGradient={['#22d3ee', '#8b5cf6', '#ec4899']}
-            animationSpeed={1.2}
+            animationSpeed={1.0}
             interactive={true}
             parallax={true}
             maxFPS={60}
@@ -562,7 +508,7 @@ export default function App() {
         </div>
       </div>
     );
-  }, [beamPresets, beamQuality, disableBeams, smoothMode]);
+  }, [disableAnimations, smoothMode]);
 
   // Memoize the header to only update when activeNav changes
   const header = useMemo(() => {
@@ -584,7 +530,7 @@ export default function App() {
                   </GlitchText>
                 </div>
               </div>
-              <div className="hidden md:block">
+              <div className="hidden md:flex items-center gap-6">
                 <div className="ml-10 relative flex items-baseline space-x-4">
                   {NAV_SECTIONS.map((section) => (
                     <NavLink
@@ -597,6 +543,19 @@ export default function App() {
                     </NavLink>
                   ))}
                 </div>
+                {/* Eco/Performance Toggle Button */}
+                <button
+                  onClick={() => setSmoothMode((prev) => !prev)}
+                  className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg border font-mono text-[11px] tracking-wider transition-all duration-300 ${
+                    smoothMode
+                      ? 'bg-emerald-500/10 border-emerald-500/30 text-emerald-400 hover:bg-emerald-500/20'
+                      : 'bg-cyan-500/10 border-cyan-500/30 text-cyan-400 hover:bg-cyan-500/20 shadow-[0_0_10px_rgba(34,211,238,0.15)]'
+                  }`}
+                  title={smoothMode ? "Switch to Performance Mode" : "Switch to Eco Mode (Saves CPU/GPU)"}
+                >
+                  <span className={`w-1.5 h-1.5 rounded-full ${smoothMode ? 'bg-emerald-400 animate-pulse' : 'bg-cyan-400 animate-ping'}`} />
+                  <span>{smoothMode ? '🌿 ECO_MODE' : '⚡ PERF_MODE'}</span>
+                </button>
               </div>
               <button
                 className="md:hidden p-2 rounded-lg border border-white/10 text-white hover:border-cyan-500/50 transition-colors"
@@ -633,6 +592,22 @@ export default function App() {
                     {section.label}
                   </_motion.button>
                 ))}
+
+                {/* Mobile Eco/Performance Toggle */}
+                <button
+                  onClick={() => {
+                    setSmoothMode((prev) => !prev);
+                  }}
+                  className={`w-full py-3.5 text-center text-sm font-mono tracking-widest uppercase rounded-xl border flex items-center justify-center gap-2 transition-all ${
+                    smoothMode
+                      ? 'border-emerald-500/30 bg-emerald-500/10 text-emerald-400'
+                      : 'border-cyan-500/30 bg-cyan-500/10 text-cyan-400'
+                  }`}
+                >
+                  <span className={`w-1.5 h-1.5 rounded-full ${smoothMode ? 'bg-emerald-400 animate-pulse' : 'bg-cyan-400'}`} />
+                  <span>{smoothMode ? '🌿 ECO_MODE ACTIVE' : '⚡ PERFORMANCE ACTIVE'}</span>
+                </button>
+
                 <button
                   className="mt-8 text-sm text-slate-400 underline underline-offset-4"
                   onClick={closeMobileNav}
