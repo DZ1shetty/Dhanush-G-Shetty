@@ -4,8 +4,8 @@ import { Mail, Send, User, MessageSquare, FileText, Download, Eye, EyeOff, Check
 
 const InputField = ({ label, name, type = "text", value, onChange, error, icon: Icon, placeholder }) => (
   <div className="relative mb-5 group">
-    <label className="text-[10px] font-mono text-slate-500 mb-1.5 ml-0.5 flex items-center gap-1.5 uppercase tracking-widest">
-      {Icon && <Icon size={10} className="text-slate-600" />}
+    <label className="text-[10px] font-mono text-slate-400 mb-2 ml-0.5 flex items-center gap-1.5 uppercase tracking-widest">
+      {Icon && <Icon size={10} className="text-slate-400" />}
       {label}
     </label>
     <input
@@ -14,16 +14,18 @@ const InputField = ({ label, name, type = "text", value, onChange, error, icon: 
       value={value}
       onChange={onChange}
       placeholder={placeholder}
-      className={`w-full bg-transparent border-b ${error ? 'border-red-500/50' : 'border-white/10'} py-2.5 text-slate-200 placeholder-slate-700 focus:outline-none focus:border-cyan-500/60 transition-colors duration-200 font-mono text-sm`}
+      className={`w-full bg-transparent border-b ${
+        error ? 'border-red-500/60' : 'border-white/20'
+      } py-2.5 text-white placeholder-slate-500 focus:outline-none focus:border-cyan-400/70 transition-colors duration-200 font-mono text-sm`}
     />
-    {error && <p className="text-red-400/80 text-[10px] mt-1 font-mono">{error}</p>}
+    {error && <p className="text-red-400 text-[10px] mt-1 font-mono">{error}</p>}
   </div>
 );
 
 const TextAreaField = ({ label, name, value, onChange, error, icon: Icon, placeholder }) => (
   <div className="relative mb-5 group">
-    <label className="text-[10px] font-mono text-slate-500 mb-1.5 ml-0.5 flex items-center gap-1.5 uppercase tracking-widest">
-      {Icon && <Icon size={10} className="text-slate-600" />}
+    <label className="text-[10px] font-mono text-slate-400 mb-2 ml-0.5 flex items-center gap-1.5 uppercase tracking-widest">
+      {Icon && <Icon size={10} className="text-slate-400" />}
       {label}
     </label>
     <textarea
@@ -32,9 +34,11 @@ const TextAreaField = ({ label, name, value, onChange, error, icon: Icon, placeh
       onChange={onChange}
       placeholder={placeholder}
       rows="4"
-      className={`w-full bg-transparent border-b ${error ? 'border-red-500/50' : 'border-white/10'} py-2.5 text-slate-200 placeholder-slate-700 focus:outline-none focus:border-cyan-500/60 transition-colors duration-200 resize-none font-mono text-sm`}
+      className={`w-full bg-transparent border-b ${
+        error ? 'border-red-500/60' : 'border-white/20'
+      } py-2.5 text-white placeholder-slate-500 focus:outline-none focus:border-cyan-400/70 transition-colors duration-200 resize-none font-mono text-sm`}
     />
-    {error && <p className="text-red-400/80 text-[10px] mt-1 font-mono">{error}</p>}
+    {error && <p className="text-red-400 text-[10px] mt-1 font-mono">{error}</p>}
   </div>
 );
 
@@ -110,38 +114,38 @@ const Contact = ({ smoothMode }) => {
         {/* Resume Panel */}
         <div className="space-y-6">
           {/* Section label */}
-          <div className="flex items-center gap-2 font-mono text-[10px] uppercase tracking-wider text-slate-600 select-none">
-            <span className="h-[1px] w-4 bg-white/10" />
+          <div className="flex items-center gap-2 font-mono text-[10px] uppercase tracking-wider text-slate-400 select-none">
+            <span className="h-[1px] w-4 bg-white/20" />
             RESUME
           </div>
 
           <div>
-            <h3 className="text-xl font-mono font-semibold text-slate-100 mb-1">resume_data.pdf</h3>
-            <p className="text-slate-500 text-xs font-mono">Professional credentials &amp; experience</p>
+            <h3 className="text-xl font-mono font-semibold text-white mb-1">resume_data.pdf</h3>
+            <p className="text-slate-400 text-xs font-mono">Professional credentials &amp; experience</p>
           </div>
 
           <div className="space-y-3">
             <a
               href="/Resume.pdf"
               download="Resume.pdf"
-              className="flex items-center justify-between w-full py-3 px-4 border border-white/10 hover:border-cyan-500/30 rounded-lg text-slate-300 hover:text-cyan-400 font-mono text-xs tracking-wider transition-all duration-200 group"
+              className="flex items-center justify-between w-full py-3 px-4 border border-white/20 hover:border-cyan-400/50 rounded-lg text-slate-200 hover:text-cyan-400 font-mono text-xs tracking-wider transition-all duration-200 group"
             >
               <span className="flex items-center gap-2">
                 <Download className="w-3.5 h-3.5" />
                 DOWNLOAD_PDF
               </span>
-              <span className="text-slate-600 group-hover:text-cyan-500 transition-colors">→</span>
+              <span className="text-slate-400 group-hover:text-cyan-400 transition-colors">→</span>
             </a>
 
             <button
               onClick={() => setShowResume(!showResume)}
-              className="flex items-center justify-between w-full py-3 px-4 border border-white/5 hover:border-white/10 rounded-lg text-slate-500 hover:text-slate-300 font-mono text-xs tracking-wider transition-all duration-200 group"
+              className="flex items-center justify-between w-full py-3 px-4 border border-white/10 hover:border-white/25 rounded-lg text-slate-300 hover:text-slate-100 font-mono text-xs tracking-wider transition-all duration-200 group"
             >
               <span className="flex items-center gap-2">
                 {showResume ? <EyeOff className="w-3.5 h-3.5" /> : <Eye className="w-3.5 h-3.5" />}
                 {showResume ? 'CLOSE_PREVIEW' : 'PREVIEW_RESUME'}
               </span>
-              <span className="text-slate-700 group-hover:text-slate-500 transition-colors">{showResume ? '−' : '+'}</span>
+              <span className="text-slate-500 group-hover:text-slate-300 transition-colors">{showResume ? '−' : '+'}</span>
             </button>
           </div>
 
@@ -153,7 +157,7 @@ const Contact = ({ smoothMode }) => {
                 animate={{ opacity: 1, height: '400px' }}
                 exit={{ opacity: 0, height: 0 }}
                 transition={{ duration: 0.25 }}
-                className="relative rounded-lg overflow-hidden border border-white/10 bg-black"
+                className="relative rounded-lg overflow-hidden border border-white/15 bg-black"
               >
                 <iframe
                   src="/Resume.pdf#toolbar=0"
@@ -165,9 +169,9 @@ const Contact = ({ smoothMode }) => {
           </AnimatePresence>
 
           {/* Status */}
-          <div className="flex items-center gap-2 text-[10px] font-mono text-slate-600 pt-2 border-t border-white/5 select-none">
-            <span className="flex h-1.5 w-1.5">
-              <span className="animate-ping absolute inline-flex h-1.5 w-1.5 rounded-full bg-emerald-500 opacity-60" />
+          <div className="flex items-center gap-2 text-[10px] font-mono text-slate-400 pt-2 border-t border-white/10 select-none">
+            <span className="flex h-1.5 w-1.5 relative">
+              <span className="animate-ping absolute inline-flex h-1.5 w-1.5 rounded-full bg-emerald-400 opacity-75" />
               <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-emerald-500" />
             </span>
             AVAILABLE_FOR_HIRE
@@ -177,14 +181,14 @@ const Contact = ({ smoothMode }) => {
         {/* Contact Form */}
         <div className="space-y-6">
           {/* Section label */}
-          <div className="flex items-center gap-2 font-mono text-[10px] uppercase tracking-wider text-slate-600 select-none">
-            <span className="h-[1px] w-4 bg-white/10" />
+          <div className="flex items-center gap-2 font-mono text-[10px] uppercase tracking-wider text-slate-400 select-none">
+            <span className="h-[1px] w-4 bg-white/20" />
             CONTACT
           </div>
 
           <div>
-            <h3 className="text-xl font-mono font-semibold text-slate-100 mb-1">send_message.sh</h3>
-            <p className="text-slate-500 text-xs font-mono">Initialize communication</p>
+            <h3 className="text-xl font-mono font-semibold text-white mb-1">send_message.sh</h3>
+            <p className="text-slate-400 text-xs font-mono">Initialize communication</p>
           </div>
 
           <AnimatePresence mode="wait">
@@ -196,10 +200,10 @@ const Contact = ({ smoothMode }) => {
                 exit={{ opacity: 0 }}
                 className="py-12 flex flex-col items-center gap-4 text-center"
               >
-                <CheckCircle className="w-8 h-8 text-emerald-500" />
+                <CheckCircle className="w-8 h-8 text-emerald-400" />
                 <div>
-                  <p className="font-mono text-sm text-slate-200">TRANSMISSION_SENT</p>
-                  <p className="font-mono text-[10px] text-slate-600 mt-1">&gt; Message queued for delivery</p>
+                  <p className="font-mono text-sm text-white">TRANSMISSION_SENT</p>
+                  <p className="font-mono text-[10px] text-slate-400 mt-1">&gt; Message queued for delivery</p>
                 </div>
               </motion.div>
             ) : (
@@ -257,7 +261,7 @@ const Contact = ({ smoothMode }) => {
                   <button
                     type="submit"
                     disabled={isSubmitting}
-                    className="flex items-center gap-2 px-6 py-3 border border-white/10 hover:border-cyan-500/30 text-slate-300 hover:text-cyan-400 rounded-lg font-mono text-xs tracking-wider transition-all duration-200 disabled:opacity-40 disabled:cursor-not-allowed group"
+                    className="flex items-center gap-2 px-6 py-3 border border-white/20 hover:border-cyan-400/50 text-slate-200 hover:text-cyan-400 rounded-lg font-mono text-xs tracking-wider transition-all duration-200 disabled:opacity-40 disabled:cursor-not-allowed group"
                   >
                     {isSubmitting ? (
                       <>
