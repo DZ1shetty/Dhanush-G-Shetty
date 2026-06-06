@@ -323,8 +323,8 @@ const NavLink = React.memo(({ section, children, activeNav, handleNavClick }) =>
       {isActive && (
         <Motion
           layoutId="active-nav-pill"
-          className="absolute inset-0 bg-cyan-500/10 rounded-lg border-b-2 border-cyan-500 shadow-[0_0_15px_rgba(34,211,238,0.4)]"
-          transition={{ type: "spring", stiffness: 500, damping: 30, mass: 0.8 }}
+          className="absolute inset-x-0 bottom-0 h-[2px] bg-cyan-400"
+          transition={{ type: "spring", stiffness: 400, damping: 25 }}
         />
       )}
       <span className="relative z-10">{children}</span>
