@@ -648,7 +648,6 @@ export default function App() {
           className="w-full lg:w-1/2 px-4 flex flex-col gap-4 lg:gap-3"
         >
           <div className="text-center lg:text-left">
-            <div className="inline-block mb-2 px-3 py-1 rounded-full bg-black/40 backdrop-blur-md border border-white/10 text-[10px] font-mono text-cyan-400 tracking-[0.2em] shadow-lg">SYSTEM_INITIALIZED</div>
             <h1 className="text-4xl md:text-5xl lg:text-5xl xl:text-6xl font-heading font-bold tracking-tighter mb-4 lg:mb-3">
               <span className="bg-clip-text text-transparent bg-gradient-to-r from-white via-cyan-100 to-white drop-shadow-[0_0_20px_rgba(34,211,238,0.3)]">
                 {portfolioData.name}
