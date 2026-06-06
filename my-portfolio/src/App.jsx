@@ -646,15 +646,7 @@ export default function App() {
                 {portfolioData.name}
               </span>
             </h1>
-            <div className="flex flex-col gap-4 lg:gap-3 items-center lg:items-start">
-              <div className="text-xs md:text-sm font-mono tracking-widest text-cyan-400 flex flex-wrap justify-center lg:justify-start gap-x-3 gap-y-1.5 uppercase font-medium select-none h-8 items-center">
-                {portfolioData.roles.map((role, idx) => (
-                  <React.Fragment key={role}>
-                    {idx > 0 && <span className="text-slate-600 font-sans font-normal">/</span>}
-                    <span>{role.replace(' ', '_')}</span>
-                  </React.Fragment>
-                ))}
-              </div>
+            <div className="flex flex-col gap-2 items-center lg:items-start">
               <SocialMediaIcons socialData={portfolioData.contact.social} />
             </div>
           </div>
