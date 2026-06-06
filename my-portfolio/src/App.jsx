@@ -615,10 +615,10 @@ export default function App() {
       : {};
 
     return (
-      <main id="main-content" className="container mx-auto px-4 sm:px-6 lg:px-8 pt-16">
-        <section id="home" className="min-h-screen flex flex-col lg:flex-row items-center justify-center gap-6 pt-4 pb-4 relative overflow-hidden">
+      <main id="main-content" className="container mx-auto px-4 sm:px-6 lg:px-8 pt-12 lg:pt-16">
+        <section id="home" className="min-h-screen lg:h-screen lg:min-h-0 flex flex-col lg:flex-row items-center justify-center gap-6 lg:gap-8 pt-4 pb-4 relative overflow-hidden">
           <Motion {...heroPrimaryMotion} className="w-full lg:w-1/2 flex items-center justify-center z-10">
-            <figure className="w-full max-w-lg group relative z-20">
+            <figure className="w-full max-w-md lg:max-w-[340px] xl:max-w-[420px] group relative z-20">
               <div className="relative rounded-[32px] overflow-hidden border border-white/10 shadow-[0_20px_80px_rgba(0,0,0,0.45)] bg-slate-900">
                 
                 {/* Real Image (Background) - Fades in */}
@@ -645,16 +645,16 @@ export default function App() {
 
         <Motion 
           {...heroCardMotion}
-          className="w-full lg:w-1/2 px-4 flex flex-col gap-6"
+          className="w-full lg:w-1/2 px-4 flex flex-col gap-4 lg:gap-3"
         >
           <div className="text-center lg:text-left">
-            <div className="inline-block mb-3 px-3 py-1 rounded-full bg-black/40 backdrop-blur-md border border-white/10 text-[10px] font-mono text-cyan-400 tracking-[0.2em] shadow-lg">SYSTEM_INITIALIZED</div>
-            <h1 className="text-5xl md:text-7xl font-heading font-bold tracking-tighter mb-8">
+            <div className="inline-block mb-2 px-3 py-1 rounded-full bg-black/40 backdrop-blur-md border border-white/10 text-[10px] font-mono text-cyan-400 tracking-[0.2em] shadow-lg">SYSTEM_INITIALIZED</div>
+            <h1 className="text-4xl md:text-5xl lg:text-5xl xl:text-6xl font-heading font-bold tracking-tighter mb-4 lg:mb-3">
               <span className="bg-clip-text text-transparent bg-gradient-to-r from-white via-cyan-100 to-white drop-shadow-[0_0_20px_rgba(34,211,238,0.3)]">
                 {portfolioData.name}
               </span>
             </h1>
-            <div className="flex flex-col gap-4 items-center lg:items-start">
+            <div className="flex flex-col gap-3 lg:gap-2 items-center lg:items-start">
               <AnimatedRoles roles={portfolioData.roles} />
               <SocialMediaIcons socialData={portfolioData.contact.social} />
             </div>
@@ -663,22 +663,22 @@ export default function App() {
           <div className="relative group">
             {/* Cyber Card Container */}
             <div className="absolute -inset-1 bg-gradient-to-r from-cyan-500/20 to-purple-600/20 rounded-2xl blur-xl opacity-50 group-hover:opacity-70 transition duration-1000"></div>
-            <div className="relative bg-black/60 backdrop-blur-xl pt-16 pb-8 px-6 md:px-8 rounded-2xl border border-white/10 shadow-2xl overflow-hidden">
+            <div className="relative bg-black/60 backdrop-blur-xl pt-11 pb-4 px-5 md:px-6 rounded-xl border border-white/10 shadow-2xl overflow-hidden">
               
               {/* Simulated Window Title Bar */}
-              <div className="absolute top-0 left-0 w-full bg-slate-950/80 backdrop-blur-md border-b border-white/5 px-4 py-3 flex items-center justify-between z-10">
+              <div className="absolute top-0 left-0 w-full bg-slate-950/80 backdrop-blur-md border-b border-white/5 px-4 py-2 flex items-center justify-between z-10">
                 <div className="flex items-center gap-1.5 select-none">
-                  <span className="w-3 h-3 rounded-full bg-rose-500/80 border border-rose-600/40 inline-block"></span>
-                  <span className="w-3 h-3 rounded-full bg-amber-500/80 border border-amber-600/40 inline-block"></span>
-                  <span className="w-3 h-3 rounded-full bg-emerald-500/80 border border-emerald-600/40 inline-block"></span>
+                  <span className="w-2.5 h-2.5 rounded-full bg-rose-500/80 border border-rose-600/40 inline-block"></span>
+                  <span className="w-2.5 h-2.5 rounded-full bg-amber-500/80 border border-amber-600/40 inline-block"></span>
+                  <span className="w-2.5 h-2.5 rounded-full bg-emerald-500/80 border border-emerald-600/40 inline-block"></span>
                 </div>
-                <div className="text-xs font-mono text-slate-400 tracking-wider flex items-center gap-2 select-none">
+                <div className="text-[10px] font-mono text-slate-400 tracking-wider flex items-center gap-1.5 select-none">
                   <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
                   {activeAboutTab === 'bio' && 'bio.json'}
                   {activeAboutTab === 'stack' && 'capabilities.sh'}
                   {activeAboutTab === 'facts' && 'developer.log'}
                 </div>
-                <div className="w-12"></div>
+                <div className="w-10"></div>
               </div>
 
               {/* Decorative Lines */}
@@ -686,39 +686,39 @@ export default function App() {
               <div className="absolute bottom-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-purple-500/50 to-transparent"></div>
               
               {/* Corner Accents */}
-              <div className="absolute top-0 left-0 w-8 h-8 border-t-2 border-l-2 border-cyan-500/30 rounded-tl-lg pointer-events-none"></div>
-              <div className="absolute bottom-0 right-0 w-8 h-8 border-b-2 border-r-2 border-purple-500/30 rounded-br-lg pointer-events-none"></div>
+              <div className="absolute top-0 left-0 w-6 h-6 border-t border-l border-cyan-500/20 rounded-tl-md pointer-events-none"></div>
+              <div className="absolute bottom-0 right-0 w-6 h-6 border-b border-r border-purple-500/20 rounded-br-md pointer-events-none"></div>
 
-              <h2 className="text-2xl font-mono font-bold text-center mb-6 flex items-center justify-center gap-x-2 text-white">
+              <h2 className="text-xl font-mono font-bold text-center mb-3 flex items-center justify-center gap-x-2 text-white">
                 <span className="text-cyan-400 font-semibold select-none">&lt;</span>
                 <span>ABOUT_ME</span>
                 <span className="text-cyan-400 font-semibold select-none">/&gt;</span>
               </h2>
 
               {/* Interactive Tabs Header (Simulated open files in editor) */}
-              <div className="flex justify-center border-b border-white/5 mb-6 font-mono text-xs tracking-wider">
+              <div className="flex justify-center border-b border-white/5 mb-4 font-mono text-[10px] sm:text-xs tracking-wider">
                 <button 
                   onClick={() => setActiveAboutTab('bio')}
-                  className={`flex items-center gap-1.5 px-4 py-2 border-b-2 transition-all duration-300 ${activeAboutTab === 'bio' ? 'border-cyan-400 text-cyan-400 bg-white/5' : 'border-transparent text-slate-400 hover:text-slate-200'}`}
+                  className={`flex items-center gap-1 px-3 py-1.5 border-b-2 transition-all duration-300 ${activeAboutTab === 'bio' ? 'border-cyan-400 text-cyan-400 bg-white/5' : 'border-transparent text-slate-400 hover:text-slate-200'}`}
                 >
                   <span className={activeAboutTab === 'bio' ? 'text-cyan-400' : 'text-slate-500'}>📄</span> bio.json
                 </button>
                 <button 
                   onClick={() => setActiveAboutTab('stack')}
-                  className={`flex items-center gap-1.5 px-4 py-2 border-b-2 transition-all duration-300 ${activeAboutTab === 'stack' ? 'border-purple-400 text-purple-400 bg-white/5' : 'border-transparent text-slate-400 hover:text-slate-200'}`}
+                  className={`flex items-center gap-1 px-3 py-1.5 border-b-2 transition-all duration-300 ${activeAboutTab === 'stack' ? 'border-purple-400 text-purple-400 bg-white/5' : 'border-transparent text-slate-400 hover:text-slate-200'}`}
                 >
                   <span className={activeAboutTab === 'stack' ? 'text-purple-400' : 'text-slate-500'}>⚡</span> capabilities.sh
                 </button>
                 <button 
                   onClick={() => setActiveAboutTab('facts')}
-                  className={`flex items-center gap-1.5 px-4 py-2 border-b-2 transition-all duration-300 ${activeAboutTab === 'facts' ? 'border-emerald-400 text-emerald-400 bg-white/5' : 'border-transparent text-slate-400 hover:text-slate-200'}`}
+                  className={`flex items-center gap-1 px-3 py-1.5 border-b-2 transition-all duration-300 ${activeAboutTab === 'facts' ? 'border-emerald-400 text-emerald-400 bg-white/5' : 'border-transparent text-slate-400 hover:text-slate-200'}`}
                 >
                   <span className={activeAboutTab === 'facts' ? 'text-emerald-400' : 'text-slate-500'}>📋</span> developer.log
                 </button>
               </div>
 
               {/* Tab Content */}
-              <div className="min-h-[200px] flex items-center justify-center">
+              <div className="min-h-[155px] flex items-center justify-center">
                 <AnimatePresence mode="wait">
                   {activeAboutTab === 'bio' && (
                     <Motion
@@ -727,11 +727,11 @@ export default function App() {
                       animate={{ opacity: 1, y: 0 }}
                       exit={{ opacity: 0, y: -10 }}
                       transition={{ duration: 0.2 }}
-                      className="w-full text-slate-300 font-mono leading-relaxed text-left text-xs sm:text-sm"
+                      className="w-full text-slate-300 font-mono leading-normal text-left text-[11px] sm:text-xs"
                     >
-                      <div className="flex gap-4">
+                      <div className="flex gap-3">
                         {/* Line Numbers */}
-                        <div className="hidden sm:flex flex-col text-slate-600 select-none text-right font-mono pr-3 border-r border-white/5">
+                        <div className="hidden sm:flex flex-col text-slate-600 select-none text-right font-mono pr-2 border-r border-white/5">
                           <span>1</span>
                           <span>2</span>
                           <span>3</span>
@@ -742,28 +742,26 @@ export default function App() {
                           <span>8</span>
                           <span>9</span>
                           <span>10</span>
-                          <span>11</span>
-                          <span>12</span>
                         </div>
                         {/* JSON block & Text */}
-                        <div className="flex-1 space-y-4">
+                        <div className="flex-1 space-y-3">
                           <div>
                             <span className="text-pink-500">const</span> <span className="text-cyan-400">developer</span> = <span className="text-yellow-300">{`{`}</span>
                             <div className="pl-4">
                               <span className="text-purple-400">name</span>: <span className="text-emerald-400">"Dhanush G Shetty"</span>,
                               <br />
-                              <span className="text-purple-400">role</span>: <span className="text-emerald-400">"Full-Stack Dev & XR Specialist"</span>,
+                              <span className="text-purple-400">role</span>: <span className="text-emerald-400">"Full-Stack & XR Dev"</span>,
                               <br />
-                              <span className="text-purple-400">fuel</span>: <span className="text-emerald-400">"Caffeine & Compiler Warnings"</span>,
+                              <span className="text-purple-400">fuel</span>: <span className="text-emerald-400">"Coffee & Warnings"</span>,
                               <br />
-                              <span className="text-purple-400">loves</span>: <span className="text-yellow-300">{`[`}</span><span className="text-emerald-400">"Slick Frontends"</span>, <span className="text-emerald-400">"Robust Backends"</span>, <span className="text-emerald-400">"AR/VR"</span><span className="text-yellow-300">{`]`}</span>
+                              <span className="text-purple-400">skills</span>: <span className="text-yellow-300">{`[`}</span><span className="text-emerald-400">"React"</span>, <span className="text-emerald-400">"FastAPI"</span>, <span className="text-emerald-400">"Unity/XR"</span><span className="text-yellow-300">{`]`}</span>
                             </div>
                             <span className="text-yellow-300">{`};`}</span>
                           </div>
                           
-                          <p className="text-slate-300 font-sans font-light leading-relaxed text-sm sm:text-base border-t border-white/5 pt-4">
-                            <span className="text-cyan-400 font-bold font-heading text-lg mr-1.5">Hey there!</span>
-                            I'm Dhanush, a coffee-fueled developer who loves building cool stuff for the web. I'm all about bridging the gap between polished, high-fidelity frontends (making things look nice) and robust, modular backends (making sure they actually work). When my hands are off the keyboard, you'll probably find me experimenting with AR/VR scenes, learning new tech, or hacking away on a fun side project.
+                          <p className="text-slate-300 font-sans font-light leading-snug text-xs sm:text-sm border-t border-white/5 pt-2">
+                            <span className="text-cyan-400 font-bold font-heading text-sm mr-1">Hey there!</span>
+                            I'm Dhanush, a developer building high-performance web apps and immersive XR scenes. I bridge the gap between polished frontends (making things look great) and solid backends (making sure they don't break). When not coding, I'm hacking on side projects, learning frameworks, or hunting down bugs.
                           </p>
                         </div>
                       </div>
@@ -777,11 +775,11 @@ export default function App() {
                       animate={{ opacity: 1, y: 0 }}
                       exit={{ opacity: 0, y: -10 }}
                       transition={{ duration: 0.2 }}
-                      className="w-full text-slate-300 font-mono text-left text-xs sm:text-sm"
+                      className="w-full text-slate-300 font-mono text-left text-[11px] sm:text-xs"
                     >
-                      <div className="flex gap-4">
+                      <div className="flex gap-3">
                         {/* Line Numbers */}
-                        <div className="hidden sm:flex flex-col text-slate-600 select-none text-right font-mono pr-3 border-r border-white/5">
+                        <div className="hidden sm:flex flex-col text-slate-600 select-none text-right font-mono pr-2 border-r border-white/5">
                           <span>1</span>
                           <span>2</span>
                           <span>3</span>
@@ -789,41 +787,39 @@ export default function App() {
                           <span>5</span>
                           <span>6</span>
                           <span>7</span>
-                          <span>8</span>
-                          <span>9</span>
                         </div>
-                        <div className="flex-1 space-y-4">
+                        <div className="flex-1 space-y-3">
                           <div>
                             <span className="text-slate-500 select-none">dhanush@portfolio:~$</span> <span className="text-cyan-400">./capabilities.sh</span>
                           </div>
                           
-                          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 border-t border-white/5 pt-4">
-                            <div className="space-y-3">
+                          <div className="grid grid-cols-1 md:grid-cols-2 gap-3 border-t border-white/5 pt-2">
+                            <div className="space-y-2">
                               <div>
-                                <span className="text-cyan-400 font-bold block mb-1">⚡ FRONTEND</span>
-                                <div className="text-slate-400 pl-3 border-l-2 border-cyan-500/30">
-                                  React, Vite, JavaScript, HTML5/CSS3
+                                <span className="text-cyan-400 font-bold block mb-0.5">⚡ FRONTEND</span>
+                                <div className="text-slate-400 pl-2.5 border-l border-cyan-500/30 leading-snug">
+                                  React, Vite, JS, HTML5/CSS3
                                 </div>
                               </div>
                               <div>
-                                <span className="text-purple-400 font-bold block mb-1">⚙️ BACKEND</span>
-                                <div className="text-slate-400 pl-3 border-l-2 border-purple-500/30">
+                                <span className="text-purple-400 font-bold block mb-0.5">⚙️ BACKEND</span>
+                                <div className="text-slate-400 pl-2.5 border-l border-purple-500/30 leading-snug">
                                   Node.js, FastAPI, Python, C, Java
                                 </div>
                               </div>
                             </div>
                             
-                            <div className="space-y-3">
+                            <div className="space-y-2">
                               <div>
-                                <span className="text-emerald-400 font-bold block mb-1">🎮 GRAPHICS & XR</span>
-                                <div className="text-slate-400 pl-3 border-l-2 border-emerald-500/30">
-                                  Unity, AR/VR Development, Three.js
+                                <span className="text-emerald-400 font-bold block mb-0.5">🎮 GRAPHICS & XR</span>
+                                <div className="text-slate-400 pl-2.5 border-l border-emerald-500/30 leading-snug">
+                                  Unity, AR/VR, Three.js
                                 </div>
                               </div>
                               <div>
-                                <span className="text-yellow-400 font-bold block mb-1">🛠️ ENV & TOOLS</span>
-                                <div className="text-slate-400 pl-3 border-l-2 border-yellow-500/30">
-                                  Git, GitHub, Vercel, VS Code, Postman
+                                <span className="text-yellow-400 font-bold block mb-0.5">🛠️ ENV & TOOLS</span>
+                                <div className="text-slate-400 pl-2.5 border-l border-yellow-500/30 leading-snug">
+                                  Git, GitHub, Vercel, VS Code
                                 </div>
                               </div>
                             </div>
@@ -840,43 +836,42 @@ export default function App() {
                       animate={{ opacity: 1, y: 0 }}
                       exit={{ opacity: 0, y: -10 }}
                       transition={{ duration: 0.2 }}
-                      className="w-full text-slate-300 font-mono text-left text-xs sm:text-sm"
+                      className="w-full text-slate-300 font-mono text-left text-[11px] sm:text-xs"
                     >
-                      <div className="flex gap-4">
+                      <div className="flex gap-3">
                         {/* Line Numbers */}
-                        <div className="hidden sm:flex flex-col text-slate-600 select-none text-right font-mono pr-3 border-r border-white/5">
+                        <div className="hidden sm:flex flex-col text-slate-600 select-none text-right font-mono pr-2 border-r border-white/5">
                           <span>1</span>
                           <span>2</span>
                           <span>3</span>
                           <span>4</span>
                           <span>5</span>
-                          <span>6</span>
                         </div>
-                        <div className="flex-1 space-y-4">
+                        <div className="flex-1 space-y-3">
                           <div>
                             <span className="text-slate-500 select-none">dhanush@portfolio:~$</span> <span className="text-cyan-400">tail -n 4 developer.log</span>
                           </div>
                           
-                          <div className="space-y-3 border-t border-white/5 pt-4">
-                            <div className="flex items-start gap-2.5">
+                          <div className="space-y-2 border-t border-white/5 pt-2 leading-snug">
+                            <div className="flex items-start gap-2">
                               <span className="text-cyan-400 font-bold select-none">[INFO]</span>
                               <span className="text-slate-600 select-none">|</span>
-                              <span>Fuelled by coffee, curiosity, and code compiler warnings. ☕</span>
+                              <span>Fuelled by coffee, curiosity, and compiler warnings. ☕</span>
                             </div>
-                            <div className="flex items-start gap-2.5">
+                            <div className="flex items-start gap-2">
                               <span className="text-amber-400 font-bold select-none">[WARN]</span>
                               <span className="text-slate-600 select-none">|</span>
-                              <span>Light mode disabled. Eye protection active (Dark mode only). 🌙</span>
+                              <span>Light mode disabled. Eye protection active (Dark only). 🌙</span>
                             </div>
-                            <div className="flex items-start gap-2.5">
+                            <div className="flex items-start gap-2">
                               <span className="text-purple-400 font-bold select-none">[DEBUG]</span>
                               <span className="text-slate-600 select-none">|</span>
-                              <span>Maintaining an 8.37 CGPA at NMAMIT (it's basically a competitive sport). 🎯</span>
+                              <span>Maintaining an 8.37 CGPA at NMAMIT (it's a sport). 🎯</span>
                             </div>
-                            <div className="flex items-start gap-2.5">
+                            <div className="flex items-start gap-2">
                               <span className="text-emerald-400 font-bold select-none">[SUCCESS]</span>
                               <span className="text-slate-600 select-none">|</span>
-                              <span>Always down to hack on random side projects or learn emerging tech. 🚀</span>
+                              <span>Always down to hack on random side projects or learn tech. 🚀</span>
                             </div>
                           </div>
                         </div>
