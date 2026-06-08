@@ -889,7 +889,7 @@ export default function App() {
       </Section>
 
       <Section id="certificate" title="Certificates & Achievements" icon={<Award className="w-8 h-8"/>}>
-        <Certificates data={portfolioData.certificates} smoothMode={smoothMode} />
+        <Certificates data={portfolioData.certificates} smoothMode={smoothMode} openModal={openModal} />
       </Section>
 
       <Section id="contact" title="Contact Me" icon={<Mail className="w-8 h-8"/>}>
