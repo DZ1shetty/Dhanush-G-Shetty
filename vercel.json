@@ -1,7 +1,7 @@
 {
-  "installCommand": "cd my-portfolio && npm install --legacy-peer-deps",
-  "buildCommand": "cd my-portfolio && npm run build",
-  "outputDirectory": "my-portfolio/dist",
+  "installCommand": "cd v2-portfolio && npm install --legacy-peer-deps",
+  "buildCommand": "cd v2-portfolio && npm run build",
+  "outputDirectory": "v2-portfolio/dist",
   "framework": "vite",
   "rewrites": [
     {
