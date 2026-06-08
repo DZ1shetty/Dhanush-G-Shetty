@@ -4,6 +4,9 @@
   "private": true,
   "scripts": {
     "install:app": "cd my-portfolio && npm install",
-    "build": "cd my-portfolio && npm run build"
+    "build": "cd my-portfolio && npm run build",
+    "automation:sort": "python automation/alphabetical_sort.py",
+    "automation:feed": "python automation/generate_feed.py",
+    "automation:all": "npm run automation:sort && npm run automation:feed"
   }
 }
