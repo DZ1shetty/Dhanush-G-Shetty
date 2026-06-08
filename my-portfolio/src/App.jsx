@@ -619,7 +619,7 @@ export default function App() {
                   src={HERO_ILLUSTRATION_2}
                   alt="Detailed developer illustration"
                   className="absolute inset-0 w-full h-full object-cover opacity-0 group-hover:opacity-100 transition-all duration-1000 ease-in-out delay-100 scale-100 group-hover:scale-105"
-                  loading="lazy"
+                  loading="eager"
                 />
 
                 {/* Sketch Image (Foreground) - Fades out */}
@@ -627,7 +627,7 @@ export default function App() {
                   src={HERO_ILLUSTRATION}
                   alt="Illustration of a developer coding on a beanbag chair"
                   className="relative w-full h-full object-cover opacity-100 group-hover:opacity-0 transition-all duration-1000 ease-in-out delay-100 scale-100 group-hover:scale-105 group-hover:blur-sm"
-                  loading="lazy"
+                  loading="eager"
                 />
                 
                 {/* Subtle Overlay for depth */}

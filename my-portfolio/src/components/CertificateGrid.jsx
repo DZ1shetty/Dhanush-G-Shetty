@@ -23,7 +23,7 @@ const CertificateGrid = ({ certs = [], onImageClick = () => {}, smoothMode = fal
                 src={cert.src} 
                 alt={cert.title} 
                 className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110 opacity-80 group-hover:opacity-100 grayscale group-hover:grayscale-0" 
-                loading="lazy" 
+                loading="eager" 
               />
               
               {/* Scanning Line Effect */}

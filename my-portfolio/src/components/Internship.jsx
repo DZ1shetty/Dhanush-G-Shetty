@@ -23,7 +23,7 @@ const ImageGallery = ({ project, openModal }) => (
           src={image.src}
           alt={image.caption}
           className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105 opacity-80 group-hover:opacity-100"
-          loading="lazy"
+          loading="eager"
         />
         <div className="absolute inset-0 bg-cyan-950/60 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-1.5 text-cyan-300 font-mono text-[10px] tracking-wider">
           <ZoomIn className="w-3.5 h-3.5" />
