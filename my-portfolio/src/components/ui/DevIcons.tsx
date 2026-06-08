@@ -69,8 +69,8 @@ const Nextjs = (props: SVGProps<SVGSVGElement>) => (
         y1="116.5"
         y2="160.5"
       >
-        <stop stop-color="white" />
-        <stop offset="1" stop-color="white" stop-opacity="0" />
+        <stop stopColor="white" />
+        <stop offset="1" stopColor="white" stopOpacity="0" />
       </linearGradient>
       <linearGradient
         gradientUnits="userSpaceOnUse"
@@ -80,8 +80,8 @@ const Nextjs = (props: SVGProps<SVGSVGElement>) => (
         y1="54"
         y2="106.875"
       >
-        <stop stop-color="white" />
-        <stop offset="1" stop-color="white" stop-opacity="0" />
+        <stop stopColor="white" />
+        <stop offset="1" stopColor="white" stopOpacity="0" />
       </linearGradient>
     </defs>
   </svg>
@@ -101,11 +101,11 @@ const Nodejs = (props: SVGProps<SVGSVGElement>) => (
         y1="17.487%"
         y2="89.755%"
       >
-        <stop offset="0%" stop-color="#41873F" />
-        <stop offset="32.88%" stop-color="#418B3D" />
-        <stop offset="63.52%" stop-color="#419637" />
-        <stop offset="93.19%" stop-color="#3FA92D" />
-        <stop offset="100%" stop-color="#3FAE2A" />
+        <stop offset="0%" stopColor="#41873F" />
+        <stop offset="32.88%" stopColor="#418B3D" />
+        <stop offset="63.52%" stopColor="#419637" />
+        <stop offset="93.19%" stopColor="#3FA92D" />
+        <stop offset="100%" stopColor="#3FAE2A" />
       </linearGradient>
       <linearGradient
         id="nodejs__c"
@@ -114,10 +114,10 @@ const Nodejs = (props: SVGProps<SVGSVGElement>) => (
         y1="55.169%"
         y2="-18.306%"
       >
-        <stop offset="13.76%" stop-color="#41873F" />
-        <stop offset="40.32%" stop-color="#54A044" />
-        <stop offset="71.36%" stop-color="#66B848" />
-        <stop offset="90.81%" stop-color="#6CC04A" />
+        <stop offset="13.76%" stopColor="#41873F" />
+        <stop offset="40.32%" stopColor="#54A044" />
+        <stop offset="71.36%" stopColor="#66B848" />
+        <stop offset="90.81%" stopColor="#6CC04A" />
       </linearGradient>
       <linearGradient
         id="nodejs__f"
@@ -126,10 +126,10 @@ const Nodejs = (props: SVGProps<SVGSVGElement>) => (
         y1="49.997%"
         y2="49.997%"
       >
-        <stop offset="9.192%" stop-color="#6CC04A" />
-        <stop offset="28.64%" stop-color="#66B848" />
-        <stop offset="59.68%" stop-color="#54A044" />
-        <stop offset="86.24%" stop-color="#41873F" />
+        <stop offset="9.192%" stopColor="#6CC04A" />
+        <stop offset="28.64%" stopColor="#66B848" />
+        <stop offset="59.68%" stopColor="#54A044" />
+        <stop offset="86.24%" stopColor="#41873F" />
       </linearGradient>
       <path
         id="nodejs__b"
@@ -189,8 +189,8 @@ const Python = (props: SVGProps<SVGSVGElement>) => (
         y2="34.658"
         gradientUnits="userSpaceOnUse"
       >
-        <stop stop-color="#387EB8" />
-        <stop offset="1" stop-color="#366994" />
+        <stop stopColor="#387EB8" />
+        <stop offset="1" stopColor="#366994" />
       </linearGradient>
       <linearGradient
         id="python__b"
@@ -200,8 +200,8 @@ const Python = (props: SVGProps<SVGSVGElement>) => (
         y2="45.163"
         gradientUnits="userSpaceOnUse"
       >
-        <stop stop-color="#FFE052" />
-        <stop offset="1" stop-color="#FFC331" />
+        <stop stopColor="#FFE052" />
+        <stop offset="1" stopColor="#FFC331" />
       </linearGradient>
     </defs>
   </svg>

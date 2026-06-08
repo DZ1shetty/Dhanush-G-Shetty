@@ -130,14 +130,6 @@
   }
   body {
     @apply bg-background text-foreground;
-    background-image: radial-gradient(
-      circle,
-      var(--dot-color) var(--dot-radius),
-      transparent calc(var(--dot-radius) + 0.5px)
-    );
-    background-size: var(--dot-size) var(--dot-size);
-    background-position: 0 0;
-    background-attachment: fixed;
   }
   button:not(:disabled),
   [role="button"]:not(:disabled) {

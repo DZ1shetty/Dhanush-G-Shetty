@@ -63,14 +63,14 @@ export default function Squares({
 
           if (isHovered) {
             ctx.fillStyle = hoverFillColor;
-            // Use 20% opacity for hovered square
-            ctx.globalAlpha = 0.2;
+            // Use 40% opacity for hovered square
+            ctx.globalAlpha = 0.4;
             ctx.fillRect(squareX, squareY, squareSize, squareSize);
             ctx.globalAlpha = 1.0;
           }
 
           ctx.strokeStyle = borderColor;
-          ctx.globalAlpha = 0.15; // Make the grid lines subtle
+          ctx.globalAlpha = 0.35; // Make the grid lines more visible
           ctx.strokeRect(squareX, squareY, squareSize, squareSize);
           ctx.globalAlpha = 1.0;
         }

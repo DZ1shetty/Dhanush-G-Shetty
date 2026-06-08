@@ -1,7 +1,7 @@
-import { ThemeProvider } from "@/components/theme-provider";
+import { useState, useEffect } from "react";
+import { ThemeProvider, useTheme } from "@/components/theme-provider";
 import { Analytics } from "@vercel/analytics/react";
 import { SpeedInsights } from '@vercel/speed-insights/react';
-import { useState } from "react";
 import NavigationBar from "./components/NavBar/NavigationBar";
 import Home from "./components/Home/HomeSection";
 import About from "./components/About/AboutSection";
@@ -11,6 +11,37 @@ import Projects from "./components/Projects/ProjectSection";
 import Contact from "./components/Contact/ContactSection";
 import Squares from "./components/ui/Squares";
 import BootScreen from "./components/ui/BootScreen";
+
+function BackgroundLayer() {
+  const { theme } = useTheme();
+  const [isDark, setIsDark] = useState(false);
+
+  useEffect(() => {
+    const checkTheme = () => {
+      const root = window.document.documentElement;
+      setIsDark(root.classList.contains("dark"));
+    };
+    
+    checkTheme();
+    // Use MutationObserver to watch for class changes on HTML tag
+    const observer = new MutationObserver(checkTheme);
+    observer.observe(window.document.documentElement, { attributes: true, attributeFilter: ['class'] });
+    
+    return () => observer.disconnect();
+  }, [theme]);
+
+  return (
+    <div className="fixed inset-0 z-[-1] bg-background">
+      <Squares 
+          direction="diagonal"
+          speed={0.5}
+          squareSize={50}
+          borderColor={isDark ? "#ffffff" : "#000000"} 
+          hoverFillColor={isDark ? "#22c55e" : "#22c55e"}
+      />
+    </div>
+  );
+}
 
 function App() {
   const [isBooting, setIsBooting] = useState(() => {
@@ -27,15 +58,7 @@ function App() {
 
   return (
     <ThemeProvider defaultTheme="light" storageKey="vite-ui-theme">
-      <div className="fixed inset-0 z-[-1] bg-background">
-        <Squares 
-            direction="diagonal"
-            speed={0.5}
-            squareSize={40}
-            borderColor="var(--foreground)" 
-            hoverFillColor="var(--foreground)"
-        />
-      </div>
+      <BackgroundLayer />
       <NavigationBar />
       <main>
         <Home />
