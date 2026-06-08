@@ -42,7 +42,7 @@ const TextAreaField = ({ label, name, value, onChange, error, icon: Icon, placeh
   </div>
 );
 
-const Contact = ({ smoothMode }) => {
+const Contact = () => {
   const [formData, setFormData] = useState({
     name: '',
     email: '',

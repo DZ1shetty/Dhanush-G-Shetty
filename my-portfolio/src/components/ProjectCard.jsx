@@ -1,8 +1,7 @@
 import React from 'react';
 import { Github, ArrowUpRight } from 'lucide-react';
-import { motion } from 'framer-motion';
 
-const ProjectCard = ({ project, index, smoothMode = false }) => {
+const ProjectCard = ({ project, index }) => {
   const formattedIndex = (index + 1).toString().padStart(2, '0');
 
   const cardClasses = `group relative bg-slate-950/30 hover:bg-slate-900/30 border border-white/5 hover:border-cyan-500/20 p-5 rounded-xl transition-all duration-300 w-full flex flex-col justify-between h-full hover:shadow-[0_8px_30px_rgba(0,0,0,0.4)]`;
@@ -57,24 +56,10 @@ const ProjectCard = ({ project, index, smoothMode = false }) => {
     </>
   );
 
-  if (smoothMode) {
-    return (
-      <div className={cardClasses}>
-        {inner}
-      </div>
-    );
-  }
-
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 30 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, amount: 0.1 }}
-      transition={{ duration: 0.5, delay: index * 0.05 }}
-      className={cardClasses}
-    >
+    <div className={cardClasses}>
       {inner}
-    </motion.div>
+    </div>
   );
 };
 

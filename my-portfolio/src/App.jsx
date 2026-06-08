@@ -19,8 +19,6 @@ import Journey from "./components/Journey";
 import Internship from "./components/Internship";
 import Contact from "./components/Contact";
 import Preloader from "./components/Preloader";
-import ScrollProgressHUD from "./components/ScrollProgressHUD";
-import ScrollReveal from "./components/ScrollReveal";
 
 // Utility function to check for reduced motion preference
 const prefersReducedMotion = () => {
@@ -28,7 +26,7 @@ const prefersReducedMotion = () => {
   return window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 };
 
-// Scroll animations are enabled dynamically based on Eco Mode and reduced motion preference
+const SCROLL_ANIMATIONS_ENABLED = false;
 const NAV_SECTIONS = [
   { id: "home", label: "Home" },
   { id: "journey", label: "Journey" },
@@ -54,16 +52,13 @@ const Motion = ({ children, ...props }) => {
 };
 
 // Section component with motion awareness
-const Section = React.memo(({ id, title, icon, children, smoothMode = false }) => {
-  const shouldReduceMotion = prefersReducedMotion();
-  const animationsEnabled = !smoothMode && !shouldReduceMotion;
-
-  const animationProps = animationsEnabled
+const Section = React.memo(({ id, title, icon, children }) => {
+  const animationProps = SCROLL_ANIMATIONS_ENABLED
     ? {
-        initial: { opacity: 0, y: 40, filter: "blur(4px)" },
-        whileInView: { opacity: 1, y: 0, filter: "blur(0px)" },
-        viewport: { once: true, amount: 0.15 },
-        transition: { duration: 0.8, ease: [0.16, 1, 0.3, 1] }
+        initial: { opacity: 0, y: 50 },
+        whileInView: { opacity: 1, y: 0 },
+        viewport: { once: true, amount: 0.1 },
+        transition: { duration: 0.6 }
       }
     : {};
 
@@ -595,10 +590,7 @@ export default function App() {
 
   // Memoize the main content to prevent re-renders when activeNav changes
   const mainContent = useMemo(() => {
-    const shouldReduceMotion = prefersReducedMotion();
-    const animationsEnabled = !smoothMode && !shouldReduceMotion;
-
-    const heroPrimaryMotion = animationsEnabled
+    const heroPrimaryMotion = SCROLL_ANIMATIONS_ENABLED
       ? {
           initial: { opacity: 0, scale: 0.9 },
           animate: { opacity: 1, scale: 1 },
@@ -606,7 +598,7 @@ export default function App() {
         }
       : {};
 
-    const heroCardMotion = animationsEnabled
+    const heroCardMotion = SCROLL_ANIMATIONS_ENABLED
       ? {
           initial: { opacity: 0, x: 50 },
           whileInView: { opacity: 1, x: 0 },
@@ -747,20 +739,20 @@ export default function App() {
                           <div>
                             <span className="text-pink-500">const</span> <span className="text-cyan-400">developer</span> = <span className="text-yellow-300">{`{`}</span>
                             <div className="pl-4">
-                              <span className="text-purple-400">name</span>: <span className="text-emerald-400">"Dhanush G Shetty"</span>,
+                              <span className="text-purple-400">name</span>: <span className="text-emerald-400">&quot;Dhanush G Shetty&quot;</span>,
                               <br />
-                              <span className="text-purple-400">role</span>: <span className="text-emerald-400">"Full-Stack & XR Dev"</span>,
+                              <span className="text-purple-400">role</span>: <span className="text-emerald-400">&quot;Full-Stack &amp; XR Dev&quot;</span>,
                               <br />
-                              <span className="text-purple-400">fuel</span>: <span className="text-emerald-400">"Coffee & Warnings"</span>,
+                              <span className="text-purple-400">fuel</span>: <span className="text-emerald-400">&quot;Coffee &amp; Warnings&quot;</span>,
                               <br />
-                              <span className="text-purple-400">skills</span>: <span className="text-yellow-300">{`[`}</span><span className="text-emerald-400">"React"</span>, <span className="text-emerald-400">"FastAPI"</span>, <span className="text-emerald-400">"Unity/XR"</span><span className="text-yellow-300">{`]`}</span>
+                              <span className="text-purple-400">skills</span>: <span className="text-yellow-300">{`[`}</span><span className="text-emerald-400">&quot;React&quot;</span>, <span className="text-emerald-400">&quot;FastAPI&quot;</span>, <span className="text-emerald-400">&quot;Unity/XR&quot;</span><span className="text-yellow-300">{`]`}</span>
                             </div>
                             <span className="text-yellow-300">{`};`}</span>
                           </div>
                           
                           <p className="text-slate-300 font-sans font-light leading-snug text-xs sm:text-sm border-t border-white/5 pt-2">
                             <span className="text-cyan-400 font-bold font-heading text-sm mr-1">Hey there!</span>
-                            I'm Dhanush, a developer building high-performance web apps and immersive XR scenes. I bridge the gap between polished frontends (making things look great) and solid backends (making sure they don't break). When not coding, I'm hacking on side projects, learning frameworks, or hunting down bugs.
+                            I&apos;m Dhanush, a developer building high-performance web apps and immersive XR scenes. I bridge the gap between polished frontends (making things look great) and solid backends (making sure they don&apos;t break). When not coding, I&apos;m hacking on side projects, learning frameworks, or hunting down bugs.
                           </p>
                         </div>
                       </div>
@@ -865,7 +857,7 @@ export default function App() {
                             <div className="flex items-start gap-2">
                               <span className="text-purple-400 font-bold select-none">[DEBUG]</span>
                               <span className="text-slate-600 select-none">|</span>
-                              <span>Maintaining an 8.37 CGPA at NMAMIT (it's a sport). 🎯</span>
+                              <span>Maintaining an 8.37 CGPA at NMAMIT (it&apos;s a sport). 🎯</span>
                             </div>
                             <div className="flex items-start gap-2">
                               <span className="text-emerald-400 font-bold select-none">[SUCCESS]</span>
@@ -884,50 +876,24 @@ export default function App() {
         </Motion>
       </section>
 
-      {/* 3. Glowing Developer Statement ScrollReveal Section */}
-      <section className="py-20 max-w-4xl mx-auto text-center px-4 flex flex-col items-center justify-center min-h-[35vh] border-t border-b border-white/5 relative overflow-hidden select-none">
-        <div className="absolute inset-0 opacity-[0.02] pointer-events-none" style={{
-          backgroundImage: 'radial-gradient(circle, #22d3ee 1px, transparent 1px)',
-          backgroundSize: '20px 20px'
-        }} />
-        
-        <ScrollReveal
-          baseOpacity={0.05}
-          enableBlur={true}
-          baseRotation={2}
-          blurStrength={8}
-          containerClassName="text-center w-full"
-          textClassName="font-heading font-extrabold text-slate-100 tracking-tight leading-relaxed text-glow font-sans"
-          disabled={!animationsEnabled}
-        >
-          I believe in building web applications that are not only high-performing and robust, but also visual masterpieces. Visual aesthetics combined with solid, modular engineering is what defines modern software excellence.
-        </ScrollReveal>
-        
-        <div className="flex items-center gap-3 mt-8 font-mono text-[10px] text-cyan-400/70 uppercase tracking-[0.25em]">
-          <span className="w-1.5 h-1.5 rounded-full bg-cyan-400 shadow-[0_0_8px_rgba(34,211,238,0.8)] animate-pulse" />
-          <span>MISSION_STATEMENT.TXT</span>
-          <span className="w-1.5 h-1.5 rounded-full bg-cyan-400 shadow-[0_0_8px_rgba(34,211,238,0.8)] animate-pulse" />
-        </div>
-      </section>
-
-      <Section id="journey" title="My Journey" icon={<GraduationCap className="w-8 h-8"/>} smoothMode={smoothMode}>
+      <Section id="journey" title="My Journey" icon={<GraduationCap className="w-8 h-8"/>}>
         <Journey data={portfolioData.journey} smoothMode={smoothMode} />
       </Section>
 
-      <Section id="internships" title="Internship Experience" icon={<Building2 className="w-8 h-8"/>} smoothMode={smoothMode}>
+      <Section id="internships" title="Internship Experience" icon={<Building2 className="w-8 h-8"/>}>
         <Internship data={portfolioData.internships} openModal={openModal} smoothMode={smoothMode} />
       </Section>
 
-      <Section id="projects" title="My Projects" icon={<Briefcase className="w-8 h-8"/>} smoothMode={smoothMode}>
+      <Section id="projects" title="My Projects" icon={<Briefcase className="w-8 h-8"/>}>
         <ProjectTerminalFilter projects={portfolioData.projects} smoothMode={smoothMode} />
       </Section>
 
-      <Section id="certificate" title="Certificates & Achievements" icon={<Award className="w-8 h-8"/>} smoothMode={smoothMode}>
+      <Section id="certificate" title="Certificates & Achievements" icon={<Award className="w-8 h-8"/>}>
         <Certificates data={portfolioData.certificates} smoothMode={smoothMode} />
       </Section>
 
-      <Section id="contact" title="Contact Me" icon={<Mail className="w-8 h-8"/>} smoothMode={smoothMode}>
-        <Contact smoothMode={smoothMode} />
+      <Section id="contact" title="Contact Me" icon={<Mail className="w-8 h-8"/>}>
+        <Contact />
       </Section>
     </main>
     );
@@ -968,12 +934,6 @@ export default function App() {
         {background}
 
         {header}
-
-        <ScrollProgressHUD
-          activeNav={activeNav}
-          handleNavClick={handleNavClick}
-          smoothMode={smoothMode}
-        />
 
         <div className={contentBlurClass}>
           <div className="relative z-10">
