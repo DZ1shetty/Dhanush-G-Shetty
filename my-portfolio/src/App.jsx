@@ -509,19 +509,45 @@ export default function App() {
                     </NavLink>
                   ))}
                 </div>
-                {/* Eco/Performance Toggle Button */}
-                <button
-                  onClick={() => setSmoothMode((prev) => !prev)}
-                  className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg border font-mono text-[11px] tracking-wider transition-all duration-300 ${
-                    smoothMode
-                      ? 'bg-emerald-500/10 border-emerald-500/30 text-emerald-400 hover:bg-emerald-500/20'
-                      : 'bg-cyan-500/10 border-cyan-500/30 text-cyan-400 hover:bg-cyan-500/20 shadow-[0_0_10px_rgba(34,211,238,0.15)]'
-                  }`}
-                  title={smoothMode ? "Switch to Performance Mode" : "Switch to Eco Mode (Saves CPU/GPU)"}
+                {/* Eco/Performance Segmented Control */}
+                <div 
+                  className="relative flex items-center bg-slate-950/60 backdrop-blur-md border border-white/10 rounded-full p-1 select-none w-16 h-8"
+                  title={smoothMode ? "Eco Mode Active (Saves CPU/GPU)" : "Performance Mode Active"}
                 >
-                  <span className={`w-1.5 h-1.5 rounded-full ${smoothMode ? 'bg-emerald-400 animate-pulse' : 'bg-cyan-400 animate-ping'}`} />
-                  <span>{smoothMode ? '🌿' : '⚡'}</span>
-                </button>
+                  <button
+                    onClick={() => setSmoothMode(true)}
+                    className={`relative z-10 flex-1 flex items-center justify-center h-full rounded-full transition-colors duration-300 text-[11px] ${
+                      smoothMode ? 'text-emerald-400' : 'text-slate-500 hover:text-slate-300'
+                    }`}
+                    aria-label="Switch to Eco Mode"
+                  >
+                    <span>🌿</span>
+                    {smoothMode && (
+                      <_motion.div
+                        layoutId="active-mode-pill"
+                        className="absolute inset-0 bg-emerald-500/10 border border-emerald-500/20 shadow-[0_0_8px_rgba(16,185,129,0.15)] rounded-full -z-10"
+                        transition={{ type: "spring", stiffness: 400, damping: 25 }}
+                      />
+                    )}
+                  </button>
+
+                  <button
+                    onClick={() => setSmoothMode(false)}
+                    className={`relative z-10 flex-1 flex items-center justify-center h-full rounded-full transition-colors duration-300 text-[11px] ${
+                      !smoothMode ? 'text-cyan-400' : 'text-slate-500 hover:text-slate-300'
+                    }`}
+                    aria-label="Switch to Performance Mode"
+                  >
+                    <span>⚡</span>
+                    {!smoothMode && (
+                      <_motion.div
+                        layoutId="active-mode-pill"
+                        className="absolute inset-0 bg-cyan-500/10 border border-cyan-500/20 shadow-[0_0_8px_rgba(34,211,238,0.15)] rounded-full -z-10"
+                        transition={{ type: "spring", stiffness: 400, damping: 25 }}
+                      />
+                    )}
+                  </button>
+                </div>
               </div>
               <button
                 className="md:hidden p-2 rounded-lg border border-white/10 text-white hover:border-cyan-500/50 transition-colors"
@@ -559,20 +585,45 @@ export default function App() {
                   </_motion.button>
                 ))}
 
-                {/* Mobile Eco/Performance Toggle */}
-                <button
-                  onClick={() => {
-                    setSmoothMode((prev) => !prev);
-                  }}
-                  className={`w-full py-3.5 text-center text-sm font-mono tracking-widest uppercase rounded-xl border flex items-center justify-center gap-2 transition-all ${
-                    smoothMode
-                      ? 'border-emerald-500/30 bg-emerald-500/10 text-emerald-400'
-                      : 'border-cyan-500/30 bg-cyan-500/10 text-cyan-400'
-                  }`}
+                {/* Mobile Eco/Performance Segmented Control */}
+                <div 
+                  className="relative flex items-center bg-slate-950/60 backdrop-blur-md border border-white/10 rounded-full p-1 select-none w-24 h-10 mx-auto"
+                  title={smoothMode ? "Eco Mode Active (Saves CPU/GPU)" : "Performance Mode Active"}
                 >
-                  <span className={`w-1.5 h-1.5 rounded-full ${smoothMode ? 'bg-emerald-400 animate-pulse' : 'bg-cyan-400'}`} />
-                  <span>{smoothMode ? '🌿' : '⚡'}</span>
-                </button>
+                  <button
+                    onClick={() => setSmoothMode(true)}
+                    className={`relative z-10 flex-1 flex items-center justify-center h-full rounded-full transition-colors duration-300 text-lg ${
+                      smoothMode ? 'text-emerald-400' : 'text-slate-500 hover:text-slate-300'
+                    }`}
+                    aria-label="Switch to Eco Mode"
+                  >
+                    <span>🌿</span>
+                    {smoothMode && (
+                      <_motion.div
+                        layoutId="active-mode-pill-mobile"
+                        className="absolute inset-0 bg-emerald-500/10 border border-emerald-500/20 shadow-[0_0_8px_rgba(16,185,129,0.15)] rounded-full -z-10"
+                        transition={{ type: "spring", stiffness: 400, damping: 25 }}
+                      />
+                    )}
+                  </button>
+
+                  <button
+                    onClick={() => setSmoothMode(false)}
+                    className={`relative z-10 flex-1 flex items-center justify-center h-full rounded-full transition-colors duration-300 text-lg ${
+                      !smoothMode ? 'text-cyan-400' : 'text-slate-500 hover:text-slate-300'
+                    }`}
+                    aria-label="Switch to Performance Mode"
+                  >
+                    <span>⚡</span>
+                    {!smoothMode && (
+                      <_motion.div
+                        layoutId="active-mode-pill-mobile"
+                        className="absolute inset-0 bg-cyan-500/10 border border-cyan-500/20 shadow-[0_0_8px_rgba(34,211,238,0.15)] rounded-full -z-10"
+                        transition={{ type: "spring", stiffness: 400, damping: 25 }}
+                      />
+                    )}
+                  </button>
+                </div>
 
                 <button
                   className="mt-8 text-sm text-slate-400 underline underline-offset-4"
