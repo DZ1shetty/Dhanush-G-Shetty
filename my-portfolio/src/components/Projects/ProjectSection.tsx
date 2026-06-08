@@ -1,6 +1,6 @@
-import ProjectCard from "./ProjectCard";
 import FadeIn from "../ui/FadeIn";
 import ScrambleText from "../ui/ScrambleText";
+import InfiniteMenu from "../ui/InfiniteMenu";
 
 const projects = [
     {
@@ -158,11 +158,19 @@ const projects = [
 ];
 
 export default function Projects() {
+    // Map projects to InfiniteMenu format
+    const menuItems = projects.map((p, index) => ({
+        image: `https://picsum.photos/600/600?random=${index}`,
+        link: p.githubLink,
+        title: p.title,
+        description: p.technologies.join(", ")
+    }));
+
     return (
         <section id="projects" className="md:py-24 py-12 w-full border-b-4 border-foreground">
-             <div className="max-w-6xl mx-auto px-6 sm:px-10">
+             <div className="max-w-6xl mx-auto px-6 sm:px-10 mb-12">
                 <FadeIn>
-                    <div className="text-center mb-20">
+                    <div className="text-center">
                         <span className="font-mono inline-block px-3 py-1.5 text-xs font-black tracking-wider uppercase bg-foreground text-background border-2 border-foreground mb-4 select-none">
                             My Portfolio
                         </span>
@@ -171,20 +179,14 @@ export default function Projects() {
                         </h2>
                         <div className="w-24 h-1.5 bg-foreground mx-auto mb-4" />
                         <p className="text-md sm:text-lg text-muted-foreground max-w-2xl mx-auto font-medium">
-                            A selection of projects where I've turned complex problems into elegant solutions.
+                            A selection of projects where I've turned complex problems into elegant solutions. Drag to explore!
                         </p>
                     </div>
                 </FadeIn>
+            </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-10">
-                    {projects.map((project, index) => (
-                        <FadeIn key={index} delay={index * 0.15}>
-                            <ProjectCard 
-                                {...project}
-                            />
-                        </FadeIn>
-                    ))}
-                </div>
+            <div className="w-full relative" style={{ height: '700px' }}>
+                <InfiniteMenu items={menuItems} scale={1.0} />
             </div>
         </section>
     );
