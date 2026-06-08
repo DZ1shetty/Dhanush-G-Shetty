@@ -520,7 +520,7 @@ export default function App() {
                   title={smoothMode ? "Switch to Performance Mode" : "Switch to Eco Mode (Saves CPU/GPU)"}
                 >
                   <span className={`w-1.5 h-1.5 rounded-full ${smoothMode ? 'bg-emerald-400 animate-pulse' : 'bg-cyan-400 animate-ping'}`} />
-                  <span>{smoothMode ? '🌿 ECO_MODE' : '⚡ PERF_MODE'}</span>
+                  <span>{smoothMode ? '🌿' : '⚡'}</span>
                 </button>
               </div>
               <button
@@ -571,7 +571,7 @@ export default function App() {
                   }`}
                 >
                   <span className={`w-1.5 h-1.5 rounded-full ${smoothMode ? 'bg-emerald-400 animate-pulse' : 'bg-cyan-400'}`} />
-                  <span>{smoothMode ? '🌿 ECO_MODE ACTIVE' : '⚡ PERFORMANCE ACTIVE'}</span>
+                  <span>{smoothMode ? '🌿' : '⚡'}</span>
                 </button>
 
                 <button
