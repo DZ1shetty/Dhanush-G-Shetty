@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Award, Code, Briefcase, BookOpen, ShieldCheck } from 'lucide-react';
-import ScrollFormationGrid from './ScrollFormationGrid';
+import CertificateGrid from './CertificateGrid';
 
-const Certificates = ({ data, smoothMode, openModal }) => {
+const Certificates = ({ data, smoothMode }) => {
   const [activeTab, setActiveTab] = useState('all');
 
   const tabs = [
@@ -73,7 +73,7 @@ const Certificates = ({ data, smoothMode, openModal }) => {
       {/* Content Area */}
       {smoothMode ? (
         <div className="min-h-[400px]">
-          <ScrollFormationGrid certs={filteredCerts} smoothMode={smoothMode} onImageClick={(idx) => openModal(filteredCerts, idx)} />
+          <CertificateGrid certs={filteredCerts} smoothMode={smoothMode} />
         </div>
       ) : (
         <motion.div
@@ -84,7 +84,7 @@ const Certificates = ({ data, smoothMode, openModal }) => {
           transition={{ duration: 0.2 }}
           className="min-h-[400px]"
         >
-          <ScrollFormationGrid certs={filteredCerts} smoothMode={smoothMode} onImageClick={(idx) => openModal(filteredCerts, idx)} />
+          <CertificateGrid certs={filteredCerts} smoothMode={smoothMode} />
         </motion.div>
       )}
     </div>
