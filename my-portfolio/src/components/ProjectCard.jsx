@@ -1,5 +1,6 @@
 import React from 'react';
 import { Github, ArrowUpRight } from 'lucide-react';
+import { motion } from 'framer-motion';
 
 const ProjectCard = ({ project, index, smoothMode = false }) => {
   const formattedIndex = (index + 1).toString().padStart(2, '0');
@@ -56,10 +57,24 @@ const ProjectCard = ({ project, index, smoothMode = false }) => {
     </>
   );
 
+  if (smoothMode) {
+    return (
+      <div className={cardClasses}>
+        {inner}
+      </div>
+    );
+  }
+
   return (
-    <div className={cardClasses}>
+    <motion.div
+      initial={{ opacity: 0, y: 30 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, amount: 0.1 }}
+      transition={{ duration: 0.5, delay: index * 0.05 }}
+      className={cardClasses}
+    >
       {inner}
-    </div>
+    </motion.div>
   );
 };
 

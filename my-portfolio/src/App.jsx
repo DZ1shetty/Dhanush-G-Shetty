@@ -19,6 +19,8 @@ import Journey from "./components/Journey";
 import Internship from "./components/Internship";
 import Contact from "./components/Contact";
 import Preloader from "./components/Preloader";
+import ScrollProgressHUD from "./components/ScrollProgressHUD";
+import ScrollReveal from "./components/ScrollReveal";
 
 // Utility function to check for reduced motion preference
 const prefersReducedMotion = () => {
@@ -26,7 +28,7 @@ const prefersReducedMotion = () => {
   return window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 };
 
-const SCROLL_ANIMATIONS_ENABLED = false;
+// Scroll animations are enabled dynamically based on Eco Mode and reduced motion preference
 const NAV_SECTIONS = [
   { id: "home", label: "Home" },
   { id: "journey", label: "Journey" },
@@ -52,13 +54,16 @@ const Motion = ({ children, ...props }) => {
 };
 
 // Section component with motion awareness
-const Section = React.memo(({ id, title, icon, children }) => {
-  const animationProps = SCROLL_ANIMATIONS_ENABLED
+const Section = React.memo(({ id, title, icon, children, smoothMode = false }) => {
+  const shouldReduceMotion = prefersReducedMotion();
+  const animationsEnabled = !smoothMode && !shouldReduceMotion;
+
+  const animationProps = animationsEnabled
     ? {
-        initial: { opacity: 0, y: 50 },
-        whileInView: { opacity: 1, y: 0 },
-        viewport: { once: true, amount: 0.1 },
-        transition: { duration: 0.6 }
+        initial: { opacity: 0, y: 40, filter: "blur(4px)" },
+        whileInView: { opacity: 1, y: 0, filter: "blur(0px)" },
+        viewport: { once: true, amount: 0.15 },
+        transition: { duration: 0.8, ease: [0.16, 1, 0.3, 1] }
       }
     : {};
 
@@ -590,7 +595,10 @@ export default function App() {
 
   // Memoize the main content to prevent re-renders when activeNav changes
   const mainContent = useMemo(() => {
-    const heroPrimaryMotion = SCROLL_ANIMATIONS_ENABLED
+    const shouldReduceMotion = prefersReducedMotion();
+    const animationsEnabled = !smoothMode && !shouldReduceMotion;
+
+    const heroPrimaryMotion = animationsEnabled
       ? {
           initial: { opacity: 0, scale: 0.9 },
           animate: { opacity: 1, scale: 1 },
@@ -598,7 +606,7 @@ export default function App() {
         }
       : {};
 
-    const heroCardMotion = SCROLL_ANIMATIONS_ENABLED
+    const heroCardMotion = animationsEnabled
       ? {
           initial: { opacity: 0, x: 50 },
           whileInView: { opacity: 1, x: 0 },
@@ -876,23 +884,49 @@ export default function App() {
         </Motion>
       </section>
 
-      <Section id="journey" title="My Journey" icon={<GraduationCap className="w-8 h-8"/>}>
+      {/* 3. Glowing Developer Statement ScrollReveal Section */}
+      <section className="py-20 max-w-4xl mx-auto text-center px-4 flex flex-col items-center justify-center min-h-[35vh] border-t border-b border-white/5 relative overflow-hidden select-none">
+        <div className="absolute inset-0 opacity-[0.02] pointer-events-none" style={{
+          backgroundImage: 'radial-gradient(circle, #22d3ee 1px, transparent 1px)',
+          backgroundSize: '20px 20px'
+        }} />
+        
+        <ScrollReveal
+          baseOpacity={0.05}
+          enableBlur={true}
+          baseRotation={2}
+          blurStrength={8}
+          containerClassName="text-center w-full"
+          textClassName="font-heading font-extrabold text-slate-100 tracking-tight leading-relaxed text-glow font-sans"
+          disabled={!animationsEnabled}
+        >
+          I believe in building web applications that are not only high-performing and robust, but also visual masterpieces. Visual aesthetics combined with solid, modular engineering is what defines modern software excellence.
+        </ScrollReveal>
+        
+        <div className="flex items-center gap-3 mt-8 font-mono text-[10px] text-cyan-400/70 uppercase tracking-[0.25em]">
+          <span className="w-1.5 h-1.5 rounded-full bg-cyan-400 shadow-[0_0_8px_rgba(34,211,238,0.8)] animate-pulse" />
+          <span>MISSION_STATEMENT.TXT</span>
+          <span className="w-1.5 h-1.5 rounded-full bg-cyan-400 shadow-[0_0_8px_rgba(34,211,238,0.8)] animate-pulse" />
+        </div>
+      </section>
+
+      <Section id="journey" title="My Journey" icon={<GraduationCap className="w-8 h-8"/>} smoothMode={smoothMode}>
         <Journey data={portfolioData.journey} smoothMode={smoothMode} />
       </Section>
 
-      <Section id="internships" title="Internship Experience" icon={<Building2 className="w-8 h-8"/>}>
+      <Section id="internships" title="Internship Experience" icon={<Building2 className="w-8 h-8"/>} smoothMode={smoothMode}>
         <Internship data={portfolioData.internships} openModal={openModal} smoothMode={smoothMode} />
       </Section>
 
-      <Section id="projects" title="My Projects" icon={<Briefcase className="w-8 h-8"/>}>
+      <Section id="projects" title="My Projects" icon={<Briefcase className="w-8 h-8"/>} smoothMode={smoothMode}>
         <ProjectTerminalFilter projects={portfolioData.projects} smoothMode={smoothMode} />
       </Section>
 
-      <Section id="certificate" title="Certificates & Achievements" icon={<Award className="w-8 h-8"/>}>
+      <Section id="certificate" title="Certificates & Achievements" icon={<Award className="w-8 h-8"/>} smoothMode={smoothMode}>
         <Certificates data={portfolioData.certificates} smoothMode={smoothMode} />
       </Section>
 
-      <Section id="contact" title="Contact Me" icon={<Mail className="w-8 h-8"/>}>
+      <Section id="contact" title="Contact Me" icon={<Mail className="w-8 h-8"/>} smoothMode={smoothMode}>
         <Contact smoothMode={smoothMode} />
       </Section>
     </main>
@@ -934,6 +968,12 @@ export default function App() {
         {background}
 
         {header}
+
+        <ScrollProgressHUD
+          activeNav={activeNav}
+          handleNavClick={handleNavClick}
+          smoothMode={smoothMode}
+        />
 
         <div className={contentBlurClass}>
           <div className="relative z-10">
