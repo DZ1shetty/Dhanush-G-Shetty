@@ -29,9 +29,8 @@ export default function Squares({
     if (!ctx) return;
 
     const resizeCanvas = () => {
-      // Use parent container dimensions
       const parent = canvas.parentElement;
-      if (parent) {
+      if (parent && parent.offsetWidth > 0 && parent.offsetHeight > 0) {
         canvas.width = parent.offsetWidth;
         canvas.height = parent.offsetHeight;
       } else {
@@ -43,6 +42,15 @@ export default function Squares({
     };
 
     window.addEventListener('resize', resizeCanvas);
+    
+    const resizeObserver = new ResizeObserver(() => {
+      resizeCanvas();
+    });
+    
+    if (canvas.parentElement) {
+      resizeObserver.observe(canvas.parentElement);
+    }
+    
     resizeCanvas();
 
     const drawGrid = () => {
@@ -133,6 +141,7 @@ export default function Squares({
 
     return () => {
       window.removeEventListener('resize', resizeCanvas);
+      resizeObserver.disconnect();
       // @ts-ignore
       cancelAnimationFrame(requestRef.current);
       canvas.removeEventListener('mousemove', handleMouseMove);

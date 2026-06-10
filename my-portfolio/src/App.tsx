@@ -14,20 +14,26 @@ import BootScreen from "./components/ui/BootScreen";
 
 function BackgroundLayer() {
   const { theme } = useTheme();
-  const [isDark, setIsDark] = useState(false);
+  
+  const [isDark, setIsDark] = useState(() => {
+    if (theme === "dark") return true;
+    if (theme === "light") return false;
+    return window.matchMedia("(prefers-color-scheme: dark)").matches;
+  });
 
   useEffect(() => {
-    const checkTheme = () => {
-      const root = window.document.documentElement;
-      setIsDark(root.classList.contains("dark"));
-    };
-    
-    checkTheme();
-    // Use MutationObserver to watch for class changes on HTML tag
-    const observer = new MutationObserver(checkTheme);
-    observer.observe(window.document.documentElement, { attributes: true, attributeFilter: ['class'] });
-    
-    return () => observer.disconnect();
+    if (theme === "dark") {
+      setIsDark(true);
+    } else if (theme === "light") {
+      setIsDark(false);
+    } else {
+      const mediaQuery = window.matchMedia("(prefers-color-scheme: dark)");
+      setIsDark(mediaQuery.matches);
+      
+      const handleChange = (e: MediaQueryListEvent) => setIsDark(e.matches);
+      mediaQuery.addEventListener("change", handleChange);
+      return () => mediaQuery.removeEventListener("change", handleChange);
+    }
   }, [theme]);
 
   return (
