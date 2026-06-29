@@ -16,11 +16,10 @@ interface ExperienceProps {
     duration: string;
     description: string;
     technologies: string[];
-    projectLink?: string;
     mediaGroups?: MediaGroup[];
 }
 
-export default function ExperienceCard({ role, company, companyLink, duration, description, technologies, projectLink, mediaGroups }: ExperienceProps) {
+export default function ExperienceCard({ role, company, companyLink, duration, description, technologies, mediaGroups }: ExperienceProps) {
     return (
         <div className="group relative w-full">
             {/* Neubrutalist Experience Box */}
@@ -32,17 +31,6 @@ export default function ExperienceCard({ role, company, companyLink, duration, d
                         <h3 className="text-xl sm:text-2xl font-black tracking-tight leading-snug">
                             {role}
                         </h3>
-                        {projectLink && (
-                            <a 
-                                href={projectLink} 
-                                target="_blank" 
-                                rel="noopener noreferrer" 
-                                className="text-foreground hover:bg-foreground hover:text-background p-1 border-2 border-transparent hover:border-foreground transition-all"
-                                title="View Project"
-                            >
-                                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="size-4.5"><path d="M15 3h6v6"/><path d="M10 14 21 3"/><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/></svg>
-                            </a>
-                        )}
                     </div>
                     <span className="font-mono text-xs font-black tracking-widest uppercase bg-foreground/10 px-2 py-1 border-2 border-foreground select-none self-start sm:self-center">
                         {duration}

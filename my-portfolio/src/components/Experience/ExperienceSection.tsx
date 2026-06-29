@@ -9,7 +9,6 @@ const experiences = [
         duration: "2 Months",
         description: "• Developed AR car accessories visualization app using Unity and C# (visual ground detection, spatial mapping, object interaction)\n• Built interactive VR gallery walkthrough simulating virtual exhibition environment",
         technologies: ["Unity", "C#", "AR/VR"],
-        projectLink: "https://www.linkedin.com/company/ark-solutions",
         mediaGroups: [
             {
                 title: "AR Part",

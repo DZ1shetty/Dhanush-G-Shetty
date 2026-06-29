@@ -126,7 +126,7 @@ export default function Home() {
                     <FaInstagram className="size-6" />
                   </a>
                   <a
-                    href="mailto:dhanushgshetty666@gmail.com"
+                    href="https://mail.google.com/mail/?view=cm&fs=1&to=dhanushgshetty666@gmail.com"
                     target="_blank"
                     rel="noopener noreferrer"
                     aria-label="Email Address"

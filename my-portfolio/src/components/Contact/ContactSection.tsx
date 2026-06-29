@@ -44,8 +44,10 @@ export default function Contact() {
                             <p className="text-muted-foreground font-medium text-sm leading-relaxed mb-8 max-w-sm">
                                 The best way to reach me. I typically respond within 24 hours.
                             </p>
-                            <a 
-                                href={`mailto:${email}`}
+                             <a 
+                                href={`https://mail.google.com/mail/?view=cm&fs=1&to=${email}`}
+                                target="_blank"
+                                rel="noopener noreferrer"
                                 className="w-full sm:w-auto cursor-pointer border-3 border-foreground bg-card text-foreground font-mono text-sm sm:text-base font-bold uppercase tracking-wider px-8 py-3.5 rounded-none shadow-[4px_4px_0px_var(--foreground)] hover:bg-foreground hover:text-background hover:-translate-x-1 hover:-translate-y-1 hover:shadow-[8px_8px_0px_var(--foreground)] active:translate-x-0 active:translate-y-0 active:shadow-none transition-all text-center flex items-center justify-center gap-2"
                             >
                                 Say Hello &gt;

@@ -1,3 +1,5 @@
+import { useEffect, useRef } from "react";
+import { animate } from "animejs";
 import EducationCard from "../About/EducationCard";
 import FadeIn from "../ui/FadeIn";
 import ScrambleText from "../ui/ScrambleText";
@@ -54,6 +56,78 @@ const quickStats = [
 ];
 
 export default function About() {
+  const profileFrameRef = useRef<HTMLDivElement>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
+  const lineRef = useRef<HTMLDivElement>(null);
+  const nodeRefs = useRef<(HTMLDivElement | null)[]>([]);
+
+  const triggerGlitch = () => {
+    const element = profileFrameRef.current;
+    if (!element) return;
+
+    animate(element, {
+      boxShadow: [
+        { value: "-8px -8px 0px #00ffff, 8px 8px 0px #ff00ff", duration: 100 },
+        { value: "10px 10px 0px 0px var(--foreground)", duration: 150 }
+      ],
+      translateX: [-3, 3, -1, 0],
+      translateY: [2, -2, 1, 0],
+      duration: 250,
+      easing: "easeInOutQuad"
+    });
+  };
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const container = containerRef.current;
+      const line = lineRef.current;
+      if (!container || !line) return;
+
+      const rect = container.getBoundingClientRect();
+      const viewportHeight = window.innerHeight;
+      const triggerPoint = viewportHeight * 0.7; // Trigger line at 70% viewport height
+
+      const scrolledDistance = triggerPoint - rect.top;
+      const progress = Math.max(0, Math.min(1, scrolledDistance / rect.height));
+
+      // Direct DOM style update for smooth 60fps animations
+      line.style.height = `${progress * 100}%`;
+
+      // Staggered node marker entrance based on scroll intersection
+      nodeRefs.current.forEach((node) => {
+        if (!node) return;
+
+        const nodeRect = node.getBoundingClientRect();
+        const reached = nodeRect.top < triggerPoint;
+        const isAnimated = node.getAttribute("data-animated") === "true";
+
+        if (reached && !isAnimated) {
+          node.setAttribute("data-animated", "true");
+          animate(node, {
+            scale: [0, 1],
+            rotate: [45, 0],
+            opacity: [0, 1],
+            duration: 500,
+            easing: "easeOutBack"
+          });
+        } else if (!reached && isAnimated) {
+          node.setAttribute("data-animated", "false");
+          animate(node, {
+            scale: 0,
+            opacity: 0,
+            duration: 300,
+            easing: "easeInQuad"
+          });
+        }
+      });
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    handleScroll(); // Run once on mount to position correctly
+
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
   return (
     <section id="about" className="md:py-24 py-12 w-full border-b-4 border-foreground">
       {/* About Me Section */}
@@ -103,7 +177,11 @@ export default function About() {
           <FadeIn direction="left" delay={0.4}>
             <div className="flex justify-center">
               {/* Picture Frame Wrapper */}
-              <div className="relative w-80 h-96 bg-card border-4 border-foreground shadow-[10px_10px_0px_0px_var(--foreground)] p-3 select-none">
+              <div 
+                ref={profileFrameRef}
+                onMouseEnter={triggerGlitch}
+                className="relative w-80 h-96 bg-card border-4 border-foreground shadow-[10px_10px_0px_0px_var(--foreground)] p-3 select-none"
+              >
                 <div className="relative w-full h-full border-2 border-foreground overflow-hidden">
                   <img 
                     src="/profile.jpeg" 
@@ -138,8 +216,11 @@ export default function About() {
         </FadeIn>
         
         {/* Timeline (Refactored to be thick, solid, and left-aligned for maximum card width) */}
-        <div className="relative max-w-3xl mx-auto">
-          <div className="absolute left-4 sm:left-6 top-0 bottom-0 w-1 bg-foreground" />
+        <div ref={containerRef} className="relative max-w-3xl mx-auto">
+          {/* Timeline track (faint/dashed) */}
+          <div className="absolute left-4 sm:left-6 top-0 bottom-0 w-1 bg-foreground/15 border-l-2 border-dashed border-foreground/30" />
+          {/* Timeline active line (growing solid) */}
+          <div ref={lineRef} className="absolute left-4 sm:left-6 top-0 w-1 bg-foreground origin-top" style={{ height: "0%" }} />
           
           <div className="space-y-10 md:space-y-14">
             {educationJourney.map((edu, index) => (
@@ -150,7 +231,10 @@ export default function About() {
               >
                 <div className="relative flex items-start">
                   {/* Robust Black Circle Marker */}
-                  <div className="absolute left-4 sm:left-6 w-6 h-6 rounded-full bg-background border-4 border-foreground transform -translate-x-1/2 mt-8 z-10 shadow-[2px_2px_0px_var(--foreground)]" />
+                  <div 
+                    ref={(el) => { nodeRefs.current[index] = el; }}
+                    className="absolute left-4 sm:left-6 w-6 h-6 rounded-full bg-background border-4 border-foreground transform -translate-x-1/2 mt-8 z-10 shadow-[2px_2px_0px_var(--foreground)] opacity-0 scale-0" 
+                  />
                   
                   <div className="w-full ml-10 sm:ml-14">
                     <EducationCard {...edu} />

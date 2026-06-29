@@ -4,63 +4,128 @@ import ScrambleText from "../ui/ScrambleText";
 
 const projects = [
     {
-        "title": "FinNovate \u2013 Financial Analytics Dashboard",
-        "description": "\u2022 Displays financial data using charts and dashboards for better visualization\n\u2022 Helps users analyze trends and make informed financial decisions",
+        "title": "FinNovate – Financial Analytics Dashboard",
+        "description": "• Interactive financial dashboard providing data visualization and real-time trend analytics.\n• Developed with React, Vite, Tailwind CSS, and Chart.js to help users make data-driven decisions.",
         "technologies": [
             "React",
             "Vite",
-            "Node.js"
+            "Chart.js",
+            "Tailwind CSS"
         ],
         "githubLink": "https://github.com/DZ1shetty/FinNovate"
     },
     {
         "title": "AR Car Accessories Visualizer",
-        "description": "\u2022 Uses Augmented Reality to place and preview car accessories (like wheels, spoilers)\n\u2022 Helps users visualize modifications before purchasing and compare different options",
+        "description": "• Immersive Augmented Reality mobile application to preview and place car modifications like wheels and spoilers.\n• Built using Unity, C#, ARCore, and Vuforia Engine for real-time spatial mapping and ground plane detection.",
         "technologies": [
             "Unity",
+            "C#",
             "ARCore",
-            "Vuforia Engine"
+            "Vuforia"
         ],
-        "githubLink": "https://github.com/DZ1shetty/AR-Visualizer"
+        "githubLink": "https://github.com/DZ1shetty/Unity-CAR_AR"
     },
     {
         "title": "Bus Fleet Management System",
-        "description": "\u2022 Stores and manages transportation data such as bus details, routes, and schedules\n\u2022 Provides an interface to log, view, and organize fleet information efficiently",
+        "description": "• Robust database-driven management application to organize and log bus fleets, routes, and transit schedules.\n• Developed backend schemas using Java, Python, and MongoDB to query and structure fleet data efficiently.",
         "technologies": [
-            "Python",
             "Java",
+            "Python",
             "MongoDB"
         ],
-        "githubLink": "https://github.com/DZ1shetty/Bus-Fleet-Management"
+        "githubLink": "https://github.com/DZ1shetty/BUS_FMS"
+    },
+    {
+        "title": "PhishGuard AI",
+        "description": "• Intelligent web security model utilizing AI algorithms to detect, flag, and prevent phishing threats.\n• Implemented front-end dashboard with real-time risk indicator metrics and defensive heuristics.",
+        "technologies": [
+            "Python",
+            "AI/ML",
+            "HTML/CSS"
+        ],
+        "githubLink": "https://github.com/DZ1shetty/phishguard-ai"
+    },
+    {
+        "title": "PopcornIQ",
+        "description": "• Dynamic movie trivia and quiz platform featuring interactive scoring and real-time feedback.\n• Built utilizing React, Framer Motion, and Tailwind CSS for fluid transitions and game states.",
+        "technologies": [
+            "React",
+            "Vite",
+            "Framer Motion"
+        ],
+        "githubLink": "https://github.com/DZ1shetty/PopcornIQ"
+    },
+    {
+        "title": "Simple Face Detection",
+        "description": "• Real-time face tracking and detection application utilizing computer vision models.\n• Developed using Python, OpenCV, and Haar Cascade classifiers for camera stream input parsing.",
+        "technologies": [
+            "Python",
+            "OpenCV",
+            "AI/ML"
+        ],
+        "githubLink": "https://github.com/DZ1shetty/Simple-Face-Detection"
+    },
+    {
+        "title": "Smart Nav",
+        "description": "• Sleek navigation hub and dashboard interface for unified link routing and analytics.",
+        "technologies": [
+            "JavaScript",
+            "CSS",
+            "HTML"
+        ],
+        "githubLink": "https://github.com/DZ1shetty/Smart_Nav"
+    },
+    {
+        "title": "GreenArchive",
+        "description": "• Environmental metrics tracking repository archiving sustainability metrics and reports.",
+        "technologies": [
+            "JavaScript",
+            "HTML",
+            "CSS"
+        ],
+        "githubLink": "https://github.com/DZ1shetty/GreenArchive"
+    },
+    {
+        "title": "Major Project",
+        "description": "• Full-stack academic project integrating modular APIs and data management services.",
+        "technologies": [
+            "JavaScript",
+            "Node.js",
+            "Express"
+        ],
+        "githubLink": "https://github.com/DZ1shetty/Major_Project"
     },
     {
         "title": "Chill-Dev",
-        "description": "\u2022 TypeScript Sandbox Experiments",
+        "description": "• Experimental development sandbox for exploring advanced TypeScript features and design patterns.",
         "technologies": [
             "TypeScript"
         ],
         "githubLink": "https://github.com/DZ1shetty/Chill-Dev"
     },
     {
-        "title": "Dhanush-G-Shetty",
-        "description": "\u2022 React Cyber Portfolio",
+        "title": "Dhanush G Shetty Portfolio",
+        "description": "• Source code of this V2 Cyber-Neubrutalist developer portfolio built with React and Vite.",
         "technologies": [
-            "React"
+            "React",
+            "Vite",
+            "Tailwind CSS"
         ],
         "githubLink": "https://github.com/DZ1shetty/Dhanush-G-Shetty"
     },
     {
-        "title": "DSA_TRAINING_NITTE-14-days-",
-        "description": "\u2022 DSA Java, C++",
+        "title": "DSA Training",
+        "description": "• Daily logs and algorithm implementations from 14-day intensive data structures and algorithms boot camp.",
         "technologies": [
-            "DSA",
-            "Java, C++"
+            "Java",
+            "C++",
+            "DSA"
         ],
         "githubLink": "https://github.com/DZ1shetty/DSA_TRAINING_NITTE-14-days-"
     },
     {
-        "title": "fastapi_crud",
-        "description": "\u2022 Python FastAPI",
+        "title": "FastAPI CRUD",
+        "description": "• Light-weight RESTful API using Python FastAPI with asynchronous database operations.",
         "technologies": [
             "Python",
             "FastAPI"
@@ -68,92 +133,39 @@ const projects = [
         "githubLink": "https://github.com/DZ1shetty/fastapi_crud"
     },
     {
-        "title": "github_basics",
-        "description": "\u2022 Git GitHub Workflows",
+        "title": "GitHub Basics",
+        "description": "• Reference guide and tutorial sandbox demonstrating branching, rebasing, and GitHub actions.",
         "technologies": [
-            "Git"
+            "Git",
+            "Markdown"
         ],
         "githubLink": "https://github.com/DZ1shetty/github_basics"
     },
     {
-        "title": "GreenArchive",
-        "description": "\u2022 JavaScript Environment Metrics",
+        "title": "NeetCode Submissions",
+        "description": "• Optimized solution submissions for data structures and algorithm challenges from NeetCode.",
         "technologies": [
-            "JavaScript"
-        ],
-        "githubLink": "https://github.com/DZ1shetty/GreenArchive"
-    },
-    {
-        "title": "Major_Project",
-        "description": "\u2022 JavaScript Full-Stack",
-        "technologies": [
-            "JavaScript"
-        ],
-        "githubLink": "https://github.com/DZ1shetty/Major_Project"
-    },
-    {
-        "title": "neetcode-submissions",
-        "description": "\u2022 Algorithms Python",
-        "technologies": [
-            "Python"
+            "Python",
+            "DSA"
         ],
         "githubLink": "https://github.com/DZ1shetty/neetcode-submissions"
     },
     {
-        "title": "phishguard-ai",
-        "description": "\u2022 CSS AI Phishing Detection",
-        "technologies": [
-            "CSS"
-        ],
-        "githubLink": "https://github.com/DZ1shetty/phishguard-ai"
-    },
-    {
-        "title": "PopcornIQ",
-        "description": "\u2022 React Movie Trivia",
-        "technologies": [
-            "React"
-        ],
-        "githubLink": "https://github.com/DZ1shetty/PopcornIQ"
-    },
-    {
-        "title": "python-questions",
-        "description": "\u2022 Python Practice Problems",
+        "title": "Python Questions",
+        "description": "• Structured catalog of practice questions and solutions for core Python programming concepts.",
         "technologies": [
             "Python"
         ],
         "githubLink": "https://github.com/DZ1shetty/python-questions"
     },
     {
-        "title": "react_frontend_setup",
-        "description": "\u2022 React Vite",
+        "title": "SDLC of a Real-World System",
+        "description": "• Systems analysis and software development life cycle (SDLC) study of Atrium Health's Hospital at Home program.",
         "technologies": [
-            "React"
-        ],
-        "githubLink": "https://github.com/DZ1shetty/react_frontend_setup"
-    },
-    {
-        "title": "SDLC-of-a-Real-World-System",
-        "description": "\u2022 HTML SDLC Analysis",
-        "technologies": [
-            "HTML"
+            "HTML",
+            "Documentation"
         ],
         "githubLink": "https://github.com/DZ1shetty/SDLC-of-a-Real-World-System"
-    },
-    {
-        "title": "Simple-Face-Detection",
-        "description": "\u2022 Python OpenCV, AI",
-        "technologies": [
-            "Python"
-        ],
-        "githubLink": "https://github.com/DZ1shetty/Simple-Face-Detection"
-    },
-    {
-        "title": "Smart_Nav",
-        "description": "\u2022 JavaScript CSS Dashboard",
-        "technologies": [
-            "JavaScript"
-        ],
-        "githubLink": "https://github.com/DZ1shetty/Smart_Nav"
     }
 ];
 

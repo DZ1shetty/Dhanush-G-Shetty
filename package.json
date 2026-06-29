@@ -3,6 +3,8 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
+    "dev": "npm run dev --prefix my-portfolio",
+    "start": "npm run dev --prefix my-portfolio",
     "install:app": "cd my-portfolio && npm install",
     "build": "cd my-portfolio && npm run build",
     "automation:sort": "python automation/alphabetical_sort.py",

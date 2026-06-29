@@ -2,6 +2,8 @@ import { useState, useEffect } from "react";
 import { ThemeProvider, useTheme } from "@/components/theme-provider";
 import { Analytics } from "@vercel/analytics/react";
 import { SpeedInsights } from '@vercel/speed-insights/react';
+import Lenis from 'lenis';
+import 'lenis/dist/lenis.css';
 import NavigationBar from "./components/NavBar/NavigationBar";
 import Home from "./components/Home/HomeSection";
 import About from "./components/About/AboutSection";
@@ -10,7 +12,6 @@ import Experience from "./components/Experience/ExperienceSection";
 import Projects from "./components/Projects/ProjectSection";
 import Contact from "./components/Contact/ContactSection";
 import Squares from "./components/ui/Squares";
-import BootScreen from "./components/ui/BootScreen";
 
 function BackgroundLayer() {
   const { theme } = useTheme();
@@ -42,25 +43,36 @@ function BackgroundLayer() {
           direction="diagonal"
           speed={0.5}
           squareSize={50}
-          borderColor={isDark ? "#ffffff" : "#000000"} 
-          hoverFillColor={isDark ? "#22c55e" : "#22c55e"}
+          borderColor={isDark ? "rgba(255, 255, 255, 0.35)" : "rgba(0, 0, 0, 0.25)"} 
+          hoverFillColor={isDark ? "#60a5fa" : "#3b82f6"}
       />
     </div>
   );
 }
 
 function App() {
-  const [isBooting, setIsBooting] = useState(() => {
-    // Check if we've already booted in this session
-    return !sessionStorage.getItem("hasBooted");
-  });
+  useEffect(() => {
+    const lenis = new Lenis({
+      duration: 1.2,
+      easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+      orientation: 'vertical',
+      gestureOrientation: 'vertical',
+      smoothWheel: true,
+      wheelMultiplier: 1,
+      touchMultiplier: 2,
+    });
 
-  if (isBooting) {
-    return <BootScreen onComplete={() => {
-      sessionStorage.setItem("hasBooted", "true");
-      setIsBooting(false);
-    }} />;
-  }
+    function raf(time: number) {
+      lenis.raf(time);
+      requestAnimationFrame(raf);
+    }
+
+    requestAnimationFrame(raf);
+
+    return () => {
+      lenis.destroy();
+    };
+  }, []);
 
   return (
     <ThemeProvider defaultTheme="light" storageKey="vite-ui-theme">
