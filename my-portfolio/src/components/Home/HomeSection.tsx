@@ -1,4 +1,4 @@
-import { Link } from "react-scroll";
+
 import { IoDocumentTextOutline } from "react-icons/io5";
 import { AiFillGithub } from "react-icons/ai";
 import { FaLinkedin, FaInstagram } from "react-icons/fa";
