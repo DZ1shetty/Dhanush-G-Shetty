@@ -4,7 +4,7 @@ import { AiFillGithub } from "react-icons/ai";
 import { FaLinkedin, FaInstagram } from "react-icons/fa";
 import { MdEmail } from "react-icons/md";
 import { TypeAnimation } from "react-type-animation";
-import Magnet from "../ui/Magnet";
+
 
 export default function Home() {
     return (
@@ -71,19 +71,7 @@ export default function Home() {
 
                 {/* Action Buttons */}
                 <div className="flex flex-col sm:flex-row gap-4 pt-1 w-full font-mono z-10">
-                  <Magnet padding={50} disabled={false} magnetStrength={3}>
-                    <Link
-                      to="projects"
-                      smooth={true}
-                      duration={600}
-                      offset={-64}
-                      className="w-full sm:w-auto cursor-pointer border-3 border-foreground bg-card text-foreground text-xs sm:text-sm font-bold uppercase tracking-wider px-6 py-3 rounded-none shadow-[4px_4px_0px_0px_var(--foreground)] hover:bg-foreground hover:text-background hover:-translate-x-1 hover:-translate-y-1 hover:shadow-[8px_8px_0px_0px_var(--foreground)] active:translate-x-0 active:translate-y-0 active:shadow-none transition-all text-center flex items-center justify-center"
-                    >
-                      View My Projects
-                    </Link>
-                  </Magnet>
 
-                  <Magnet padding={50} disabled={false} magnetStrength={3}>
                     <a
                       href="/resume.pdf"
                       target="_blank"
@@ -93,7 +81,6 @@ export default function Home() {
                       <IoDocumentTextOutline className="size-4 shrink-0" />
                       View Resume
                     </a>
-                  </Magnet>
                 </div>
 
                 {/* Social Links */}

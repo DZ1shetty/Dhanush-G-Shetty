@@ -166,6 +166,16 @@ const projects = [
             "Documentation"
         ],
         "githubLink": "https://github.com/DZ1shetty/SDLC-of-a-Real-World-System"
+    },
+    {
+        "title": "Restaurant Landing Page",
+        "description": "• A responsive restaurant landing page featuring modern web design and styling.",
+        "technologies": [
+            "HTML",
+            "CSS",
+            "Vite"
+        ],
+        "githubLink": "https://github.com/DZ1shetty/restaurant-"
     }
 ];
 
@@ -190,7 +200,7 @@ export default function Projects() {
 
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-10">
                     {projects.map((project, index) => (
-                        <FadeIn key={index} delay={index * 0.15}>
+                        <FadeIn key={index} delay={(index % 3) * 0.15}>
                             <ProjectCard 
                                 {...project}
                             />

@@ -1,53 +1,37 @@
 import { 
-    React, Python, Nodejs, HTML5, CSS,
-    Git, GitHub, MySQL, PostgreSQL, TailwindCSS, Expressjs, Nextjs, Firebase, MongoDB, Postman, OpenRouter
+    React, Python, Nodejs, Firebase, MongoDB, JavaScript
 } from "../ui/DevIcons"
 import SkillCard from "./SkillCard"
 import FadeIn from "../ui/FadeIn"
 import ScrambleText from "../ui/ScrambleText"
-import { FaJava } from "react-icons/fa"
+import { FaDatabase, FaCube } from "react-icons/fa"
+import { SiVite, SiUnity } from "react-icons/si"
 
 const categories = [
     { 
         title: "Programming", 
         skills: [
             { name: "Python", Icon: Python },
-            { name: "Java", Icon: FaJava }
+            { name: "JavaScript", Icon: JavaScript },
+            { name: "SQL", Icon: FaDatabase },
+            { name: "MongoDB", Icon: MongoDB }
         ] 
     },
     { 
-        title: "Frontend", 
+        title: "Frameworks", 
         skills: [
-            { name: "HTML", Icon: HTML5 },
-            { name: "CSS", Icon: CSS },
-            { name: "React.js", Icon: React },
-            { name: "Next.js", Icon: Nextjs },
-            { name: "TailwindCSS", Icon: TailwindCSS }
+            { name: "React", Icon: React },
+            { name: "Node.js", Icon: Nodejs },
+            { name: "Vite", Icon: SiVite }
         ]  
     },
     {
-        title: "Backend",
+        title: "Tools",
         skills: [
-            { name: "Node.js", Icon: Nodejs },
-            { name: "Express.js", Icon: Expressjs },
-            { name: "Firebase", Icon: Firebase }
-        ]
-    },
-    {
-        title: "Database",
-        skills: [
-            { name: "MongoDB", Icon: MongoDB },
-            { name: "PostgreSQL", Icon: PostgreSQL },
-            { name: "MySQL", Icon: MySQL }
-        ]
-    },
-    {
-        title: "AI and Tools",
-        skills: [
-            { name: "Open Router", Icon: OpenRouter },
-            { name: "Git", Icon: Git },
-            { name: "GitHub", Icon: GitHub },
-            { name: "Postman", Icon: Postman }
+            { name: "Unity", Icon: SiUnity },
+            { name: "Vuforia", Icon: FaCube },
+            { name: "Firebase", Icon: Firebase },
+            { name: "ARCore", Icon: FaCube }
         ]
     }
 ];

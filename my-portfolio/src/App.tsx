@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, lazy, Suspense } from "react";
 import { ThemeProvider, useTheme } from "@/components/theme-provider";
 import { Analytics } from "@vercel/analytics/react";
 import { SpeedInsights } from '@vercel/speed-insights/react';
@@ -6,12 +6,13 @@ import Lenis from 'lenis';
 import 'lenis/dist/lenis.css';
 import NavigationBar from "./components/NavBar/NavigationBar";
 import Home from "./components/Home/HomeSection";
-import About from "./components/About/AboutSection";
-import Skills from "./components/Skills/SkillsSection";
-import Experience from "./components/Experience/ExperienceSection";
-import Projects from "./components/Projects/ProjectSection";
-import Contact from "./components/Contact/ContactSection";
 import Squares from "./components/ui/Squares";
+
+const About = lazy(() => import("./components/About/AboutSection"));
+const Skills = lazy(() => import("./components/Skills/SkillsSection"));
+const Experience = lazy(() => import("./components/Experience/ExperienceSection"));
+const Projects = lazy(() => import("./components/Projects/ProjectSection"));
+const Contact = lazy(() => import("./components/Contact/ContactSection"));
 
 function BackgroundLayer() {
   const { theme } = useTheme();
@@ -80,11 +81,13 @@ function App() {
       <NavigationBar />
       <main>
         <Home />
-        <About />
-        <Skills />
-        <Experience />
-        <Projects />
-        <Contact />
+        <Suspense fallback={null}>
+          <About />
+          <Skills />
+          <Experience />
+          <Projects />
+          <Contact />
+        </Suspense>
       </main>      
       <Analytics />   
       <SpeedInsights /> 

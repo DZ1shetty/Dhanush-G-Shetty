@@ -40,7 +40,7 @@ const educationJourney = [
         achievements: {
             honors: [
                 {
-                    name: "CGPA 8.39",
+                    name: "CGPA 8.5",
                     years: "Current",
                     tooltipDescription: "Maintaining a strong academic record."
                 }
@@ -51,7 +51,7 @@ const educationJourney = [
 ];
 
 const quickStats = [
-    { value: "8.39", label: "CGPA", accent: "text-foreground" },
+    { value: "8.5", label: "CGPA", accent: "text-foreground" },
     { value: "18+", label: "Projects Built", accent: "text-foreground" },
 ];
 
@@ -146,13 +146,13 @@ export default function About() {
             <div className="flex flex-col gap-6 text-left text-foreground bg-card border-4 border-foreground p-6 sm:p-10 shadow-[8px_8px_0px_0px_var(--foreground)]">
               <div>
                 <BlurText 
-                  text="Hey! I'm a full-stack dev and AR/VR geek who loves tinkering with React, Python, and Node.js. I'm basically here to turn cool ideas into slick web apps."
+                  text="Hey! I'm a student at NMAMIT who just loves building things. I spend most of my time creating web apps and exploring AR/VR using React, Python, and Node.js."
                   className="text-lg leading-relaxed mb-6 font-medium"
                   highlightWords={["React,", "Python,", "Node.js."]}
                   highlightClass="underline underline-offset-4 decoration-2 decoration-foreground font-bold"
                 />
                 <BlurText 
-                  text="Currently surviving engineering school at NMAMIT. I spend most of my time learning new tech, building random projects, and just having fun coding."
+                  text="I'm all about solving problems and building software that feels great to use. I'm always excited to learn new things and team up on projects that make a positive impact!"
                   className="text-lg leading-relaxed mb-8 font-medium"
                   delay={0.4}
                 />
@@ -186,6 +186,7 @@ export default function About() {
                   <img 
                     src="/profile.jpeg" 
                     alt="Profile" 
+                    loading="lazy"
                     className="w-full h-full object-cover transition-transform duration-700 hover:scale-105" 
                   />
                   <div className="absolute bottom-4 left-1/2 -translate-x-1/2 bg-foreground text-background font-mono font-black text-xs sm:text-sm px-3 py-1 border-2 border-background shadow-[2px_2px_0px_0px_var(--background)] whitespace-nowrap z-10 pointer-events-none tracking-wider">

@@ -76,12 +76,14 @@ export default function ExperienceCard({ role, company, companyLink, duration, d
                                                     src={item.url} 
                                                     controls 
                                                     muted 
+                                                    preload="none"
                                                     className="w-full aspect-video object-cover border-2 border-foreground bg-black"
                                                 />
                                             ) : (
                                                 <img 
                                                     src={item.url} 
                                                     alt={item.caption || "Experience media"} 
+                                                    loading="lazy"
                                                     className="w-full aspect-video object-cover border-2 border-foreground"
                                                 />
                                             )}

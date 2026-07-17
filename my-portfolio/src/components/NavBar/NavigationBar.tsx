@@ -5,6 +5,27 @@ import { ModeToggle } from "@/components/mode-toggle";
 
 export default function NavigationBar() {
     const [isOpen, setIsOpen] = useState(false);
+    const [logoStyle, setLogoStyle] = useState<React.CSSProperties>({});
+
+    const getRandomStyle = () => {
+        const fonts = ['Arial', 'Verdana', 'Tahoma', 'Trebuchet MS', 'Times New Roman', 'Georgia', 'Garamond', 'Courier New', 'Brush Script MT', 'Comic Sans MS', 'Impact', 'Lucida Console', 'Monaco', 'Palatino', 'fantasy', 'cursive', 'monospace', 'sans-serif', 'serif'];
+        const weights = ['100', '300', '400', '600', '700', '900'];
+        const styles = ['normal', 'italic'];
+        const transforms = ['none', 'uppercase', 'lowercase'];
+        const letterSpacings = ['-0.05em', '0', '0.05em', '0.1em', '0.2em', '0.3em'];
+    
+        return {
+          fontFamily: fonts[Math.floor(Math.random() * fonts.length)],
+          fontWeight: weights[Math.floor(Math.random() * weights.length)],
+          fontStyle: styles[Math.floor(Math.random() * styles.length)],
+          textTransform: transforms[Math.floor(Math.random() * transforms.length)] as any,
+          letterSpacing: letterSpacings[Math.floor(Math.random() * letterSpacings.length)],
+        };
+    };
+
+    const handleLogoClick = () => {
+        setLogoStyle(getRandomStyle());
+    };
 
     const toggleMenu = () => {
         setIsOpen(!isOpen);
@@ -23,9 +44,13 @@ export default function NavigationBar() {
     return (
         <nav className="fixed w-full top-0 flex px-6 md:px-16 h-16 bg-background text-foreground justify-between items-center border-b-4 border-foreground z-50 transition-colors duration-300">
             {/* Neubrutalist Logo */}
-            <div className="font-mono font-black text-2xl border-3 border-foreground bg-card text-foreground px-3 py-0.5 shadow-[3px_3px_0px_0px_var(--foreground)] tracking-tighter select-none">
+            <button 
+                onClick={handleLogoClick}
+                style={logoStyle}
+                className="font-mono font-black text-2xl border-3 border-foreground bg-card text-foreground px-3 py-0.5 shadow-[3px_3px_0px_0px_var(--foreground)] tracking-tighter select-none cursor-pointer transition-all active:translate-x-0.5 active:translate-y-0.5 active:shadow-[1px_1px_0px_0px_var(--foreground)]"
+            >
                 DZ1
-            </div>
+            </button>
 
             {/* Navigation and Mode Toggle */}
             <div className="flex items-center gap-6">

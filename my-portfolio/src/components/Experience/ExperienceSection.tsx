@@ -4,9 +4,17 @@ import ScrambleText from "../ui/ScrambleText";
 
 const experiences = [
     {
+        role: "Python Full Stack Development Intern",
+        company: "DLithe (Online)",
+        duration: "June 2025 – Present",
+        description: "• Learning Python Full Stack Development using Django, Flask, HTML, CSS, JavaScript, SQL, ORM, REST APIs, and Git workflows.\n• Gaining hands-on experience in cloud deployment, debugging, testing, performance optimization, and end-to-end web application development.",
+        technologies: ["Python", "Django", "Flask", "SQL", "JavaScript", "React"],
+        mediaGroups: []
+    },
+    {
         role: "AR/VR Development Intern",
         company: "NMAM Institute of Technology & ARK Solutions",
-        duration: "2 Months",
+        duration: "June 2025 – July 2025",
         description: "• Developed AR car accessories visualization app using Unity and C# (visual ground detection, spatial mapping, object interaction)\n• Built interactive VR gallery walkthrough simulating virtual exhibition environment",
         technologies: ["Unity", "C#", "AR/VR"],
         mediaGroups: [
