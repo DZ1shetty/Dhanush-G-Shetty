@@ -38,7 +38,7 @@ const categories = [
 
 export default function Skills() {
     return (
-        <section id="skills" className="md:py-24 py-12 w-full border-b-4 border-foreground">
+        <section id="skills" className="scroll-mt-16 md:pt-8 md:pb-32 pt-8 pb-24 w-full border-b-4 border-foreground">
             <div className="max-w-6xl mx-auto px-6 sm:px-10">
                 <FadeIn>
                     <div className="text-center mb-20"> 

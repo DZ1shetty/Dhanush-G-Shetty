@@ -181,12 +181,12 @@ const projects = [
 
 export default function Projects() {
     return (
-        <section id="projects" className="md:py-24 py-12 w-full border-b-4 border-foreground">
-             <div className="max-w-6xl mx-auto px-6 sm:px-10">
+        <section id="projects" className="scroll-mt-16 md:pt-8 md:pb-32 pt-8 pb-24 w-full border-b-4 border-foreground">
+             <div className="max-w-6xl mx-auto px-4 sm:px-6 md:px-10">
                 <FadeIn>
                     <div className="text-center mb-20">
                         <span className="font-mono inline-block px-3 py-1.5 text-xs font-black tracking-wider uppercase bg-foreground text-background border-2 border-foreground mb-4 select-none">
-                            My Portfolio
+                            My Projects
                         </span>
                         <h2 className="text-4xl md:text-5xl font-black tracking-tight text-foreground select-none uppercase font-mono mb-4">
                             <ScrambleText text="Featured Projects" />

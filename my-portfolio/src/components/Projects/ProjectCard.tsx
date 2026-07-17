@@ -26,7 +26,7 @@ export default function ProjectCard({ title, description, technologies, githubLi
                                 href={githubLink} 
                                 target="_blank" 
                                 rel="noopener noreferrer"
-                                className="p-2 border-2 border-foreground bg-card text-foreground shadow-[2px_2px_0px_0px_var(--foreground)] hover:-translate-x-0.5 hover:-translate-y-0.5 hover:shadow-[3px_3px_0px_0px_var(--foreground)] active:translate-x-0 active:translate-y-0 active:shadow-none transition-all cursor-pointer flex items-center justify-center relative z-50"
+                                className="p-2 border-2 border-foreground bg-card text-foreground shadow-[2px_2px_0px_0px_var(--foreground)] hover:-translate-x-0.5 hover:-translate-y-0.5 hover:shadow-[3px_3px_0px_0px_var(--foreground)] active:translate-x-0 active:translate-y-0 active:shadow-none transition-all cursor-pointer flex items-center justify-center relative z-20"
                                 title="View Code"
                             >
                                 <FaGithub size={16} />
@@ -37,7 +37,7 @@ export default function ProjectCard({ title, description, technologies, githubLi
                                 href={liveLink} 
                                 target="_blank" 
                                 rel="noopener noreferrer"
-                                className="p-2 border-2 border-foreground bg-card text-foreground shadow-[2px_2px_0px_0px_var(--foreground)] hover:-translate-x-0.5 hover:-translate-y-0.5 hover:shadow-[3px_3px_0px_0px_var(--foreground)] active:translate-x-0 active:translate-y-0 active:shadow-none transition-all cursor-pointer flex items-center justify-center relative z-50"
+                                className="p-2 border-2 border-foreground bg-card text-foreground shadow-[2px_2px_0px_0px_var(--foreground)] hover:-translate-x-0.5 hover:-translate-y-0.5 hover:shadow-[3px_3px_0px_0px_var(--foreground)] active:translate-x-0 active:translate-y-0 active:shadow-none transition-all cursor-pointer flex items-center justify-center relative z-20"
                                 title="View Live Site"
                             >
                                 <FiExternalLink size={16} />

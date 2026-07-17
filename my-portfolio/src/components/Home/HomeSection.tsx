@@ -19,9 +19,7 @@ export default function Home() {
                   <span className="w-3 h-3 rounded-full border-2 border-background bg-background/50" />
                   <span className="w-3 h-3 rounded-full border-2 border-background bg-transparent" />
                 </div>
-                <span className="text-xs font-bold tracking-widest uppercase opacity-90">
-                  DHANUSH_SHETTY.EXE
-                </span>
+
                 <div className="text-[10px] sm:text-xs font-bold border-2 border-background bg-background text-foreground px-2 py-0.5 select-none hidden sm:block">
                   SYS_INIT
                 </div>
@@ -66,7 +64,7 @@ export default function Home() {
 
                 {/* Description */}
                 <p className="text-muted-foreground text-sm sm:text-base md:text-lg leading-relaxed max-w-3xl">
-                  Innovative Full-Stack Developer passionate about writing clean, maintainable code and leveraging modern technologies to streamline the transition from idea to production.
+                  Building cool things for the web. I love turning good ideas into reality using clean code and simple design. Let's make something awesome together! 🚀
                 </p>
 
                 {/* Action Buttons */}

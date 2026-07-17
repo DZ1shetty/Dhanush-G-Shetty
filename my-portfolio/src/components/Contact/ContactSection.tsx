@@ -6,7 +6,41 @@ import ScrambleText from "@/components/ui/ScrambleText";
 
 export default function Contact() {
     const [copied, setCopied] = useState(false);
+    const [result, setResult] = useState("");
+    const [isSubmitting, setIsSubmitting] = useState(false);
     const email = "dhanushgshetty666@gmail.com";
+
+    const onSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+        event.preventDefault();
+        const form = event.currentTarget;
+        setIsSubmitting(true);
+        setResult("Sending...");
+        const formData = new FormData(form);
+    
+        formData.append("access_key", import.meta.env.VITE_WEB3FORMS_ACCESS_KEY);
+    
+        try {
+            const response = await fetch("https://api.web3forms.com/submit", {
+                method: "POST",
+                body: formData
+            });
+        
+            const data = await response.json();
+        
+            if (data.success) {
+                setResult("Message Sent Successfully!");
+                form.reset();
+            } else {
+                console.log("Error", data);
+                setResult(data.message || "Something went wrong.");
+            }
+        } catch (error) {
+            console.error("Fetch error:", error);
+            setResult("Error sending message.");
+        } finally {
+            setIsSubmitting(false);
+        }
+    };
 
     const handleCopy = () => {
         navigator.clipboard.writeText(email);
@@ -15,7 +49,7 @@ export default function Contact() {
     };
 
     return (
-        <section id="contact" className="min-h-screen py-20 w-full relative overflow-hidden">
+        <section id="contact" className="scroll-mt-16 min-h-screen pt-8 pb-20 w-full relative overflow-hidden">
             <div className="max-w-4xl mx-auto px-6 relative z-10">
                 <FadeIn>
                     <div className="text-center mb-16">
@@ -34,24 +68,34 @@ export default function Contact() {
 
                 <div className="grid md:grid-cols-2 gap-10 items-stretch">
                     
-                    {/* Left Card: Send Email Block */}
+                    {/* Left Card: Contact Form Block */}
                     <FadeIn delay={0.2} direction="right">
-                        <div className="bg-card text-foreground p-8 h-full rounded-none border-4 border-foreground shadow-[6px_6px_0px_var(--foreground)] hover:-translate-x-1 hover:-translate-y-1 hover:shadow-[10px_10px_0px_var(--foreground)] active:translate-x-0 active:translate-y-0 active:shadow-[6px_6px_0px_var(--foreground)] transition-all duration-300 flex flex-col justify-center items-center text-center">
-                            <div className="bg-foreground/5 p-4 border-3 border-foreground rounded-none mb-6">
-                                <MdEmail className="size-10 text-foreground" />
-                            </div>
-                            <h3 className="text-2xl font-black mb-3">Send me an email</h3>
-                            <p className="text-muted-foreground font-medium text-sm leading-relaxed mb-8 max-w-sm">
-                                The best way to reach me. I typically respond within 24 hours.
-                            </p>
-                             <a 
-                                href={`https://mail.google.com/mail/?view=cm&fs=1&to=${email}`}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className="w-full sm:w-auto cursor-pointer border-3 border-foreground bg-card text-foreground font-mono text-sm sm:text-base font-bold uppercase tracking-wider px-8 py-3.5 rounded-none shadow-[4px_4px_0px_var(--foreground)] hover:bg-foreground hover:text-background hover:-translate-x-1 hover:-translate-y-1 hover:shadow-[8px_8px_0px_var(--foreground)] active:translate-x-0 active:translate-y-0 active:shadow-none transition-all text-center flex items-center justify-center gap-2"
-                            >
-                                Say Hello &gt;
-                            </a>
+                        <div className="bg-card text-foreground p-8 h-full rounded-none border-4 border-foreground shadow-[6px_6px_0px_var(--foreground)] transition-all duration-300 flex flex-col justify-center">
+                            <h3 className="text-2xl font-black mb-6 uppercase tracking-tight flex items-center gap-2">
+                                <MdEmail className="size-6" /> Message Me
+                            </h3>
+                            <form onSubmit={onSubmit} className="flex flex-col gap-4 font-mono font-bold">
+                                <div className="flex flex-col gap-1">
+                                    <label htmlFor="name" className="text-xs uppercase tracking-wider">Name</label>
+                                    <input type="text" id="name" name="name" required className="bg-background border-2 border-foreground p-3 focus:outline-none focus:ring-2 focus:ring-foreground transition-all" placeholder="John Doe" />
+                                </div>
+                                <div className="flex flex-col gap-1">
+                                    <label htmlFor="email" className="text-xs uppercase tracking-wider">Email</label>
+                                    <input type="email" id="email" name="email" required className="bg-background border-2 border-foreground p-3 focus:outline-none focus:ring-2 focus:ring-foreground transition-all" placeholder="john@example.com" />
+                                </div>
+                                <div className="flex flex-col gap-1">
+                                    <label htmlFor="message" className="text-xs uppercase tracking-wider">Message</label>
+                                    <textarea id="message" name="message" required rows={4} className="bg-background border-2 border-foreground p-3 focus:outline-none focus:ring-2 focus:ring-foreground transition-all resize-none" placeholder="Let's build something cool..."></textarea>
+                                </div>
+                                <button type="submit" disabled={isSubmitting} className="mt-2 w-full cursor-pointer border-3 border-foreground bg-foreground text-background font-mono text-sm sm:text-base font-black uppercase tracking-wider px-8 py-3.5 rounded-none shadow-[4px_4px_0px_var(--foreground)] hover:bg-card hover:text-foreground hover:-translate-x-1 hover:-translate-y-1 hover:shadow-[8px_8px_0px_var(--foreground)] active:translate-x-0 active:translate-y-0 active:shadow-none disabled:opacity-70 disabled:cursor-not-allowed transition-all">
+                                    {isSubmitting ? "Sending..." : "Submit ->"}
+                                </button>
+                                {result && (
+                                    <div className={`mt-2 text-xs text-center font-bold border-2 border-foreground p-2 ${result.includes("Success") ? "bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-200" : "bg-red-100 dark:bg-red-900/30 text-red-800 dark:text-red-200"}`}>
+                                        {result}
+                                    </div>
+                                )}
+                            </form>
                         </div>
                     </FadeIn>
                     

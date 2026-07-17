@@ -129,7 +129,7 @@ export default function About() {
   }, []);
 
   return (
-    <section id="about" className="md:py-24 py-12 w-full border-b-4 border-foreground">
+    <section id="about" className="scroll-mt-16 md:pt-8 md:pb-32 pt-8 pb-24 w-full border-b-4 border-foreground">
       {/* About Me Section */}
       <div className="max-w-6xl mx-auto px-6 sm:px-10">
         <FadeIn>
@@ -189,9 +189,6 @@ export default function About() {
                     loading="lazy"
                     className="w-full h-full object-cover transition-transform duration-700 hover:scale-105" 
                   />
-                  <div className="absolute bottom-4 left-1/2 -translate-x-1/2 bg-foreground text-background font-mono font-black text-xs sm:text-sm px-3 py-1 border-2 border-background shadow-[2px_2px_0px_0px_var(--background)] whitespace-nowrap z-10 pointer-events-none tracking-wider">
-                    DHANUSH_G_SHETTY.EXE
-                  </div>
                 </div>
               </div>
             </div>

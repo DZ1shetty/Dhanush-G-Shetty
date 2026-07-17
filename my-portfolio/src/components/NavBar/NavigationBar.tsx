@@ -42,7 +42,7 @@ export default function NavigationBar() {
     ];
 
     return (
-        <nav className="fixed w-full top-0 flex px-6 md:px-16 h-16 bg-background text-foreground justify-between items-center border-b-4 border-foreground z-50 transition-colors duration-300">
+        <nav className="fixed w-full top-0 flex px-6 md:px-16 h-16 bg-background/70 backdrop-blur-md text-foreground justify-between items-center border-b-4 border-foreground z-50 transition-colors duration-300">
             {/* Neubrutalist Logo */}
             <button 
                 onClick={handleLogoClick}

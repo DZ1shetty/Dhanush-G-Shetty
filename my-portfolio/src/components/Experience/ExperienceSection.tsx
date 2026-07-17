@@ -39,12 +39,12 @@ const experiences = [
 
 export default function Experience() {
     return (
-        <section id="experience" className="md:py-24 py-12 w-full border-b-4 border-foreground">
+        <section id="experience" className="scroll-mt-16 md:pt-8 md:pb-32 pt-8 pb-24 w-full border-b-4 border-foreground">
             <div className="max-w-6xl mx-auto px-6 sm:px-10">
                 <FadeIn>
                     <div className="text-center mb-20">
                         <span className="font-mono inline-block px-3 py-1.5 text-xs font-black tracking-wider uppercase bg-foreground text-background border-2 border-foreground mb-4 select-none">
-                            My Path
+                            Internships
                         </span>
                         <h2 className="text-4xl md:text-5xl font-black tracking-tight text-foreground select-none uppercase font-mono">
                             <ScrambleText text="Experience" />
